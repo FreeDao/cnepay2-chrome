@@ -43,7 +43,10 @@ public class APIDemoActivity extends UIBaseActivity implements View.OnClickListe
 	@Override
 	public void onError(int err) {
 		Toast.makeText(this, "Error = " + err, Toast.LENGTH_SHORT).show();
-		this.showTitleSubmit();
+		// 刷卡时，插拔卡可能会引起decodeError
+		if (this.isPlugged()) {
+			this.showTitleSubmit();
+		}
 	}
 	
 	@Override

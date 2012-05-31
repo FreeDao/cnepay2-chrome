@@ -30,7 +30,7 @@ public class BaseActivity extends Activity implements CardReaderListener {
 	//private final static int T_FAILURE = 50;
 
 	protected int version = 2; // 2 means API2, 1 means API1
-	private int choseVersion = 0; //0 means do not force API,
+	private int choseVersion = 2; //0 means do not force API,
 	                                           //1 means only API1,2 means only API2
 	protected CardInfo ci = null;
 
