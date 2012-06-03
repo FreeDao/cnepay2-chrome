@@ -65,11 +65,13 @@ public class UIBaseActivity extends BaseActivity {
 	@Override
 	public void onPlugout() {
 		imgIndicator.setImageResource(R.drawable.signup_reader_off);
-		mPlugged = false;
 		if (notNotify) {
 			notNotify = false;
+			mPlugged = false;
 			return;
 		}
+		if (!mPlugged) return;
+		mPlugged = false;
 		mToast.cancel();
 		mToast = new Toast(this);
 		mToast.setDuration(Toast.LENGTH_SHORT);
@@ -185,6 +187,17 @@ public class UIBaseActivity extends BaseActivity {
 	 */
 	public boolean isPlugged() {
 		return mPlugged;
+	}
+	
+	/**
+	 * 设置右上角按钮
+	 * @param text
+	 */
+	public void setTitleSubmitText(String text) {
+		if(btnSubmit != null) {
+			TextView tv = (TextView) btnSubmit.getChildAt(1);
+			tv.setText(text);
+		}
 	}
 	/*********** end user function **************/
 }

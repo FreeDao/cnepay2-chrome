@@ -1,5 +1,7 @@
 package com.cnepay.android.pos2;
 
+import com.tangye.swipedialog.SwipeDialogController;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -9,12 +11,19 @@ public class APIDemoActivity extends UIBaseActivity implements View.OnClickListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.reg);
 		
 		btnSubmit.setOnClickListener(this);
-
+		int[] attrs = new int[] {
+        	R.layout.swipe_dialog,
+        	R.style.dialog,
+        	R.id.dialog_anim,
+        	R.id.dialog_note
+        };
+        SwipeDialogController sd = new SwipeDialogController(this, attrs); 
+        sd.show();
+        sd.setText("请刷卡...");
 	}
-	
 	
 	@Override
 	public void onPlugin() {
@@ -36,7 +45,7 @@ public class APIDemoActivity extends UIBaseActivity implements View.OnClickListe
 	
 	@Override
 	public void onComplete(String cn) {
-		Toast.makeText(this, ci.toString(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, cn, Toast.LENGTH_SHORT).show();
 		this.showTitleSubmit();
 	}
 	
