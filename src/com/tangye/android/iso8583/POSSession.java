@@ -20,7 +20,7 @@ public class POSSession {
         return account;
     }	
 	
-	public POSSession initWK(String wkey, String track2) throws UnsupportedEncodingException {
+	public POSSession initWK(String wkey, String mAccount, String mPasswd) throws UnsupportedEncodingException {
 		if(wkey == null || wkey.length() != 24) throw new IllegalArgumentException("WK should be 24 bytes long");
 		// android.util.Log.e("WK", IsoUtil.byte2hex(wkey.getBytes("ISO-8859-1")));
 		pik = wkey.substring(0, 8);
@@ -29,10 +29,9 @@ public class POSSession {
 		byte[] bmak = mak.getBytes("ISO-8859-1");
 		pik = IsoUtil.byte2hex(bpik);
 		mak = IsoUtil.byte2hex(bmak);
-		if(track2 != null) {
-			String cn = track2.substring(0, track2.indexOf("="));
-			POSEncrypt pos = POSHelper.getPOSEncrypt(ctx, cn);
-			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), track2);
+		if(mAccount != null) {
+			POSEncrypt pos = POSHelper.getPOSEncrypt(ctx, mAccount);
+			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), mPasswd);
 			byte[] bkek = IsoUtil.hex2byte(kek);
 			pos.close();
 			// android.util.Log.e("PIKEncoded", pik);
@@ -48,7 +47,7 @@ public class POSSession {
 			// android.util.Log.e("PIKDecoded", pik);
 			// android.util.Log.e("MAKDecoded", mak);
 			// android.util.Log.e("KEKDecoded", kek);
-	        account = cn;
+	        account = mAccount;
 		} else {
 		    throw new IllegalArgumentException("Fatal error when get WK");
 		}

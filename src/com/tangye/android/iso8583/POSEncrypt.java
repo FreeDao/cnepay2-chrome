@@ -24,7 +24,7 @@ public class POSEncrypt {
 		sp = s;
 	}
 	
-	public void init(IsoMessage msg, String track2) throws IllegalStateException {
+	public void init(IsoMessage msg, String passwd) throws IllegalStateException {
 		long x = new Date().getTime() % 999999 + 1;
 		String traceNumber = String.format("%06d", x);
 		// android.util.Log.e("KEKEncoded", msg.getField(46).toString());
@@ -33,12 +33,12 @@ public class POSEncrypt {
         if(KEK == null || KEK.length == 0) throw new IllegalStateException("KEK cannot read");
         String ming = IsoUtil.byte2hex(KEK); // HEXSTRING KEK
         // android.util.Log.e("KEKDecoded", ming);
-		new ready(sp.edit(), track2)
+		new ready(sp.edit())
 		.put(TRACENUMBER, traceNumber) // 流水号
 		.put(TERMINAL, msg.getField(41).toString()) // 终端号
 		.put(USERMARK, msg.getField(42).toString()) // 商户号
 		.put(SETNUMBER, "000001") // 批次号
-		.put(KEKENCODED, pAES(ming, track2))
+		.put(KEKENCODED, pAES(ming, passwd))
 		.commit(); // store permanently
 		ming = null;
 	}
@@ -58,7 +58,7 @@ public class POSEncrypt {
 		String traceNumber = get(TRACENUMBER, "000000");
 		int x = Integer.valueOf(traceNumber) % 999999 + 1;
 		traceNumber = String.format("%06d", x);
-		new ready(sp.edit(), "")
+		new ready(sp.edit())
 		.put(TRACENUMBER, traceNumber)
 		.commit();
 		return this;
@@ -69,7 +69,7 @@ public class POSEncrypt {
         if(setNumber.length() != 6 || setNumber.equals(get(SETNUMBER, "000100"))) {
             return this;
         }
-        new ready(sp.edit(), "")
+        new ready(sp.edit())
         .put(SETNUMBER, setNumber)
         .commit();
         return this;
@@ -81,7 +81,7 @@ public class POSEncrypt {
 	        addSetNumber();
 	        return this;
 	    }
-	    new ready(sp.edit(), "")
+	    new ready(sp.edit())
         .put(SETNUMBER, setNumber)
         .commit();
         return this;
@@ -94,7 +94,7 @@ public class POSEncrypt {
         if(x > 999990) x = 100;
         else x++;
         setNumber = String.format("%06d", x);
-        new ready(sp.edit(), "")
+        new ready(sp.edit())
         .put(SETNUMBER, setNumber)
         .commit();
         return this;
@@ -130,7 +130,7 @@ public class POSEncrypt {
 	
 	class ready {
 		private Editor edit;
-		public ready(Editor ed, String pk) {
+		public ready(Editor ed) {
 			edit = ed;
 		}
 		public ready put(String key, String val) {

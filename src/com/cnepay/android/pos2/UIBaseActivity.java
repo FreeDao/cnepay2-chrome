@@ -1,6 +1,10 @@
 
 package com.cnepay.android.pos2;
 
+import com.cnepay.android.pos2.CNAPSHttpActivity;
+import com.tangye.android.utils.PublicHelper;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
@@ -20,6 +24,7 @@ public class UIBaseActivity extends BaseActivity {
 	private boolean notNotify = false;
 	private static long lastLeaveTime = 0;
 	private boolean mPlugged = false;
+	private OnCNAPSResultListener cnapsListener = null;
 
 	protected ImageView imgIndicator = null;
 	protected TextView txtTitle = null;
@@ -113,8 +118,36 @@ public class UIBaseActivity extends BaseActivity {
 		super.onPause();
 		lastLeaveTime = SystemClock.elapsedRealtime();
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CNAPS_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if(data != null) {
+                    String[] extra = data.getStringArrayExtra(CNAPSHttpActivity.INTENT_EXTRA);
+                    if(extra.length == 2 && cnapsListener != null) {
+                    	cnapsListener.onCNAPSResult(extra[0], extra[1]);
+                    	return;
+                    }
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+	
+	
 
 	/********** user function **************/
+	public static int CNAPS_REQUEST = 100;
+	
+	/**
+	 * 若需要选择开户银行信息，则使用该方法
+	 * @param l
+	 */
+	public void setOnCNAPSResultListener(OnCNAPSResultListener l) {
+		cnapsListener = l;
+	}
+	
 	/**
 	 * 重新计算leave时间
 	 */
@@ -199,5 +232,30 @@ public class UIBaseActivity extends BaseActivity {
 			tv.setText(text);
 		}
 	}
+	
+	/**
+	 * 选择开户银行
+	 */
+	public void chooseBank() {
+		Intent i = new Intent(this, CNAPSHttpActivity.class);
+	    startActivityForResult(i, CNAPS_REQUEST);
+	}
+	
+	/**
+	 * 获取软件代理商代码
+	 * @return 区分代理客户端的代码
+	 */
+	public String getSource() {
+		return getString(R.string.source);
+	}
+	
+	/**
+	 * 获取公共错误代码信息
+	 * @param code 39域
+	 * @return 错误信息
+	 */
+	public String getError(String code) {
+        return PublicHelper.getError(code, this);
+    }
 	/*********** end user function **************/
 }

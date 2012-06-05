@@ -14,8 +14,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:paddingBottom="10dp"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -271,7 +271,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/reg_backname"
+                    android:id="@+id/reg_bankname"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="1"
@@ -288,7 +288,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:orientation="vertical" >
 
         <Button

@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">每次刷卡前点击完成，只供演示</string>
-    <string name="app_name">Cnepay</string>
+    <string name="source" translate="false">1000</string>
+    <string name="app_name">我刷</string>
+    <string name="cnaps_page">共有%d页</string>
+    
+    <string name="c00">交易成功</string>
+    <string name="c01">查询发卡方</string>
+    <string name="c02">超时</string>
+    <string name="c03">无效商户</string>
+    <string name="c04">终端已注册</string>
+    <string name="c05">交易超时</string>
+    <string name="c12">无效交易</string>
+    <string name="c13">无效金额</string>
+    <string name="c14">无效卡</string>
+    <string name="c19">重复交易</string>
+    <string name="c25">无此交易类型</string>
+    <string name="c30">格式错误</string>
+    <string name="c43">黑名单卡</string>
+    <string name="c51">余额不足</string>
+    <string name="c54">卡已过期</string>
+    <string name="c55">密码错误</string>
+    <string name="c58">本POS无此功能</string>
+    <string name="c61">超出限制</string>
+    <string name="c78">没找到原交易</string>
+    <string name="c80">MAC错误，非法数据传递</string>
+    <string name="c87">原始交易未找到</string>
+    <string name="c89">未注册的终端</string>
+    <string name="c93">数据库为打开</string>
+    <string name="c94">数据库插入错误</string>
+    <string name="c95">等待批上送</string>
+    <string name="c96">系统错误</string>
+    <string name="c97">数据库选择错误</string>
+    <string name="c98">数据库更新错误</string>
+    <string name="c99">数据格式错误</string>
 </resources>
