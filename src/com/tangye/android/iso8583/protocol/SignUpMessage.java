@@ -17,8 +17,8 @@ public class SignUpMessage extends BaseMessageAbstract {
 	protected void onCreateRequestIsoMessage(IsoMessage requestMsg) {
 		requestMsg.setType(0x0900);
 		requestMsg.setBinary(true);
-		requestMsg.setValue(60, "00", IsoType.LLLVARBCD);
 		FixedValue_63_1 = "000";
+		requestMsg.setValue(60, "00", IsoType.LLLVARBCD);
 	}
 
 	@Override
