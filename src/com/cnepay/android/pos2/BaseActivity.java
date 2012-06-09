@@ -139,6 +139,12 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		// TODO Auto-generated method stub
 		Log.v(TAG, "swipe timeout");
 	}
+	
+	@Override
+	public void onSwipe() {
+		// TODO Auto-generated method stub
+		Log.v(TAG, "swiping...");
+	}
 
 	@Override
 	public void onDecoding() {
@@ -161,7 +167,7 @@ public class BaseActivity extends Activity implements CardReaderListener {
 	class API2_CallbackListener implements CSwiperStateChangedListener {
 
 		public void onCardSwipeDetected() {
-			// TODO Auto-generated method stub
+			BaseActivity.this.onSwipe();
 			Log.v(TAG, "onCardSwipeDetected");
 		}
 

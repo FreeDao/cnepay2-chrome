@@ -9,13 +9,12 @@ import com.bbpos.cswiper.encrypt.MD5;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-public class POSEncrypt {
+public class POSEncrypt extends POSNative {
 	
 	public final String TRACENUMBER = "t";
 	public final String TERMINAL = "tn";
 	public final String USERMARK = "u";
 	public final String SETNUMBER = "sn";
-	public final String MACENCODED = "ef";
 	public final String KEKENCODED = "kr";
 	
 	private SharedPreferences sp;
@@ -38,7 +37,7 @@ public class POSEncrypt {
 		.put(TERMINAL, msg.getField(41).toString()) // 终端号
 		.put(USERMARK, msg.getField(42).toString()) // 商户号
 		.put(SETNUMBER, "000001") // 批次号
-		.put(KEKENCODED, pAES(ming, passwd))
+		.put(KEKENCODED, pAES(ming, getNativeK(passwd, msg.getField(2).toString())))
 		.commit(); // store permanently
 		ming = null;
 	}

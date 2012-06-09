@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.bbpos.cswiper.encrypt.MD5;
+
 //import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,18 +15,19 @@ import android.util.Log;
 public class POSHelper {
 	
 	private static final String TAG = "POSHelper";
-	private static final String PREFIX = "SESSION_";	
+	private static final String PREFIX = "SESSION_";
 	private static long sessionId = -1;	
 	private static Map<String, POSSession> session = new ConcurrentHashMap<String, POSSession>();
 		
 	/**
 	 * Get a POS Terminal info box, store any POS related fixed info after register
 	 * @param ctx Context
-	 * @param name The card number possessed by card holder
+	 * @param phone The phone number registered by the card holder
 	 * @return the POS terminal handler which is targeting on process info of it
 	 */
-	public static POSEncrypt getPOSEncrypt(Context ctx, String name) {
-		SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(name, 0);
+	public static POSEncrypt getPOSEncrypt(Context ctx, String phone) {
+		String md5 = MD5.getMD5ofStr(phone);
+		SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(md5, 0);
 		POSEncrypt pe = new POSEncrypt(sp);
 		return pe;
 	}
@@ -36,7 +39,7 @@ public class POSHelper {
 	 * @return an existed session or a new session. return null when the created session is lost
 	 */
 	public static POSSession getPOSSession(Context ctx, boolean isNew) {
-		ctx = ctx.getApplicationContext();
+		if (ctx == null) return null;
 		String sid;
 		POSSession ses;
 		if(isNew) {
@@ -122,12 +125,12 @@ public class POSHelper {
     
     /**
      * Delete account which is bind on this POS phone
-     * @param name is the account card number
+     * @param phone is the phone number registered by the card holder
      * @return true for delete success, otherwise false
      */
     /*
-    public static boolean deleteAccount(String name) {
-    	File f = new File(PREFS_PATH + name + ".xml");
+    public static boolean deleteAccount(String phone) {
+    	java.io.File f = new java.io.File(PREFS_PATH + phone + ".xml");
     	if(f.exists()) {
     		Log.i(TAG, "Delete successfully");
     		return f.delete();

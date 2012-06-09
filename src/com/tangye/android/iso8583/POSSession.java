@@ -5,11 +5,12 @@ import java.io.UnsupportedEncodingException;
 import com.bbpos.cswiper.encrypt.DES;
 import android.content.Context;
 
-public class POSSession {
+public class POSSession extends POSNative {
 	
 	private String pik;
 	private String mak;
 	private String account;
+	private String card;
     private Context ctx;
 		
 	public POSSession(Context context) {
@@ -17,10 +18,15 @@ public class POSSession {
 	}
 	
     public String getSessionAccount() {
-        return account;
-    }	
+        return account;  // phone number
+    }
+    
+    public String getCardNumber() {
+    	// FIXME to use privately
+    	return card;  // card number
+    }
 	
-	public POSSession initWK(String wkey, String mAccount, String mPasswd) throws UnsupportedEncodingException {
+	public POSSession initWK(String wkey, String mAccount, String mPasswd, String mCard) throws UnsupportedEncodingException {
 		if(wkey == null || wkey.length() != 24) throw new IllegalArgumentException("WK should be 24 bytes long");
 		// android.util.Log.e("WK", IsoUtil.byte2hex(wkey.getBytes("ISO-8859-1")));
 		pik = wkey.substring(0, 8);
@@ -29,9 +35,9 @@ public class POSSession {
 		byte[] bmak = mak.getBytes("ISO-8859-1");
 		pik = IsoUtil.byte2hex(bpik);
 		mak = IsoUtil.byte2hex(bmak);
-		if(mAccount != null) {
+		if(mAccount != null && mPasswd != null) {
 			POSEncrypt pos = POSHelper.getPOSEncrypt(ctx, mAccount);
-			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), mPasswd);
+			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), getNativeK(mPasswd, mCard));
 			byte[] bkek = IsoUtil.hex2byte(kek);
 			pos.close();
 			// android.util.Log.e("PIKEncoded", pik);
@@ -48,6 +54,7 @@ public class POSSession {
 			// android.util.Log.e("MAKDecoded", mak);
 			// android.util.Log.e("KEKDecoded", kek);
 	        account = mAccount;
+	        card = mCard;
 		} else {
 		    throw new IllegalArgumentException("Fatal error when get WK");
 		}
@@ -81,14 +88,14 @@ public class POSSession {
         return mac;
     }
     
-    public String getPIN(String pin, String track2) {        
+    public String getPIN(String pin, String cardNumber) {        
         byte[] pinBlock = (byte[]) null;
         if (pin.length() > 10)
             throw new IllegalArgumentException("Invalid PIN length: " + pin.length());
-        if (track2.length() < 13)
+        if (cardNumber.length() < 13)
             throw new IllegalArgumentException("Invalid Account Number");
-        int len = track2.length();
-        String accountNumber = track2.substring(len - 13, len - 1);
+        int len = cardNumber.length();
+        String accountNumber = cardNumber.substring(len - 13, len - 1);
         String block1 = null;
         switch (pin.length()) {
         case 4:

@@ -173,6 +173,13 @@ public class RegisterActivity extends UIBaseActivity implements
 			dialog.dismiss();
 		}
 	}
+	
+	@Override
+	public void onSwipe() {
+		if (dialog != null) {
+			dialog.setText("接受刷卡数据...");
+		}
+	}
 
 	@Override
 	public void onDecoding() {
@@ -389,7 +396,7 @@ public class RegisterActivity extends UIBaseActivity implements
 	                			Log.i(TAG, "应答码：" + resp.getField(39).toString());
 								Log.i(TAG, "终端标识码：" + resp.getField(41).toString());
 								Log.i(TAG, "受卡方标识码：" + resp.getField(42).toString());
-			                    POSEncrypt POS = POSHelper.getPOSEncrypt(RegisterActivity.this, account);
+			                    POSEncrypt POS = POSHelper.getPOSEncrypt(RegisterActivity.this, phone);
 		        				POS.init(resp, password);
 		        				POS.close();
 		        				error = account; // differ with stop by user

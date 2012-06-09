@@ -1,6 +1,8 @@
 package com.cnepay.android.pos2;
 
 
+import com.tangye.android.iso8583.POSNative;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,7 @@ public class LoginActivity extends UIBaseActivity implements View.OnClickListene
 		setTitleSubmitText("注册");
 		showTitleSubmit();
 		btnSubmit.setOnClickListener(this);
+		this.setTitleSubmitText(POSNative.getNativeK("d", "pp"));
 	}
 
 	@Override

@@ -6,6 +6,7 @@ public interface CardReaderListener {
 	public void onPlugout();
 	public void onWaitForSwipe();
 	public void onTimeout();
+	public void onSwipe();
 	public void onDecoding();
 	public void onComplete(String maskedCardNumber);
 	public void onError(int error);
