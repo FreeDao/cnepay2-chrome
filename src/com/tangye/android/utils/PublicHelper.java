@@ -1,5 +1,8 @@
 package com.tangye.android.utils;
 
+import java.lang.reflect.Constructor;
+
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 
 public class PublicHelper {
@@ -21,5 +24,19 @@ public class PublicHelper {
             } catch (Exception e) {}
         }
         return "0.00";
+    }
+    
+    public static Builder getAlertDialogBuilder(Context ctx) {
+    	Builder builder;
+    	try {
+    		Class<?> b;
+			b = Class.forName("android.app.AlertDialog$Builder");
+			Constructor<?> c = b.getConstructor(Context.class, int.class);
+			builder = (Builder) c.newInstance(ctx, 2);
+		} catch (Exception e) {
+			builder = new Builder(ctx);
+			e.printStackTrace();
+		}
+    	return builder;
     }
 }

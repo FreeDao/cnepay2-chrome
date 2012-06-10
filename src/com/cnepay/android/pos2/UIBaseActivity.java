@@ -138,7 +138,7 @@ public class UIBaseActivity extends BaseActivity {
 	
 
 	/********** user function **************/
-	public static int CNAPS_REQUEST = 100;
+	public static int CNAPS_REQUEST = 0x1000;
 	
 	/**
 	 * 若需要选择开户银行信息，则使用该方法

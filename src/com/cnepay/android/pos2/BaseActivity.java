@@ -314,6 +314,7 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			Log.v(TAG, "deleteAPI2");
 			if (cswiperController.getCSwiperState() != CSwiperControllerState.STATE_IDLE) {
 				stopSwipe();
+				onError(E_API2_INTERRUPT);
 			}
 			cswiperController.deleteCSwiper();
 			cswiperController = null;

@@ -30,17 +30,14 @@ import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.ConsumeMessage;
-import com.tangye.android.iso8583.protocol.SignUpMessage;
 import com.tangye.android.utils.GBKBase64;
-import com.tangye.android.utils.GernateSNumber;
-import com.tangye.swipedialog.SwipeDialogController;
 
 public class ConsumeActivity extends UIBaseActivity implements View.OnClickListener{
 	
 	private static final String TAG = "ConsumeActivity";
 	
-	private static final int CONSUME_SUCCESS = 0;
-    private static final int CONSUME_FAILURE = 1;
+	private static final int SUCCESS = 0;
+    private static final int FAILURE = 1;
 	
     private String[] all;
 	//Button btnClear;
@@ -84,10 +81,10 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
         	@Override
         	public void handleMessage(Message msg) {
         		switch(msg.what) {
-        		case CONSUME_SUCCESS:
+        		case SUCCESS:
 	        		setResult(RESULT_OK);
 	        		all = (String[])msg.obj;
-	        		if(all.length != 14) {
+	        		if(all != null && all.length != 14) {
 	        			//TODO
 	        		}
 	        		merchantNumber.setText(all[0]);
@@ -115,7 +112,7 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 		        	// TODO record history payment
 		        	// msg.obj is the IsoMessage for this consumption
 		        	break;
-        		case CONSUME_FAILURE:
+        		case FAILURE:
         			setResult(RESULT_CANCELED, (Intent)msg.obj);
         			findViewById(R.id.recharge_loading).setVisibility(View.GONE);
         			finish();
@@ -127,7 +124,6 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
         //startconsume();
 		
 	}
-	
 	
 	private void startconsume() {
 	    isProcessing = true;
@@ -182,7 +178,6 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	                		String merchantNo = resp.getField(42).toString();
 	                		String terminalNo = resp.getField(41).toString();
 	                		String cardNumber = resp.getField(2).toString();
-	                		String issuingBank = ConsumeActivity.this.getIssuingBankName(resp.getField(44).toString());
 	                		String batchNo = ConsumeActivity.this.getBatchNum(resp.getField(60).toString());
 	                		String voucherNo = resp.getField(11).toString();
 	                		String authNo = null;
@@ -203,16 +198,10 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	                		int TransactionYear = mCalendar.get(Calendar.YEAR);
 	                		String FileName =TransactionYear + resp.getField(13).toString() + resp.getField(12).toString();
 	                		allMessage = new String[]{merchantNo, terminalNo, cardNumber,
-	                				issuingBank, batchNo, voucherNo, authNo, referNo, transactionDate,
+	                				batchNo, voucherNo, authNo, referNo, transactionDate,
 	                				transactionTime, transactionAmount, traceId, merchantName, FileName};
-		                   
 		                    isOk = true;
 	                	} else {
-	                		
-	                		String temp = resp.getField(39).toString().toLowerCase();
-                    		int resID = getResources().getIdentifier("err_" + temp + "_cos", "string",  getPackageName());
-	                        error = ConsumeActivity.this.getResources().getString(resID);
-                    		 
 	                		/*
 	                		if(statusCode.equals("Z3")){
 	                			error = "序列号已被使用";
@@ -226,7 +215,7 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	                			error = getError(statusCode);
 	                		}
 	                		*/
-	                		//error = getError(statusCode);
+	                		error = getError(statusCode);
 	                	}
 	                } else {
 	                	// Manually stop client from user's aspect
@@ -250,10 +239,10 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	                Log.i(TAG, "Parse Error: " + e);
 				}  
 	            if(!isOk) {
-	                mHandler.obtainMessage(CONSUME_FAILURE, error).sendToTarget();
+	                mHandler.obtainMessage(FAILURE, error).sendToTarget();
 	            } else {	            	 
 	                setDescription(descri);
-	                mHandler.obtainMessage(CONSUME_SUCCESS, allMessage).sendToTarget();
+	                mHandler.obtainMessage(SUCCESS, allMessage).sendToTarget();
 	            }
 	            isProcessing = false;
 			}
@@ -314,13 +303,6 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	private void setDescription(String des) {
 		// TODO display the description on the screen
 		lastPaymentDes = des;
-	}
-
-	private String getIssuingBankName(String code) {
-		String temp = code.substring(11, code.length()).trim();
-		int resID = getResources().getIdentifier("issuing_" + temp, "string",  getPackageName());
-    	String issuingBankName = ConsumeActivity.this.getResources().getString(resID);
-		return issuingBankName;
 	}
 	
 	private String getTransactionDate(String code) {

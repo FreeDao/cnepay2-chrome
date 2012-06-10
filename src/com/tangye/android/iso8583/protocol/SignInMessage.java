@@ -26,6 +26,7 @@ public class SignInMessage extends BaseMessageAbstract {
 	@Override
 	protected void onCreateResponseIsoTemplate(IsoTemplate respTemp) {
 		respTemp.setType(0x0810);
+		respTemp.setValue(2, IsoType.LLLVARBCD);
 		respTemp.setValue(11, IsoType.NUMERIC, 6);
 		respTemp.setValue(12, IsoType.TIME);
 		respTemp.setValue(13, IsoType.DATE4);
@@ -42,7 +43,7 @@ public class SignInMessage extends BaseMessageAbstract {
 
 	@Override
 	public boolean isBitmapValid() {
-		int[] in = {11,12,13,16,32,37,39,41,42,55,60,62};
+		int[] in = {2, 11,12,13,16,32,37,39,41,42,55,60,62};
 		int[] out = {11,16,25,41,42,57,60,63}; // TODO 是否需要57域 密码
 		return isBitmapValid(in, out);
 	}

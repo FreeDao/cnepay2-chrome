@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -153,8 +154,8 @@ public class RegisterActivity extends UIBaseActivity implements
 			case E_API2_UNSTABLE:
 				errText("刷卡不稳定，请重试");
 				break;
-			case E_API2_INVALID_DEVICE:
-				errText("无法识别该读卡器");
+			case E_API2_INTERRUPT:
+				isInterrupt = true;
 			default:
 				isDecodeError = false;
 			}
@@ -176,16 +177,12 @@ public class RegisterActivity extends UIBaseActivity implements
 	
 	@Override
 	public void onSwipe() {
-		if (dialog != null) {
-			dialog.setText("接受刷卡数据...");
-		}
+		dialog.setText("接受刷卡数据...");
 	}
 
 	@Override
 	public void onDecoding() {
-		if (dialog != null) {
-			dialog.setText("正在解码...");
-		}
+		dialog.setText("正在解码...");
 	}
 
 	@Override
@@ -237,7 +234,9 @@ public class RegisterActivity extends UIBaseActivity implements
 	}
 
 	private void errText(String txt) {
-		Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
+		Toast t = Toast.makeText(this, txt, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
 	}
 
 	// test id number, and verify

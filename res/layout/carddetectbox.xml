@@ -2,23 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_detect_box"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:visibility="gone" >
+    android:layout_height="40dp"
+    android:gravity="center_vertical">
 
+    <ImageView
+        android:id="@+id/card_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:visibility="gone"
+        android:src="@drawable/indicator" />
+    
     <ImageView
         android:id="@+id/card_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:visibility="gone"
         android:src="@drawable/card_icon_default_security" />
 
     <TextView
         android:id="@+id/card_text"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:layout_weight="1"
-        android:text="0000"
         android:textSize="14sp"
         android:textStyle="bold" />
 

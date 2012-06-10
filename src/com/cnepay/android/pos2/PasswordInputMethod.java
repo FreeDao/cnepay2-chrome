@@ -1,6 +1,5 @@
 package com.cnepay.android.pos2;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,10 +8,9 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class PasswordInputMethod implements View.OnClickListener {
+public class PasswordInputMethod implements View.OnClickListener, OnKeyListener {
 
 	private Runnable repeatRunnable;
-	private final String TAG = "CashInputMethod";
 	private final int NUMOFBUTTON = 10;
 
 	private Button[] numButtons;
@@ -32,28 +30,18 @@ public class PasswordInputMethod implements View.OnClickListener {
 		fnButton = fnctionButton;
 		delButton = deleteButton;
 		passwordInput = passwordInputEditText;
-
 		tag = new int[NUMOFBUTTON];
 		for (int i = 0; i < NUMOFBUTTON; i++) {
 			tag[i] = i;
 		}
-
 		passwordStr = new StringBuilder();
-
 		passwordListener = passwordInputMethodListener;
-
 	}
 
 	public void init() {
 		passwordInput.setLongClickable(false);
-		passwordInput.setKeyListener(null);
-		passwordInput.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
+		// passwordInput.setKeyListener(null);
+		passwordInput.setOnKeyListener(this);
 		passwordInput.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -62,6 +50,7 @@ public class PasswordInputMethod implements View.OnClickListener {
 				return true;
 			}
 		});
+		passwordInput.requestFocus();
 
 		if (numButtons.length != NUMOFBUTTON) {
 			throw new IllegalArgumentException("the length of numberButtons "
@@ -126,23 +115,18 @@ public class PasswordInputMethod implements View.OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		int value = ((Integer) v.getTag()).intValue();
-		Log.v(TAG, "value = " + value);
 		switch (value) {
 		case 10:
-			// TODO submit
-
 			passwordInput.setText("");
 			String password = passwordStr.toString();
 			passwordStr.delete(0, passwordStr.length());
-			Log.v(TAG, "password = " + password);
 			passwordListener.onSubmit(password);
 			break;
 		default:
 			if (passwordStr.length() < 6) {
 				passwordStr.append(String.valueOf(value));
-				passwordInput.append("X");
+				passwordInput.append("*");
 			}
-
 		}
 
 	}
@@ -163,7 +147,6 @@ public class PasswordInputMethod implements View.OnClickListener {
 
 	public interface PasswordInputMethodListener {
 		public void onPasswordCancel();
-
 		public void onSubmit(String password);
-	};
+	}
 }

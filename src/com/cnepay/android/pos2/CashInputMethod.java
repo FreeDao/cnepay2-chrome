@@ -1,6 +1,5 @@
 package com.cnepay.android.pos2;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,15 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CashInputMethod implements View.OnClickListener {
-
+	
 	private Runnable repeatRunnable;
-	private final String TAG = "CashInputMethod";
-
 	private Button[] numButtons;
 	private Button fnButton;
 	private View delButton;
 	private EditText cashInput;
 
+	/**
+	 * 金额输入法
+	 * @param numberButtons 所有数字键的Buttons引用
+	 * @param fnctionButton 功能键的Button引用
+	 * @param deleteButton 删除键的View引用
+	 * @param cashInputEditText 金额输入框引用
+	 */
 	public CashInputMethod(Button[] numberButtons, Button fnctionButton,
 			View deleteButton, EditText cashInputEditText) {
 		numButtons = numberButtons;
@@ -31,11 +35,13 @@ public class CashInputMethod implements View.OnClickListener {
 	public void init() {
 		cashInput.setHint("￥0.00");
 		cashInput.setLongClickable(false);
-		cashInput.setKeyListener(null);
+		//cashInput.setKeyListener(null);
 		cashInput.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
+				if(event.getAction() == KeyEvent.ACTION_UP) {
+					setCashText(keyCode - KeyEvent.KEYCODE_0);
+				}
 				return false;
 			}
 		});
@@ -47,6 +53,7 @@ public class CashInputMethod implements View.OnClickListener {
 				return true;
 			}
 		});
+		cashInput.requestFocus();
 
 		if (numButtons.length != 10) {
 			throw new IllegalArgumentException("the length of numberButtons "
@@ -95,7 +102,6 @@ public class CashInputMethod implements View.OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		int value = ((Integer) v.getTag()).intValue();
-		Log.v(TAG, "value = " + value);
 		if (value / 10 == 0) {
 			setCashText(value);
 		} else {
@@ -113,8 +119,6 @@ public class CashInputMethod implements View.OnClickListener {
 		} else if (value == KeyEvent.KEYCODE_DEL - KeyEvent.KEYCODE_0) {
 			newvalue /= 10;
 		}
-		Log.v(TAG, "newvalue = " + newvalue);
-		Log.v(TAG, "cashInputinput.isFoucsed = " + cashInput.isFocused());
 		if (!cashInput.isFocused() || newvalue >= 1000000000000d) {
 			return;
 		} else if (newvalue == 0) {
@@ -123,14 +127,17 @@ public class CashInputMethod implements View.OnClickListener {
 		}
 		String x1 = String.valueOf(newvalue / 100);
 		String x2 = String.valueOf(newvalue % 100);
-		Log.v(TAG, "x1 = " + x1 + ",x2 = " + x2);
 		if (x2.length() < 2)
 			x2 = "0" + x2;
 		cashInput.setText("");
 		cashInput.append("￥" + x1 + "." + x2);
 	}
 
-	private long getCashInCents() {
+	/**
+	 * 获取金额函数
+	 * @return 获取总的金额，以分为单位返回
+	 */
+	public long getCashInCents() {
 		long ca;
 		try {
 			ca = Math.round((100 * Double.valueOf(cashInput.getText()
