@@ -35,7 +35,6 @@ public class PublicHelper {
 			builder = (Builder) c.newInstance(ctx, 2);
 		} catch (Exception e) {
 			builder = new Builder(ctx);
-			e.printStackTrace();
 		}
     	return builder;
     }

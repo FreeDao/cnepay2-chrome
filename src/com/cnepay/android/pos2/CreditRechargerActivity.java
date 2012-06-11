@@ -2,8 +2,8 @@ package com.cnepay.android.pos2;
 
 import com.cnepay.android.pos2.PasswordInputMethod.PasswordInputMethodListener;
 
+import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.POSHelper;
-import com.tangye.swipedialog.SwipeDialogController;
 
 import android.content.DialogInterface;
 import android.content.Intent;

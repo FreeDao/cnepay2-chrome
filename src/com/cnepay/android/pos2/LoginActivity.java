@@ -138,9 +138,11 @@ public class LoginActivity extends UIBaseActivity
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.title_submit:
+			startActivity(new Intent(this, CreditRechargerActivity.class));
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
             builder.setMessage("请认真填写银行卡号、序列号、手机号码，一经注册成功，实名认证通过将不得更改");
             builder.setTitle("提示");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                 	Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

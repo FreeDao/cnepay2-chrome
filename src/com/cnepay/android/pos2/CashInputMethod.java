@@ -35,7 +35,7 @@ public class CashInputMethod implements View.OnClickListener {
 	public void init() {
 		cashInput.setHint("￥0.00");
 		cashInput.setLongClickable(false);
-		//cashInput.setKeyListener(null);
+		cashInput.setKeyListener(null);
 		cashInput.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
