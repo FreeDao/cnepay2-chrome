@@ -422,6 +422,7 @@ public class CNAPSHttpActivity extends Activity implements
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
 			builder.setMessage("请确保您输入了正确的开户支行信息，如此信息有误，转账和提现会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。");
 			builder.setTitle("提示");
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setPositiveButton(android.R.string.ok,
 					new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
@@ -436,7 +437,6 @@ public class CNAPSHttpActivity extends Activity implements
 					new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							commit.setEnabled(true);
-							dialog.dismiss();
 						}
 					});
 			builder.create().show();
