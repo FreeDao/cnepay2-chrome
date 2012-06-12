@@ -40,7 +40,7 @@ public class PasswordInputMethod implements View.OnClickListener, OnKeyListener 
 
 	public void init() {
 		passwordInput.setLongClickable(false);
-		// passwordInput.setKeyListener(null);
+		passwordInput.setKeyListener(null);
 		passwordInput.setOnKeyListener(this);
 		passwordInput.setOnTouchListener(new View.OnTouchListener() {
 			@Override
