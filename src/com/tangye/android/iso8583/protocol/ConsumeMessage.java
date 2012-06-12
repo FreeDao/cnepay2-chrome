@@ -2,6 +2,7 @@ package com.tangye.android.iso8583.protocol;
 
 import java.math.BigDecimal;
 import com.tangye.android.iso8583.*;
+import com.tangye.android.utils.CardInfo;
 
 public class ConsumeMessage extends BaseMessageAbstract {
 
@@ -51,7 +52,7 @@ public class ConsumeMessage extends BaseMessageAbstract {
 	@Override
 	public boolean isBitmapValid() {
 		int[] in = {2,3,4,11,12,13,14,15,25,32,37,38,39,41,42,44,49,53,55,59,60,63,64};
-		int[] out = {3,4,11,22,25,26,35,41,42,49,52,53,60,64};
+		int[] out = {3,4,11,22,25,26,35,41,42,49,52,53,58,60,64};
 		return isBitmapValid(in, out);
 	}
 	
@@ -65,13 +66,13 @@ public class ConsumeMessage extends BaseMessageAbstract {
         return this;
     }
 
-    /*******
-     * d is constructed as a exp date with YYMM format, 刷卡时不需要
-    public ConsumeMessage setCardInvalidDate_14(java.util.Date d) {
+    /*
+    // d is constructed as a exp date with YYMM format, 刷卡时不需要
+    public ConsumeMessage setCardInvalidDate_14(Object d) {
     	req.setValue(14, d, IsoType.DATE_EXP);
     	return this;
     }
-    *******/
+    */
     
     public ConsumeMessage setIsPinNeed_22(boolean is) {
     	if(is) {
@@ -87,11 +88,6 @@ public class ConsumeMessage extends BaseMessageAbstract {
     	if(len >=4 || len <= 12) {
     		req.setValue(26, len, IsoType.NUMERIC, 2);
     	}
-    	return this;
-    }
-    
-    public ConsumeMessage setTrack2Info_35(String track2) {
-    	req.setValue(35, track2, IsoType.LLVARBCD);
     	return this;
     }
     
@@ -126,4 +122,9 @@ public class ConsumeMessage extends BaseMessageAbstract {
         req.setUseMac64(true);
     	return this;
     }
+
+    public ConsumeMessage setCardInfo(CardInfo ci) {
+		ci.loadMessage(req, true);
+		return this;
+	}
 }
