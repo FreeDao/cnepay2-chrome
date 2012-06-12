@@ -1,16 +1,31 @@
 package com.cnepay.android.pos2;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.util.Calendar;
+
 import com.cnepay.android.pos2.PasswordInputMethod.PasswordInputMethodListener;
 
 import com.tangye.android.dialog.SwipeDialogController;
+import com.tangye.android.iso8583.IsoMessage;
+import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
+import com.tangye.android.iso8583.POSSession;
+import com.tangye.android.iso8583.protocol.ConsumeMessage;
+import com.tangye.android.utils.CardInfo;
+import com.tangye.android.utils.GBKBase64;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -34,8 +49,12 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 	private PasswordInputMethod passwdIM;
 	private ViewGroup framePass, layoutMask;
 	private ImageView imgCardType, imgCardReader;
+	private ConsumeMessage s;
+	private Handler mHandler;
+	private boolean isProcessing;
 
-	private final static int CONSUME_REQ = 1;
+	private final static int SUCCESS = 0;
+	private final static int FAILURE = 1;
 	private final static String TAG = "CreditRechargerActivity";
 
 	@Override
@@ -48,6 +67,32 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		cashIM = new CashInputMethod(btns, fnButton, delButton, txtInput);
 		passwdIM = new PasswordInputMethod(btns, fnButton, delButton, txtPassword, this);
 		cashIM.init();
+		mHandler = new Handler() {
+        	@Override
+        	public void handleMessage(Message msg) {
+        		switch(msg.what) {
+        		case SUCCESS:
+	        		String[] all = (String[]) msg.obj;
+	        		if(all != null && all.length < 14) {
+	        			// TODO consumption successfully
+	        			Intent i = new Intent(CreditRechargerActivity.this, ConsumeActivity.class);
+	        			String extra = POSHelper.getSessionString();
+	        			i.putExtra(extra, all);
+	        			startActivity(i);
+	        			finish();
+	        		}
+		        	break;
+        		case FAILURE:
+        			String e = (String) msg.obj;
+        			if (e != null) {
+        				makeError(e);
+        			}
+        			// TODO need to 冲正
+        			break;
+        		}
+        		// TODO dismiss dialog?
+        	}
+		};
 	}
 
 	@Override
@@ -74,25 +119,13 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 
 	@Override
 	public void onSubmit(String password) {
-		// TODO Auto-generated method stub
+		// TODO clear screen::::::::::::::::::::::::::::::::::::::
 		Log.v(TAG, "onSubmit");
-		Intent intent = new Intent(this, ConsumeActivity.class);
-		String amount = txtInput.getText().toString().substring(1);
-		String descri = txtDescribe.getText().toString();
-		String cardNumber = card.getText().toString();
-		String passwd = password.toString();
-		/*
-		 * try { passwd = POSHelper.getPOSSession().getPIN(passwd,
-		 * cardNumber); } catch(Exception e) {
-		 * makeError("Please input 4 to 6 length password"); return; }
-		 */
-		String[] tmp = { amount, descri, cardNumber, passwd };
-		String key = POSHelper.getSessionString();
-		/*
-		 * if(key == null) { finish(); // TODO session gone; return; }
-		 */
-		intent.putExtra(key, tmp);
-		startActivityForResult(intent, CONSUME_REQ);
+		if(!doRequest(password)) {
+			// TODO finish();
+			// dismiss progress dialog
+			isProcessing = false;
+		}
 	}
 
 	@Override
@@ -234,6 +267,15 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 			}
 		}
 	}
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && isProcessing) {
+        	makeError("不能中止交易");
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 	private void initUI() {
 		initNumPad();
@@ -279,5 +321,139 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		Toast t = Toast.makeText(this, err, Toast.LENGTH_SHORT);
 		t.setGravity(Gravity.CENTER, 0, 0);
 		t.show();
+	}
+	
+	private boolean doRequest(String password) {
+	    isProcessing = true;
+	    POSSession session = POSHelper.getPOSSession();
+		if (ci == null || session == null) {
+			makeError("POS机出错！");
+			return false;
+		}
+		final CardInfo cardInfo = ci;
+		final String name = session.getSessionAccount();
+		if (name == null || name.length() == 0) {
+			makeError("POS机出错！");
+			return false;
+		}
+		final String amount = txtInput.getText().toString().substring(1);
+		final String descri = txtDescribe.getText().toString();
+		try {
+			password = session.getPIN(password, cardInfo.getCard(false));
+		} catch(Exception e) {
+			makeError("Please input 4 to 6 length password");
+			return false;
+		}
+		final String passwd = password;
+		
+		(new Thread(TAG) {
+			public void run() {
+				POSEncrypt POS = POSHelper.getPOSEncrypt(CreditRechargerActivity.this, name);
+				POS.addTraceNumber();
+				s = new ConsumeMessage();
+                s.setAmount_4(new BigDecimal(amount))
+                .setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
+                .setIsPinNeed_22(true)
+                .setMaxPinLength_26(10) // TODO hard-code here
+                .setCardInfo(cardInfo)
+                .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
+                .setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))
+                .setUserPin_52(passwd)
+                .setSetNumber_60(POS.getPOSDecrypt(POS.SETNUMBER))
+                .setUseMac_64();
+				POS.close();
+				boolean isOk = false;
+	            String error = "";
+	            String[] allMessage = null;
+	            try {
+	                if(!s.isBitmapValid()) throw new RuntimeException("BitmapError");
+	                IsoMessage resp = s.request();
+	                if(resp != null) {
+	                	String statusCode = resp.getField(39).toString();
+	                	if (statusCode.equals("00")) {
+	                		String merchantNo = resp.getField(42).toString();
+	                		String terminalNo = resp.getField(41).toString();
+	                		String cardNumber = resp.getField(2).toString();
+	                		String batchNo = resp.getField(60).toString().substring(2);
+	                		String voucherNo = resp.getField(11).toString();
+	                		String authNo = null;
+	                		if(resp.getField(42).toString().length() == 0 || resp.getField(42).toString() == null) {
+	                			authNo = "000000";
+	                		} else {
+	                			authNo = resp.getField(42).toString();
+	                		}
+	                		String referNo = resp.getField(37).toString();
+	                		String transactionDate = getTransactionDate(resp.getField(13).toString());
+	                		String transactionTime = getTransactionTime(resp.getField(12).toString());
+	                		String transactionAmount = amount;
+	                		String traceId = resp.getField(59).toString();
+	                		String merchantName = GBKBase64.decode(resp.getField(55).toString());
+	                		long time = System.currentTimeMillis();
+	                		Calendar mCalendar=Calendar.getInstance();
+	                		mCalendar.setTimeInMillis(time);
+	                		int TransactionYear = mCalendar.get(Calendar.YEAR);
+	                		String FileName = TransactionYear + resp.getField(13).toString() + resp.getField(12).toString();
+	                		allMessage = new String[] { merchantNo, terminalNo, cardNumber,
+	                				batchNo, voucherNo, authNo, referNo, transactionDate, transactionTime,
+	                				transactionAmount, traceId, merchantName, FileName, /*plus description*/descri};
+		                    isOk = true;
+	                	} else {
+	                		/*
+	                		if(statusCode.equals("Z3")){
+	                			error = "序列号已被使用";
+	                		} else {
+	                			error = getError(statusCode);
+	                		}
+	                		*/
+	                		error = getError(statusCode);
+	                	}
+	                } else {
+	                	// Manually stop client from user's aspect
+	                	allMessage = null;
+	                    isOk = false;
+	                }
+	            } catch (SocketTimeoutException e) {
+	                error = "连接超时，请确保网络稳定性";
+	                e.printStackTrace();
+	            } catch (IllegalStateException e) {
+	                error = "严重错误，请咨询售后";
+	                e.printStackTrace();
+	            } catch (UnknownHostException e) {
+	                error = "无法连接主机，请检查连接性";
+	                e.printStackTrace();
+	            } catch (IOException e) {
+	                error = "请检查手机的网络信号";
+	                e.printStackTrace();
+	            } catch (Exception e) {
+	            	error = "报文错误，请联系客服";
+	                Log.i(TAG, "Parse Error: " + e);
+				}  
+	            if(!isOk) {
+	                mHandler.obtainMessage(FAILURE, error).sendToTarget();
+	            } else {	            	 
+	                mHandler.obtainMessage(SUCCESS, allMessage).sendToTarget();
+	            }
+	            isProcessing = false;
+			}
+		}).start();
+		return true;
+	}
+	
+	private String getTransactionDate(String code) {
+		long time = System.currentTimeMillis();
+		Calendar mCalendar=Calendar.getInstance();
+		mCalendar.setTimeInMillis(time);
+		int TransactionYear = mCalendar.get(Calendar.YEAR);
+		StringBuffer mouthDay = new StringBuffer(code);
+		String transactionDate = TransactionYear + "/" + mouthDay.insert(2, "/");
+		return transactionDate;
+	}
+	
+	private String getTransactionTime(String code) {
+		StringBuffer sb2 = new StringBuffer(code);
+		sb2.insert(2, ":");
+		sb2.insert(5, ":");
+		String transactionTime = sb2.toString();
+		return transactionTime;
 	}
 }

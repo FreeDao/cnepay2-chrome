@@ -7,6 +7,7 @@ import android.util.Log;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.IsoTemplate;
 import com.tangye.android.iso8583.IsoType;
+import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GBKBase64;
 
 public class SignUpMessage extends BaseMessageAbstract {
@@ -37,7 +38,7 @@ public class SignUpMessage extends BaseMessageAbstract {
 	@Override
 	public boolean isBitmapValid() {
 		int[] in = {2,16,39,41,42,46,54,60};
-		int[] out = {2,16,47,54,55,57,60,63};
+		int[] out = {2,16,47,54,55,57,58,60,63};
 		return isBitmapValid(in, out);
 	}
 	
@@ -75,7 +76,7 @@ public class SignUpMessage extends BaseMessageAbstract {
 		}
 		return this;
 	}
-    
+
 	public SignUpMessage setOtherInfo_63(String id, String bank, String phone) {
 		String x = FixedValue_63_1;
 		x += extAlpha(id, 20); // 身份证
@@ -84,4 +85,9 @@ public class SignUpMessage extends BaseMessageAbstract {
         req.setValue(63, x, IsoType.LLLVAR);
         return this;
     }
+	
+	public SignUpMessage setCardInfo(CardInfo ci) {
+		ci.loadMessage(req, false);
+		return this;
+	}
 }

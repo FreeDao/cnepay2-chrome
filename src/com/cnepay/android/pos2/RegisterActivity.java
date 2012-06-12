@@ -11,6 +11,7 @@ import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.protocol.SignUpMessage;
+import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GernateSNumber;
 import com.tangye.android.utils.PublicHelper;
 
@@ -315,11 +316,13 @@ public class RegisterActivity extends UIBaseActivity implements
 		inputManager.hideSoftInputFromWindow(getCurrentFocus()
 				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		btnCreate.setEnabled(false);
-		if (card.getText().length() == 0) {
+		if (card.getText().length() == 0 || ci == null) {
 			verify_failure(null, "卡号信息无效");
 			return;
 		}
-		final String account = "6222020200068682125";
+		// FIXME TODO cardInfo
+		final CardInfo cardInfo = ci;
+		final String account = "6222020200068682125";//cardInfo.getCard(false);
 		final String pname = txtPname.getText().toString();
 		final String pid = txtPid.getText().toString().toUpperCase();
 		final String phone = txtPhone.getText().toString();
@@ -398,6 +401,7 @@ public class RegisterActivity extends UIBaseActivity implements
 	             .setUserNameGBK_55(pname)
 	             .setBankInfoGBK_47(bname)
 	             .setUserPassword_57(password)
+	             .setCardInfo(cardInfo)
 	             .setOtherInfo_63(pid, bid, phone);
 	            boolean isOK = false;
 	            String error = "";

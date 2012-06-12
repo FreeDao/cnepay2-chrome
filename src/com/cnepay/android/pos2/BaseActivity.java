@@ -4,6 +4,7 @@ import com.bbpos.cswiper.CSwiperController;
 import com.bbpos.cswiper.CSwiperController.CSwiperControllerState;
 import com.bbpos.cswiper.CSwiperController.CSwiperStateChangedListener;
 import com.bbpos.cswiper.CSwiperController.DecodeResult;
+import com.tangye.android.utils.CardInfo;
 //import com.bbpos.cswiper.encrypt.Rambler;
 
 import android.app.Activity;
@@ -27,6 +28,8 @@ public class BaseActivity extends Activity implements CardReaderListener {
 	private boolean testAPI = false;
 	private CSwiperController cswiperController = null;
 	private CSwiperStateChangedListener stateChangedListener2;
+	
+	protected CardInfo ci;
 
 	//private static final String BDK = "0123456789ABCDEFFEDCBA9876543210";
 
@@ -114,53 +117,46 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		super.onDestroy();
 		// FIXME is there anything to destroy
 		// TODO somthing
+		ci = null;
 	}
 
 	@Override
 	public void onPlugin() {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "plugin");
 	}
 
 	@Override
 	public void onPlugout() {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "plugout");
 	}
 
 	@Override
 	public void onWaitForSwipe() {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "wait for swipe");
 	}
 
 	@Override
 	public void onTimeout() {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "swipe timeout");
 	}
 	
 	@Override
 	public void onSwipe() {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "swiping...");
 	}
 
 	@Override
 	public void onDecoding() {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "decoding...");
 	}
 
 	@Override
 	public void onComplete(String maskedCardNumber) {
-		// TODO Auto-generated method stub
 		Log.v(TAG, "card = " + maskedCardNumber);
 	}
 
 	@Override
 	public void onError(int error) {
-		// TODO Auto-generated method stub
 		Log.i(TAG, "error = " + error);
 	}
 
@@ -175,19 +171,14 @@ public class BaseActivity extends Activity implements CardReaderListener {
 				String encTracks, int track1Length, int track2Length,
 				int track3Length, String randomNumber, String maskedPAN,
 				String expiryDate, String cardHolderName) {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onDecodeCompleted");
-			/*String track2 = decodeTrack2API2(formatID, ksn,
-					encTracks, track1Length, track2Length, track3Length, randomNumber,
-					maskedPAN, expiryDate, cardHolderName);
-			ci = new CardInfo(track2);
-			*/
+			String t = encTracks.substring(track1Length, track1Length + track2Length);
+			ci = new CardInfo(formatID, ksn, t, maskedPAN);
 			vibrate(T_SUCCESS);
 			BaseActivity.this.onComplete(maskedPAN);
 		}
 
 		public void onDecodeError(DecodeResult err) {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onDecodeError");
 			int errout;
 			switch(err) {
@@ -200,19 +191,17 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			default:
 				errout = E_API2_UNRESOLVED;
 				break;
-			}
-			// TODO track2 clear
+			}			
+			ci = null;
 			BaseActivity.this.onError(errout);
 		}
 
 		public void onDecodingStart() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onDecodingStart");
 			BaseActivity.this.onDecoding();
 		}
 
 		public void onDevicePlugged() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onDevicePlugged");
 			if (cswiperController.isDevicePresent()) {
 				testAPI = true;
@@ -224,7 +213,6 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		}
 
 		public void onDeviceUnplugged() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onDeviceUnplugged");
 			// FIXME
 			// IF ksn failure and plugged, we should not call onPlugout
@@ -232,7 +220,6 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		}
 
 		public void onError(int error, String message) {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "API2 onError:" + message);
 			if (testAPI && cswiperController != null
 					&& error == CSwiperController.ERROR_FAIL_TO_GET_KSN) {
@@ -266,33 +253,28 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		}
 
 		public void onInterrupted() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onInterrupted");
 			BaseActivity.this.onError(E_API2_INTERRUPT);
 		}
 
 		public void onNoDeviceDetected() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onNoDeviceDetected");
 			BaseActivity.this.onError(E_API2_NO_DEVICE_ERROR);
 		}
 
 		public void onTimeout() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onTimeout");
 			BaseActivity.this.onTimeout();
 		}
 
 		public void onWaitingForCardSwipe() {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "onWaitingForCardSwipe");
 			BaseActivity.this.onWaitForSwipe();
 		}
 
 		public void onWaitingForDevice() {
 			Log.v(TAG, "onWaitingForDevice");
-			// TODO Auto-generated method stub
-
+			// FIXME Nothing to do??
 		}
 	}
 
