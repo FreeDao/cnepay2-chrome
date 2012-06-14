@@ -1,17 +1,22 @@
-package com.bbpos.cswiper.encrypt;
+package com.tangye.android.utils;
 
-import javax.crypto.*;
-import javax.crypto.spec.*;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
-public class DES {
+import com.tangye.android.iso8583.IsoUtil;
+
+
+public class AES {
 	
-	private final static String CRYPT_KEY = "空中商城";
+	// private static final String CRYPT_KEY = "ECRTIFJKDddfafad";
 	
     public static byte[] encrypt(byte[] data, byte[] key)
     {
-    	SecretKey sk = new SecretKeySpec(key, "DES");
+    	SecretKey sk = new SecretKeySpec(key, "AES");
     	try {
-    		Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+    		Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
     		cipher.init(Cipher.ENCRYPT_MODE, sk);
 			byte[] enc = cipher.doFinal(data);
 			return enc;
@@ -27,9 +32,9 @@ public class DES {
     
     public static byte[] decrypt(byte[] data, byte[] key)
     {
-    	SecretKey sk = new SecretKeySpec(key, "DES");
+    	SecretKey sk = new SecretKeySpec(key, "AES");
     	try {
-    		Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+    		Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
     		cipher.init(Cipher.DECRYPT_MODE, sk);
 			byte[] enc = cipher.doFinal(data);
 			return enc;
@@ -94,24 +99,53 @@ public class DES {
 		return result;
 	}
 	
+	
 	/**
 	 * begin private
 	 * @author tangye
-	 */
-	public final static byte[] decrypt(byte[] data) {
+	 *
+     * 加密
+     * @param data
+     * @param key only ascii 16 Byte
+     * @return
+     * @throws Exception
+     */
+    public final static String encryptTrack(String data, String key) {
         try {
-            return decrypt(data, CRYPT_KEY.getBytes("GBK"));
+            return IsoUtil.byte2hex(encrypt(data.getBytes(), generateKey(key)));
         } catch (Exception e) {
-            return null;
         }
+        return null;
     }
     
-    public final static byte[] encrypt(byte[] data) {
+    /**
+     * @author tangye
+     * 
+     * 解密
+     * @param data
+     * @param key only ascii 16 Byte
+     * @return
+     * @throws Exception
+     */
+    public final static String decryptTrack(String data, String key) {
         try {
-            return encrypt(data, CRYPT_KEY.getBytes("GBK"));
+            return new String(decrypt(IsoUtil.hex2byte(data), generateKey(key)));
         } catch (Exception e) {
-            return null;
         }
+        return null;
     }
-    // end private
+    /*
+    public final static String decrypt(String data) {
+        return decrypt(data, CRYPT_KEY);
+    }
+    
+    public final static String encrypt(String data) {
+        return encrypt(data, CRYPT_KEY);
+    }*/
+
+    private final static byte[] generateKey(String key) {
+        StringBuilder xb = new StringBuilder(key);
+        xb.reverse();
+        return xb.toString().substring(0, 16).getBytes();
+    }
 }

@@ -27,7 +27,8 @@ public class BaseActivity extends Activity implements CardReaderListener {
 	// BEGIN API2
 	private boolean testAPI = false;
 	private CSwiperController cswiperController = null;
-	private CSwiperStateChangedListener stateChangedListener2;
+	private CSwiperStateChangedListener stateChangedListener2 = null;
+	private KsnTestListener ksnTestListener = null;
 	
 	protected CardInfo ci;
 
@@ -72,7 +73,8 @@ public class BaseActivity extends Activity implements CardReaderListener {
 	 * startSwipe保证当调用该api时，允许刷卡
 	 */
 	public void startSwipe() {
-		if (cswiperController.getCSwiperState() == CSwiperControllerState.STATE_IDLE) {
+		if (cswiperController != null && cswiperController.getCSwiperState()
+				== CSwiperControllerState.STATE_IDLE) {
 			Log.v(TAG, "startCSwiper API2");
 			try {
 				cswiperController.startCSwiper();
@@ -80,12 +82,23 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		}
 	}
 	
+	/**
+	 * 关闭刷卡接口，必要时提前结束刷卡
+	 */
 	public void stopSwipe() {
 		if (cswiperController != null) {
 			try {
 				cswiperController.stopCSwiper();
 			} catch (IllegalStateException e) {}
 		}
+	}
+	
+	/**
+	 * only call this function in onCreate(), if you want to test ksn
+	 * @param l the listener to set for testing ksn, null for not test
+	 */
+	public void setKsnTestListener(KsnTestListener l) {
+		ksnTestListener = l;
 	}
 	
 	/************** end public function **************/
@@ -172,10 +185,9 @@ public class BaseActivity extends Activity implements CardReaderListener {
 				int track3Length, String randomNumber, String maskedPAN,
 				String expiryDate, String cardHolderName) {
 			Log.v(TAG, "onDecodeCompleted");
-			String t = encTracks.substring(track1Length, track1Length + track2Length);
-			ci = new CardInfo(formatID, ksn, t, maskedPAN);
+			ci = new CardInfo(formatID, ksn, encTracks, maskedPAN);
 			vibrate(T_SUCCESS);
-			BaseActivity.this.onComplete(maskedPAN);
+			BaseActivity.this.onComplete(ci.getCard(true));
 		}
 
 		public void onDecodeError(DecodeResult err) {
@@ -242,10 +254,14 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			testAPI = false;
 		}
 
-		public void onGetKsnCompleted(String arg0) {
+		public void onGetKsnCompleted(String ksn) {
 			Log.v(TAG, "onGetKsnCompleted");
 			if (testAPI) {
-				BaseActivity.this.onPlugin();
+				if (ksnTestListener == null || ksnTestListener.test(ksn)) {
+					BaseActivity.this.onPlugin();
+				} else {
+					BaseActivity.this.onError(E_API2_INVALID_DEVICE);
+				}
 				testAPI = false;
 			}
 			// TODO

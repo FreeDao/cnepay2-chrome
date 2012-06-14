@@ -63,7 +63,6 @@ public class CashInputMethod implements View.OnClickListener {
 			numButtons[i].setTag(i);
 			numButtons[i].setText("" + i);
 			numButtons[i].setOnClickListener(this);
-
 		}
 
 		delButton.setOnTouchListener(new OnTouchListener() {

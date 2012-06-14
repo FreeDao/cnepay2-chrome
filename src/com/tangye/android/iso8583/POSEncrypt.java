@@ -2,9 +2,9 @@ package com.tangye.android.iso8583;
 
 import java.util.Date;
 
-import com.bbpos.cswiper.encrypt.AES;
-import com.bbpos.cswiper.encrypt.DES;
-import com.bbpos.cswiper.encrypt.MD5;
+import com.tangye.android.utils.AES;
+import com.tangye.android.utils.DES;
+import com.tangye.android.utils.MD5;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

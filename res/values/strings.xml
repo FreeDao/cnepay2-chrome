@@ -33,4 +33,11 @@
     <string name="c97">数据库选择错误</string>
     <string name="c98">数据库更新错误</string>
     <string name="c99">数据格式错误</string>
+    
+    <string name="charge_mgr">POS收款</string>
+	<string name="transfer_mgr">银行卡转账</string>
+	<string name="setpwd_mgr">修改密码</string>
+	<string name="real_name_mgr">实名认证</string>
+	<string name="records_mgr">查看历史记录</string>
+	
 </resources>

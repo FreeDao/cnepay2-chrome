@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.bbpos.cswiper.encrypt.MD5;
+import com.tangye.android.utils.MD5;
 
 //import android.app.AlarmManager;
 import android.content.Context;
@@ -138,4 +138,5 @@ public class POSHelper {
     	return false;
     }
     */
+    
 }

@@ -75,7 +75,7 @@ public class LoginActivity extends UIBaseActivity
                         progressDialog.dismiss();
                         progressDialog = null; // For not fade card number
                         String info = (String) msg.obj;
-                        Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                         if (info.length() == 0) {
                         	makeError("登录成功");
                         } else {
@@ -135,10 +135,16 @@ public class LoginActivity extends UIBaseActivity
 	}
 
 	@Override
-	public void onClick(View v) {
+	public void onClick(final View v) {
 		switch(v.getId()) {
 		case R.id.title_submit:
-			startActivity(new Intent(this, CreditRechargerActivity.class));
+			v.setEnabled(false);
+			v.postDelayed(new Runnable() {
+				public void run() {
+					v.setEnabled(true);
+				}
+			}, ENABLE_TIMEOUT);
+			startActivity(new Intent(this, ManagerActivity.class));
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
             builder.setMessage("请认真填写银行卡号、序列号、手机号码，一经注册成功，实名认证通过将不得更改");
             builder.setTitle("提示");
@@ -245,7 +251,8 @@ public class LoginActivity extends UIBaseActivity
 		                    SESSION.initWK(resp.getField(62).toString(),
 		                    			   account,
 		                    			   passwd,
-		                    			   resp.getField(2).toString()).close();
+		                    			   resp.getField(2).toString(),
+		                    			   resp.getField(58).toString().substring(0, 14)).close();
 		                    String setn = resp.getField(60).toString().substring(2, 8);
 		                    POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);
 		                    POS.setSetNumber(setn).close();

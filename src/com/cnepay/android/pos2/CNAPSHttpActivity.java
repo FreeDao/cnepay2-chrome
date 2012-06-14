@@ -54,10 +54,11 @@ public class CNAPSHttpActivity extends Activity implements
 	private static final int FIND_SUCCESS = 0;
 	private static final int JUMP_SUCCESS = 1;
 	private static final int ENABLE_TIMEOUT = 1000;
-	public static final String INTENT_EXTRA = "extra";
 	private static final int TIMEOUTCONNECTION = 10000;
 	private static final int TIMEOUTSOCKET = 10000;
 	private static final int FIND_FAILURE = 2;
+	
+	public static final String INTENT_EXTRA = "extra";
 
 	EditText edKeyword;
 	Button buttonFind;
@@ -69,9 +70,11 @@ public class CNAPSHttpActivity extends Activity implements
 	TextView bankId;
 	Button jumpButton;
 	String total = null;
+	int totalPageNum = 0;
 	TextView nowPage = null;
 	EditText pageInput;
 	LinearLayout hideLayout;
+	View notice;
 	Button commit;
 	Button cancel;
 
@@ -89,6 +92,7 @@ public class CNAPSHttpActivity extends Activity implements
 		nowPage = (TextView) findViewById(R.id.now_page);
 		jumpButton = (Button) findViewById(R.id.jump_page);
 		pageInput = (EditText) findViewById(R.id.inputPage);
+		notice = findViewById(R.id.notice_part);
 		hideLayout = (LinearLayout) findViewById(R.id.hide_part);
 		bankName = (TextView) findViewById(R.id.cnaps_bankname);
 		bankId = (TextView) findViewById(R.id.cnaps_bankid);
@@ -120,8 +124,10 @@ public class CNAPSHttpActivity extends Activity implements
 					} else {
 						totalPage = Integer.parseInt(total) / 10 + 1;
 					}
+					totalPageNum = totalPage;
 					totalResult.setText(getString(R.string.cnaps_page, totalPage));
 					nowPage.setText("第 1 页");
+					notice.setVisibility(View.GONE);
 					hideLayout.setVisibility(View.VISIBLE);
 					String[] m = new String[bankNames.size()];
 					Set<String> setKey = bankNames.keySet();
@@ -150,7 +156,8 @@ public class CNAPSHttpActivity extends Activity implements
 					} else {
 						totalPage2 = Integer.parseInt(total) / 10 + 1;
 					}
-					totalResult.setText(totalPage2 + "");
+					totalPageNum = totalPage2;
+					totalResult.setText(getString(R.string.cnaps_page, totalPage2));
 					nowPage.setText("第 " + msg.obj + " 页");
 					String[] n = new String[bankNames.size()];
 					Set<String> setKey2 = bankNames.keySet();
@@ -353,8 +360,7 @@ public class CNAPSHttpActivity extends Activity implements
 				return;
 			}
 			int input = Integer.parseInt(pageInput.getText().toString());
-			int getTotalNum = Integer
-					.parseInt(totalResult.getText().toString());
+			int getTotalNum = totalPageNum;
 			if (input > getTotalNum) {
 				verify_failure(pageInput, "输入页面大于总页面");
 				return;
@@ -420,7 +426,7 @@ public class CNAPSHttpActivity extends Activity implements
 				return;
 			}
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
-			builder.setMessage("请确保您输入了正确的开户支行信息，如此信息有误，转账和提现会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。");
+			builder.setMessage("请再次确保您输入了正确的开户支行信息，如此信息有误，转账会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。");
 			builder.setTitle("提示");
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setPositiveButton(android.R.string.ok,

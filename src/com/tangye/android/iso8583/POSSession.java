@@ -2,7 +2,8 @@ package com.tangye.android.iso8583;
 
 import java.io.UnsupportedEncodingException;
 
-import com.bbpos.cswiper.encrypt.DES;
+import com.tangye.android.utils.DES;
+
 import android.content.Context;
 
 public class POSSession extends POSNative {
@@ -11,6 +12,7 @@ public class POSSession extends POSNative {
 	private String mak;
 	private String account;
 	private String card;
+	private String ksn;
     private Context ctx;
 		
 	public POSSession(Context context) {
@@ -26,7 +28,7 @@ public class POSSession extends POSNative {
     	return card;  // card number
     }
 	
-	public POSSession initWK(String wkey, String mAccount, String mPasswd, String mCard) throws UnsupportedEncodingException {
+	public POSSession initWK(String wkey, String mAccount, String mPasswd, String mCard, String mKsn) throws UnsupportedEncodingException {
 		if(wkey == null || wkey.length() != 24) throw new IllegalArgumentException("WK should be 24 bytes long");
 		// android.util.Log.e("WK", IsoUtil.byte2hex(wkey.getBytes("ISO-8859-1")));
 		pik = wkey.substring(0, 8);
@@ -55,6 +57,7 @@ public class POSSession extends POSNative {
 			// android.util.Log.e("KEKDecoded", kek);
 	        account = mAccount;
 	        card = mCard;
+	        ksn = mKsn;
 		} else {
 		    throw new IllegalArgumentException("Fatal error when get WK");
 		}
@@ -130,6 +133,10 @@ public class POSSession extends POSNative {
         }
         return new String(pinBlock);
     }
+    
+    public boolean testKsn(String KSN) {
+		return KSN.substring(0, 14).equals(ksn);
+	}
 	
 	public void close() {
 		ctx = null; // 防止造成内存泄漏

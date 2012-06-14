@@ -29,7 +29,7 @@ public class CardInfo {
 	
 	public void loadMessage(IsoMessage req, boolean useTrack2) {
 		if (useTrack2) {
-			req.setValue(35, track2, IsoType.LLVAR);
+			req.setValue(35, track2, IsoType.LLLVAR);
 		}
 		req.setValue(58, ksn, IsoType.LLLVAR);
 	}

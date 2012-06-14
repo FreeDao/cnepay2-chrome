@@ -2,6 +2,8 @@
 package com.cnepay.android.pos2;
 
 import com.cnepay.android.pos2.CNAPSHttpActivity;
+import com.tangye.android.iso8583.POSHelper;
+import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.utils.PublicHelper;
 
 import android.content.Intent;
@@ -24,6 +26,7 @@ public class UIBaseActivity extends BaseActivity {
 	private boolean notNotify = false;
 	private static long lastLeaveTime = 0;
 	private boolean mPlugged = false;
+	private boolean isInSession = false;
 	private OnCNAPSResultListener cnapsListener = null;
 
 	protected ImageView imgIndicator = null;
@@ -110,6 +113,12 @@ public class UIBaseActivity extends BaseActivity {
 		if (SystemClock.elapsedRealtime() - lastLeaveTime < 10000) {
 			notNotify = true;
 		}
+		mPlugged = false; // wait for KSN test result
+		/**** login session control ****/
+		if(isInSession && POSHelper.getSession() <= 0) {
+			finish();
+        }
+		/**** end control ****/
 		super.onResume();
 	}
 
@@ -257,5 +266,19 @@ public class UIBaseActivity extends BaseActivity {
 	public String getError(String code) {
         return PublicHelper.getError(code, this);
     }
+	
+	/**
+	 * onCreate时调用，如果调用，则表示访问该activity必须登录
+	 */
+	public void setRequireLogon() {
+		isInSession = true;
+		setKsnTestListener(new KsnTestListener() {
+			@Override
+			public boolean test(String ksn) {
+				POSSession session = POSHelper.getPOSSession();
+				return session != null && session.testKsn(ksn);
+			}
+		});
+	}
 	/*********** end user function **************/
 }

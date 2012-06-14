@@ -26,7 +26,7 @@ public class SignInMessage extends BaseMessageAbstract {
 	@Override
 	protected void onCreateResponseIsoTemplate(IsoTemplate respTemp) {
 		respTemp.setType(0x0810);
-		respTemp.setValue(2, IsoType.LLLVARBCD);
+		respTemp.setValue(2, IsoType.LLVARBCD); 
 		respTemp.setValue(11, IsoType.NUMERIC, 6);
 		respTemp.setValue(12, IsoType.TIME);
 		respTemp.setValue(13, IsoType.DATE4);
@@ -37,13 +37,14 @@ public class SignInMessage extends BaseMessageAbstract {
 		respTemp.setValue(41, IsoType.ALPHA, 8);
 		respTemp.setValue(42, IsoType.ALPHA, 15);
 		respTemp.setValue(55, IsoType.LLLVAR);
+		respTemp.setValue(58, IsoType.LLLVAR); // ksn
 		respTemp.setValue(60, IsoType.LLLVARBCD);
 		respTemp.setValue(62, IsoType.LLLVAR); // WK BINARY24字节，按照ASCII对待
 	}
 
 	@Override
 	public boolean isBitmapValid() {
-		int[] in = {2,11,12,13,16,32,37,39,41,42,55,60,62};
+		int[] in = {2,11,12,13,16,32,37,39,41,42,55,58,60,62};
 		int[] out = {11,16,25,41,42,57,60,63};
 		return isBitmapValid(in, out);
 	}

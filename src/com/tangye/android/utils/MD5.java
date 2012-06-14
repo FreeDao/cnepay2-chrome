@@ -1,4 +1,4 @@
-﻿package com.bbpos.cswiper.encrypt;
+﻿package com.tangye.android.utils;
 
 import java.security.MessageDigest;
 
