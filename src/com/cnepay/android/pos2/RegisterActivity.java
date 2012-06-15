@@ -171,6 +171,9 @@ public class RegisterActivity extends UIBaseActivity implements
 			case E_API2_UNSTABLE:
 				errText("刷卡不稳定，请重试");
 				break;
+			case E_API2_INVALID_DEVICE:
+				errText("非法读卡器，请使用正规对卡器");
+				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;
 			default:
@@ -322,7 +325,7 @@ public class RegisterActivity extends UIBaseActivity implements
 		}
 		// FIXME TODO cardInfo
 		final CardInfo cardInfo = ci;
-		final String account = "6222020200068682125";//cardInfo.getCard(false);
+		final String account = cardInfo.getCard(false);
 		final String pname = txtPname.getText().toString();
 		final String pid = txtPid.getText().toString().toUpperCase();
 		final String phone = txtPhone.getText().toString();
@@ -425,12 +428,8 @@ public class RegisterActivity extends UIBaseActivity implements
 	                			Log.e(TAG, "Fatal Card Error");
 	                		}
 	                	} else {
-	                		if(statusCode.equals("Z3")){
+	                		if(statusCode.equals("Z3")) {
 	                			error = "序列号已被使用";
-	                		} else if (statusCode.equals("R5")){
-	                			error = "卡已被注册过";
-	                		} else if (statusCode.equals("R6")){
-			                			error = "信用卡不能注册";
 	                		} else if (statusCode.equals("Z4")){
 	                			error = "您已绑定过序列号";
 	                		} else {

@@ -1,7 +1,6 @@
 
 package com.cnepay.android.pos2;
 
-import com.cnepay.android.pos2.CNAPSHttpActivity;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.utils.PublicHelper;
@@ -10,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -90,6 +91,21 @@ public class UIBaseActivity extends BaseActivity {
 		mToast.setView(view);
 		mToast.show();
 	}
+	
+	@Override
+	public void onError(int error) {
+		// This can be override totally outside session
+		// Otherwise it must make sure to handle 
+		// #E_API2_INVALID_DEVICE# error
+		if (isInSession) {
+			if (error == E_API2_INVALID_DEVICE) {
+				mToast.cancel();
+				mToast = Toast.makeText(this, "非法读卡器！请使用注册时绑定的读卡器!", Toast.LENGTH_SHORT);
+				mToast.setGravity(Gravity.CENTER, 0, 0);
+				mToast.show();
+			}
+		}
+	}
 
 	@Override
 	public void setContentView(int view) {
@@ -127,6 +143,57 @@ public class UIBaseActivity extends BaseActivity {
 		super.onPause();
 		lastLeaveTime = SystemClock.elapsedRealtime();
 	}
+	
+	private static final int ABOUT_MENU_ID = Menu.FIRST;
+    private static final int QUIT_MENU_ID = Menu.FIRST + 1;
+    
+    private void signoff() {
+    	POSHelper.deleteSession();
+    	finish();
+    }
+    
+    private void showAboutDialog() {
+    	// TODO show about dialog
+    	Toast.makeText(this, "关与菜单", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, ABOUT_MENU_ID, 0, "关于")
+        .setShortcut('2', 'a')
+        .setIcon(android.R.drawable.ic_menu_info_details);
+        if(isInSession) {
+            menu.add(0, QUIT_MENU_ID, 0, "注销")
+            .setShortcut('3', 'q')
+            .setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        }
+        //menu.add(0, EMBOSS_MENU_ID, 0, "Emboss").setShortcut('4', 's');
+        //menu.add(0, BLUR_MENU_ID, 0, "Blur").setShortcut('5', 'z');
+        //menu.add(0, ERASE_MENU_ID, 0, "Erase").setShortcut('5', 'z');
+        //menu.add(0, SRCATOP_MENU_ID, 0, "SrcATop").setShortcut('5', 'z');
+
+        return true;
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case QUIT_MENU_ID:
+                signoff();
+                return true;
+            case ABOUT_MENU_ID:
+                showAboutDialog();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

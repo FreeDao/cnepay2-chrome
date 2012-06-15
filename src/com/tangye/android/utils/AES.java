@@ -1,5 +1,7 @@
 package com.tangye.android.utils;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
@@ -146,6 +148,10 @@ public class AES {
     private final static byte[] generateKey(String key) {
         StringBuilder xb = new StringBuilder(key);
         xb.reverse();
-        return xb.toString().substring(0, 16).getBytes();
+        try {
+			return xb.toString().substring(0, 16).getBytes("ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			return xb.toString().substring(0, 16).getBytes();
+		}
     }
 }

@@ -185,9 +185,15 @@ public class BaseActivity extends Activity implements CardReaderListener {
 				int track3Length, String randomNumber, String maskedPAN,
 				String expiryDate, String cardHolderName) {
 			Log.v(TAG, "onDecodeCompleted");
-			ci = new CardInfo(formatID, ksn, encTracks, maskedPAN);
-			vibrate(T_SUCCESS);
-			BaseActivity.this.onComplete(ci.getCard(true));
+			try {
+				ci = new CardInfo(formatID, ksn, encTracks, maskedPAN);
+				vibrate(T_SUCCESS);
+				BaseActivity.this.onComplete(ci.getCard(true));
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+				ci = null;
+				BaseActivity.this.onError(E_API2_INVALID_DEVICE);
+			}
 		}
 
 		public void onDecodeError(DecodeResult err) {
@@ -235,6 +241,7 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			Log.v(TAG, "API2 onError:" + message);
 			if (testAPI && cswiperController != null
 					&& error == CSwiperController.ERROR_FAIL_TO_GET_KSN) {
+				onPlugout();
 				BaseActivity.this.onError(E_API2_INVALID_DEVICE);
 			} else {
 				// TODO translate inner API error code to our own API error code
@@ -260,6 +267,7 @@ public class BaseActivity extends Activity implements CardReaderListener {
 				if (ksnTestListener == null || ksnTestListener.test(ksn)) {
 					BaseActivity.this.onPlugin();
 				} else {
+					onPlugout();
 					BaseActivity.this.onError(E_API2_INVALID_DEVICE);
 				}
 				testAPI = false;

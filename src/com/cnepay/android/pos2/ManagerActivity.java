@@ -2,6 +2,9 @@ package com.cnepay.android.pos2;
 
 import java.util.ArrayList;
 
+import com.tangye.android.iso8583.POSHelper;
+import com.tangye.android.iso8583.POSSession;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,8 +30,8 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         setTitle("账户管理");
         setRequireLogon();
         tv = (TextView)findViewById(R.id.mananger_notice_text);
-        Intent intent = getIntent();
-        if(intent.getIntExtra("juage", 0) == 1) {
+        POSSession SESSION = POSHelper.getPOSSession();
+        if(SESSION != null && !SESSION.isAuthenticated()) {
         	 mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ManagerActivity.class));
         	 mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, ManagerActivity.class));
         	 tv.setVisibility(View.VISIBLE);

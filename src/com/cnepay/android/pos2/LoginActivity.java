@@ -8,7 +8,6 @@ import java.net.UnknownHostException;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
-import com.tangye.android.iso8583.POSNative;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.SignInMessage;
 import com.tangye.android.utils.PublicHelper;
@@ -48,7 +47,7 @@ public class LoginActivity extends UIBaseActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(POSHelper.getSession() > 0) {
-            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
             startActivity(intent);
             finish();
             return;
@@ -79,7 +78,6 @@ public class LoginActivity extends UIBaseActivity
                         if (info.length() == 0) {
                         	makeError("登录成功");
                         } else {
-                        	intent.putExtra("juage", 1);
                         	makeError(info);
                         }
 	        			startActivity(intent);
@@ -118,7 +116,7 @@ public class LoginActivity extends UIBaseActivity
         };
 
         // TEST JNI
-		this.setTitleSubmitText(POSNative.getNativeK("d", "pp"));
+		//Toast.makeText(this, (new POSSession(this).getNativeK("d", "pp")).length() + "", Toast.LENGTH_SHORT).show();
 	}
 	
     @Override
@@ -144,7 +142,7 @@ public class LoginActivity extends UIBaseActivity
 					v.setEnabled(true);
 				}
 			}, ENABLE_TIMEOUT);
-			startActivity(new Intent(this, ManagerActivity.class));
+			//startActivity(new Intent(this, ManagerActivity.class));
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
             builder.setMessage("请认真填写银行卡号、序列号、手机号码，一经注册成功，实名认证通过将不得更改");
             builder.setTitle("提示");
@@ -209,6 +207,7 @@ public class LoginActivity extends UIBaseActivity
 				true, //进度是否是不确定的，这只和创建进度条有关 
 				true,
 				this);
+		progressDialog.setCanceledOnTouchOutside(false);
 		(new Thread() {
 			public void run() {
 			    POSEncrypt POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);
@@ -235,16 +234,12 @@ public class LoginActivity extends UIBaseActivity
 	                	String msg = null;
 	                	if (statusCode.equals("00")) {
 	                    	msg = ""; // 登录成功
-	                    } else if (statusCode.equals("X9")) {
-	                    	msg = "账户认证未通过";
-	                    } else if (statusCode.equals("X8")) {
-	                    	msg = "实名认证已审核未通过";
-	                    } else if (statusCode.equals("X7")) {
-	                    	msg = "实名认证通过";
-	                    } else if (statusCode.equals("X6")) {
-	                    	msg = "实名认证审核中";
-	                    } else if (statusCode.equals("X5")) {
-	                    	msg = "未进行实名认证";
+	                    } else if ( statusCode.equals("X9")
+	                    		 || statusCode.equals("X8")
+	                    		 || statusCode.equals("X7")
+	                    		 || statusCode.equals("X6")
+	                    		 || statusCode.equals("X5") ) {
+	                    	msg = getError(statusCode);
 	                    }
 	                	if (msg != null) {
 	                		POSSession SESSION = POSHelper.getPOSSession(LoginActivity.this, true);
@@ -252,19 +247,17 @@ public class LoginActivity extends UIBaseActivity
 		                    			   account,
 		                    			   passwd,
 		                    			   resp.getField(2).toString(),
-		                    			   resp.getField(58).toString().substring(0, 14)).close();
+		                    			   resp.getField(58).toString().substring(0, 14),
+		                    			   msg.length() == 0).close();
 		                    String setn = resp.getField(60).toString().substring(2, 8);
 		                    POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);
 		                    POS.setSetNumber(setn).close();
 		                    Log.i(TAG, "Log Set Number: " + setn);
-		                    
 	        				error = msg; // differ with stop by user
 		                    isOK = true;
 	                	} else {
 	                		if(statusCode.equals("Z0")){
 	                			error = "error";
-	                		} else if (statusCode.equals("03")){
-	                			error = "未在POS中心上初始化该POS终端";
 	                		} else {
 	                			error = getError(statusCode);
 	                		}
@@ -288,7 +281,8 @@ public class LoginActivity extends UIBaseActivity
 	                e.printStackTrace();
 	            } catch (Exception e) {
 	            	error = "报文错误，请联系客服";
-                    Log.i(TAG, "Parse Error: " + e);
+                    Log.i(TAG, "Exception Error: " + e);
+                    e.printStackTrace();
 				}
 	            if(!isOK) {
                     mHandler.obtainMessage(FAILURE, error).sendToTarget();

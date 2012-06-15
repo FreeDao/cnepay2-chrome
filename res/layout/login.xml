@@ -47,7 +47,8 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:background="#00000000"
-                    android:hint="手机号" />
+                    android:hint="手机号"
+                    android:inputType="phone" />
 
                 <EditText
                     android:id="@+id/log_password"

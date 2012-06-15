@@ -7,7 +7,7 @@ public class CardInfo {
 	
 	private String formatID, ksn, track2, card;
 	
-	public CardInfo(String...args) {
+	public CardInfo(String...args) throws IllegalStateException {
 		if (args.length > 3) {
 			formatID = args[0];
 			if (!testID(formatID)) {
@@ -15,7 +15,7 @@ public class CardInfo {
 			}
 			ksn = args[1];
 			track2 = args[2];
-			card = args[3];
+			card = "6222020200068682125";//args[3];
 		} else {
 			throw new IllegalArgumentException("Args should be at least 4");
 		}
@@ -23,8 +23,10 @@ public class CardInfo {
 	
 	private boolean testID(String id) {
 		// TODO to test formatID, must = 34 or 39
-		// maybe ksn need to test, too, 14 ksn and 6 counter
-		return true;
+		if (id.equals("34")) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void loadMessage(IsoMessage req, boolean useTrack2) {

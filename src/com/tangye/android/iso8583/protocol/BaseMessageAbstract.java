@@ -15,7 +15,7 @@ public abstract class BaseMessageAbstract {
 	private static final String ISOHEADER = "6000060000603000000000";
 	public static final String TPDU_BCD = new String(IsoUtil.hex2byte(ISOHEADER));
 	private static final String DEFAULT_ADDR = "203.81.23.23";//"119.97.180.133";
-	private static final int DEFAULT_PORT = 49002;
+	private static final int DEFAULT_PORT = 59002;
 	
 	//203.81.23.23：29002
 

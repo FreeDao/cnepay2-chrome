@@ -9,7 +9,6 @@ import com.tangye.android.utils.MD5;
 
 //import android.app.AlarmManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public class POSHelper {
@@ -27,8 +26,7 @@ public class POSHelper {
 	 */
 	public static POSEncrypt getPOSEncrypt(Context ctx, String phone) {
 		String md5 = MD5.getMD5ofStr(phone);
-		SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(md5, 0);
-		POSEncrypt pe = new POSEncrypt(sp);
+		POSEncrypt pe = new POSEncrypt(ctx, md5);
 		return pe;
 	}
 	

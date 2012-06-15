@@ -13,9 +13,11 @@ public class POSSession extends POSNative {
 	private String account;
 	private String card;
 	private String ksn;
+	private boolean ready;
     private Context ctx;
 		
 	public POSSession(Context context) {
+		super(context);
 		ctx = context.getApplicationContext();
 	}
 	
@@ -28,7 +30,9 @@ public class POSSession extends POSNative {
     	return card;  // card number
     }
 	
-	public POSSession initWK(String wkey, String mAccount, String mPasswd, String mCard, String mKsn) throws UnsupportedEncodingException {
+	public POSSession initWK(String wkey, 
+			String mAccount, String mPasswd, 
+			String mCard, String mKsn, boolean mReady) throws UnsupportedEncodingException {
 		if(wkey == null || wkey.length() != 24) throw new IllegalArgumentException("WK should be 24 bytes long");
 		// android.util.Log.e("WK", IsoUtil.byte2hex(wkey.getBytes("ISO-8859-1")));
 		pik = wkey.substring(0, 8);
@@ -40,6 +44,7 @@ public class POSSession extends POSNative {
 		if(mAccount != null && mPasswd != null) {
 			POSEncrypt pos = POSHelper.getPOSEncrypt(ctx, mAccount);
 			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), getNativeK(mPasswd, mCard));
+			releaseNative();
 			byte[] bkek = IsoUtil.hex2byte(kek);
 			pos.close();
 			// android.util.Log.e("PIKEncoded", pik);
@@ -58,6 +63,7 @@ public class POSSession extends POSNative {
 	        account = mAccount;
 	        card = mCard;
 	        ksn = mKsn;
+	        ready = mReady;
 		} else {
 		    throw new IllegalArgumentException("Fatal error when get WK");
 		}
@@ -135,11 +141,16 @@ public class POSSession extends POSNative {
     }
     
     public boolean testKsn(String KSN) {
-		return KSN.substring(0, 14).equals(ksn);
+		return KSN.substring(0, 14).equalsIgnoreCase(ksn);
 	}
+    
+    public boolean isAuthenticated() {
+    	return ready;
+    }
 	
 	public void close() {
 		ctx = null; // 防止造成内存泄漏
+		releaseNative();
 	}
 	
 	/**

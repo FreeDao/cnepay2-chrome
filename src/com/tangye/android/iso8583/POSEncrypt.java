@@ -6,6 +6,7 @@ import com.tangye.android.utils.AES;
 import com.tangye.android.utils.DES;
 import com.tangye.android.utils.MD5;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
@@ -19,8 +20,9 @@ public class POSEncrypt extends POSNative {
 	
 	private SharedPreferences sp;
 	
-	public POSEncrypt(SharedPreferences s) {
-		sp = s;
+	public POSEncrypt(Context ctx, String md5) {
+		super(ctx);
+		sp = ctx.getApplicationContext().getSharedPreferences(md5, 0);
 	}
 	
 	public void init(IsoMessage msg, String passwd) throws IllegalStateException {
@@ -101,6 +103,7 @@ public class POSEncrypt extends POSNative {
 	
 	public void close() {
 		sp = null;
+		releaseNative();
 	}
 	
 	private String pAES(String b64, String k1) {
