@@ -41,7 +41,7 @@
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:visibility="gone" >
+            android:visibility="visible" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -53,7 +53,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Consumption success!"
+                    android:text="消费成功！"
                     android:textColor="#119911"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -155,23 +155,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="中国银行" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="275dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="发卡行名:" />
-
-                <TextView
-                    android:id="@+id/issuingname_ticket"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -383,7 +366,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp" >
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" >
 
                 <Button
                     android:id="@+id/charge_finish"
@@ -396,7 +380,7 @@
                     android:shadowDx="2"
                     android:shadowDy="2"
                     android:shadowRadius="1"
-                    android:text="Information confirm"
+                    android:text="信息确认"
                     android:textColor="#ffffff"
                     android:textSize="18sp"
                     android:textStyle="bold" />

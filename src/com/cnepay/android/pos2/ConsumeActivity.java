@@ -15,12 +15,11 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	
 	
     private String[] all;
-	//Button btnClear;
 	Button btnFinish;
 	String lastPaymentDes;
 	Handler mHandler;
 	volatile boolean isProcessing;
-	TextView merchantNumber, terminalNumber, cardNo, iBankName, batchNumber,
+	TextView merchantNumber, terminalNumber, cardNo, batchNumber,
 	voucherNumber, authNumber, referNumber, dealDate, dealTime, dealAmount, merchantN;
 	LinearLayout result;
 	
@@ -34,13 +33,11 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
         setTitle("消费结果");
         setRequireLogon();
         btnSubmit.setOnClickListener(this);
-        //btnClear = (Button)findViewById(R.id.clear_signature);
         btnFinish = (Button)findViewById(R.id.charge_finish);
         
         merchantNumber = (TextView)findViewById(R.id.merchantno_ticket);
         terminalNumber = (TextView)findViewById(R.id.terminano_ticket);
         cardNo = (TextView)findViewById(R.id.cardno_ticket);
-        iBankName = (TextView)findViewById(R.id.issuingname_ticket);
         voucherNumber = (TextView)findViewById(R.id.voucherno_ticket);
         authNumber = (TextView)findViewById(R.id.authno_ticket);
         referNumber = (TextView)findViewById(R.id.referno_ticket);
@@ -62,15 +59,14 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 		merchantNumber.setText(all[0]);
 		terminalNumber.setText(all[1]);
 		cardNo.setText(all[2]);
-		iBankName.setText(all[3]);
-		batchNumber.setText(all[4]);
-		voucherNumber.setText(all[5]);
-		authNumber.setText(all[6]);
-		referNumber.setText(all[7]);
-		dealDate.setText(all[8]);
-		dealTime.setText(all[9]);
-		dealAmount.setText(all[10]);
-		merchantN.setText(all[12]);
+		batchNumber.setText(all[3]);
+		voucherNumber.setText(all[4]);
+		authNumber.setText(all[5]);
+		referNumber.setText(all[6]);
+		dealDate.setText(all[7]);
+		dealTime.setText(all[8]);
+		dealAmount.setText("￥" + all[9]);
+		merchantN.setText(all[11]);
     	findViewById(R.id.recharge_loading).setVisibility(View.GONE);
     	findViewById(R.id.recharge_result).setVisibility(View.VISIBLE);
     	//* TODO delete TEST

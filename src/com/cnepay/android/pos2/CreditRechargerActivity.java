@@ -74,7 +74,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
         		switch(msg.what) {
         		case SUCCESS:
 	        		String[] all = (String[]) msg.obj;
-	        		if(all != null && all.length < 14) {
+	        		if(all != null && all.length <= 14) {
 	        			// TODO consumption successfully
 	        			Intent i = new Intent(CreditRechargerActivity.this, ConsumeActivity.class);
 	        			String extra = POSHelper.getSessionString();
@@ -154,8 +154,6 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 
 	@Override
 	public void onComplete(String cn) {
-		super.onComplete(cn);
-
 		dialog.dismiss();
 		card.setText(cn);
 		framePass.setVisibility(View.VISIBLE);
@@ -378,20 +376,20 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 	                		String merchantNo = resp.getField(42).toString();
 	                		String terminalNo = resp.getField(41).toString();
 	                		String cardNumber = resp.getField(2).toString();
-	                		String batchNo = resp.getField(60).toString().substring(2);
-	                		String voucherNo = resp.getField(11).toString();
-	                		String authNo = null;
-	                		if(resp.getField(42).toString().length() == 0 || resp.getField(42).toString() == null) {
+	                		String batchNo = resp.getField(60).toString().substring(2); // 批次号
+	                		String voucherNo = resp.getField(11).toString(); // 流水号
+	                		String authNo = null; // 授权码
+	                		if(resp.getField(38) == null || resp.getField(38).toString().length() == 0) {
 	                			authNo = "000000";
 	                		} else {
-	                			authNo = resp.getField(42).toString();
+	                			authNo = resp.getField(38).toString();
 	                		}
-	                		String referNo = resp.getField(37).toString();
+	                		String referNo = resp.getField(37).toString(); // 参考号
 	                		String transactionDate = getTransactionDate(resp.getField(13).toString());
 	                		String transactionTime = getTransactionTime(resp.getField(12).toString());
 	                		String transactionAmount = amount;
-	                		String traceId = resp.getField(59).toString();
-	                		String merchantName = GBKBase64.decode(resp.getField(55).toString());
+	                		String traceId = resp.getField(59).toString(); // 交易ID
+	                		String merchantName = GBKBase64.decode(resp.getField(55).toString()); // 姓名
 	                		long time = System.currentTimeMillis();
 	                		Calendar mCalendar=Calendar.getInstance();
 	                		mCalendar.setTimeInMillis(time);
