@@ -43,7 +43,9 @@ public class POSSession extends POSNative {
 		mak = IsoUtil.byte2hex(bmak);
 		if(mAccount != null && mPasswd != null) {
 			POSEncrypt pos = POSHelper.getPOSEncrypt(ctx, mAccount);
-			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), getNativeK(mPasswd, mCard));
+			String s = getNativeK(mPasswd, mCard);
+			android.util.Log.v("POS", IsoUtil.byte2hex(s.getBytes("ISO-8859-1")));
+			String kek = pos.dAES(pos.getPOSDecrypt(pos.KEKENCODED), s);
 			releaseNative();
 			byte[] bkek = IsoUtil.hex2byte(kek);
 			pos.close();
