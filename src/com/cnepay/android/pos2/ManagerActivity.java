@@ -32,16 +32,16 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         tv = (TextView)findViewById(R.id.mananger_notice_text);
         POSSession SESSION = POSHelper.getPOSSession();
         if(SESSION != null && !SESSION.isAuthenticated()) {
-        	 mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ManagerActivity.class));
+        	 mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, null));
         	 mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, ManagerActivity.class));
         	 tv.setVisibility(View.VISIBLE);
         } else {
         	tv.setVisibility(View.GONE);
             mApps.add(new App(R.drawable.recharger, R.string.charge_mgr, CreditRechargerActivity.class));
             mApps.add(new App(R.drawable.card2card, R.string.transfer_mgr, ManagerActivity.class));
-            mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ManagerActivity.class));
+            mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, null));
             mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, ManagerActivity.class));
-            mApps.add(new App(R.drawable.checkrecord, R.string.records_mgr, ManagerActivity.class));
+            mApps.add(new App(R.drawable.checkrecord, R.string.records_mgr, null));
         }
         
         mGrid = (GridView)findViewById(R.id.manager_grid);
@@ -80,7 +80,7 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         if(app.intent != null) {
             startActivity(app.intent);
         } else {
-            Toast.makeText(this, "This function has not benn realized yet.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "该功能还未实现，敬请等待", Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -89,7 +89,11 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         public int icon;
         public Intent intent;
         public App(int Icon, int Title, Class<?> mClass) {
-            intent = new Intent(ManagerActivity.this, mClass);
+        	if (mClass != null) {
+        		intent = new Intent(ManagerActivity.this, mClass);
+        	} else {
+        		intent = null;
+        	}
             title = Title;
             icon = Icon;
         }
