@@ -1,39 +1,34 @@
 package com.cnepay.android.pos2;
 
+
 import com.tangye.android.iso8583.POSHelper;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ConsumeActivity extends UIBaseActivity implements View.OnClickListener{
 	
-	private static final String TAG = "ConsumeActivity";
-	
+	//private static final String TAG = "ConsumeActivity";
 	
     private String[] all;
-	Button btnFinish;
-	String lastPaymentDes;
-	Handler mHandler;
-	volatile boolean isProcessing;
-	TextView merchantNumber, terminalNumber, cardNo, batchNumber,
-	voucherNumber, authNumber, referNumber, dealDate, dealTime, dealAmount, merchantN;
-	LinearLayout result;
-	
-	
+	private Button btnFinish;
+	private TextView merchantNumber, terminalNumber, cardNo, batchNumber,
+					voucherNumber, authNumber, referNumber, dealDate, dealTime, 
+					dealAmount, merchantN, reference;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.consume);
-        this.showTitleSubmit();
+        this.hideTitleSubmit();
         setTitle("消费结果");
         setRequireLogon();
-        btnSubmit.setOnClickListener(this);
+        //btnSubmit.setOnClickListener(this);
         btnFinish = (Button)findViewById(R.id.charge_finish);
+        btnFinish.setOnClickListener(this);
         
         merchantNumber = (TextView)findViewById(R.id.merchantno_ticket);
         terminalNumber = (TextView)findViewById(R.id.terminano_ticket);
@@ -44,7 +39,7 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
         dealDate = (TextView)findViewById(R.id.transactiondate_ticket);
         dealTime = (TextView)findViewById(R.id.transactiontime_ticket);
         dealAmount = (TextView)findViewById(R.id.amountticket);
-        result = (LinearLayout)findViewById(R.id.recharge_result);
+        reference = (TextView)findViewById(R.id.reference);
         batchNumber = (TextView)findViewById(R.id.batchno_ticket);
         merchantN = (TextView)findViewById(R.id.merchantname_ticket);
         
@@ -53,8 +48,8 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
         	finish();
         }
         all = (String[]) getIntent().getStringArrayExtra(extra);
-		if(all != null && all.length != 14) {
-			//TODO below
+		if(all == null || all.length != 14) {
+			finish();
 		}
 		merchantNumber.setText(all[0]);
 		terminalNumber.setText(all[1]);
@@ -67,25 +62,22 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 		dealTime.setText(all[8]);
 		dealAmount.setText("￥" + all[9]);
 		merchantN.setText(all[11]);
-    	findViewById(R.id.recharge_loading).setVisibility(View.GONE);
-    	findViewById(R.id.recharge_result).setVisibility(View.VISIBLE);
-    	//* TODO delete TEST
-    	// IsoMessage m = (IsoMessage)msg.obj;
-    	// Toast.makeText(ConsumeActivity.this, m.getField(44).toString(), Toast.LENGTH_SHORT).show();
-    	/*if(lastPaymentDes != null) {
-    	    Toast.makeText(ConsumeActivity.this, getString(R.string.desc_chg) + ":" 
-    	            + lastPaymentDes, Toast.LENGTH_SHORT).show();
-    	}*/
-    	//* END TEST
-    	// TODO record history payment
-    	// msg.obj is the IsoMessage for this consumption
+		reference.setText(all[13]);
 
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		switch(v.getId()){
+		case R.id.charge_finish:
+			v.setEnabled(false);
+			Intent intent = new Intent(ConsumeActivity.this, SignNameActivity.class);
+			intent.putExtra("allString", all);
+			startActivity(intent);
+			finish();
+			break;
+		}
 	}
 
 }

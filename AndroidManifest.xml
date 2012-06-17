@@ -49,8 +49,16 @@
                   android:theme="@style/title"
                   android:windowSoftInputMode="stateHidden"
                   android:screenOrientation="portrait" />
+        <activity android:name=".SignNameActivity"
+                 android:label="@string/app_name"
+                 android:screenOrientation="portrait"
+                 android:windowSoftInputMode="stateHidden"
+                 android:theme="@android:style/Theme.Light.NoTitleBar"/>
     </application>
     <uses-sdk android:minSdkVersion="7" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"></uses-permission>

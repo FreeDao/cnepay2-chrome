@@ -1,47 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/allsrceen"
+    android:background="@drawable/main_bg"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" 
-    >
+    android:layout_height="wrap_content" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical" 
-        android:background="#f3f5f7">
+        android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/recharge_loading"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp" >
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/consume_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Charging" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/recharge_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alwaysDrawnWithCache="true"
             android:background="@drawable/ticketbg"
             android:orientation="vertical"
+            android:layout_margin="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:visibility="visible" >
+            android:paddingTop="5dp" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -326,10 +305,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="备注(REFERENCE):" />
+
+                <TextView
+                    android:id="@+id/reference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp" />
+"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
@@ -338,53 +324,58 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本人确认以上交易" />
+                    android:text="\n本人确认以上交易"
+                    android:textSize="18dp" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="同意将其记入本卡账户" />
+                    android:text="同意将其记入本卡账户"
+                    android:textSize="18dp" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I ACKNOWLEDGE SATISFACTORY RECEI" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PT OF RELATIVE GOODS/SERVICE" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="20dp"
-                    android:text="商户存根(MERCHANT COPY)" />
+                    android:paddingBottom="20dp"
+                    android:text="商户存根(MERCHANT COPY)"
+                    android:textSize="18dp" />
             </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp" >
+
+            <Button
+                android:id="@+id/charge_finish"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp" >
-
-                <Button
-                    android:id="@+id/charge_finish"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/button"
-                    android:shadowColor="#333333"
-                    android:shadowDx="2"
-                    android:shadowDy="2"
-                    android:shadowRadius="1"
-                    android:text="信息确认"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/button"
+                android:shadowColor="#333333"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:text="信息确认"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
