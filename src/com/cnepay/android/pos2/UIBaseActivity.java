@@ -7,6 +7,7 @@ import com.tangye.android.utils.PublicHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.Menu;
@@ -346,6 +347,20 @@ public class UIBaseActivity extends BaseActivity {
 				return session != null && session.testKsn(ksn);
 			}
 		});
+	}
+	
+	/**
+	 * 获取SD卡路径
+	 * @return 如果mount了SD卡，返回路径，否则返回null
+	 */
+	public String getSDPath(){ 
+		boolean sdCardExist = Environment.getExternalStorageState()   
+				.equals(Environment.MEDIA_MOUNTED); 
+		if(sdCardExist)
+		{     
+			return (Environment.getExternalStorageDirectory()).toString(); 
+		}
+		return null; 
 	}
 	/*********** end user function **************/
 }

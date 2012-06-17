@@ -18,7 +18,7 @@ public class CashTransferActivity extends UIBaseActivity implements View.OnClick
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cashtransfer);
-        this.hideTitleSubmit();
+        hideTitleSubmit();
         setTitle("转账结果");
         setRequireLogon();
 
@@ -55,7 +55,6 @@ public class CashTransferActivity extends UIBaseActivity implements View.OnClick
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.charge_finish_transfer:
 			v.setEnabled(false);

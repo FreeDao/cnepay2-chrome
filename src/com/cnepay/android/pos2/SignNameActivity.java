@@ -20,14 +20,12 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -40,7 +38,7 @@ import com.tangye.android.utils.MyDrawView;
 import com.tangye.android.utils.PicDraw;
 
 
-public class SignNameActivity extends Activity implements View.OnClickListener {
+public class SignNameActivity extends UIBaseActivity implements View.OnClickListener {
 	private static final String TAG = "SignNameActivity";
 	private static final String UPLOAD_URL = "http://203.81.23.4:18080/tompms/transCurrent/uploadVoucher";
 	private static final int TIMEOUTSOCKET = 10000;
@@ -58,9 +56,11 @@ public class SignNameActivity extends Activity implements View.OnClickListener {
 	private Handler mHandler;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign);
+		setTitle("签名凭据");
+		setRequireLogon();
 		cleanSignName = (Button)findViewById(R.id.clean_sign);
 		finish = (Button)findViewById(R.id.upload_ticket);
 		signature = (MyDrawView)findViewById(R.id.signature_draw);
@@ -253,16 +253,6 @@ public class SignNameActivity extends Activity implements View.OnClickListener {
 			signature.clear();
 			break;
 		}
-	}
-	
-	private String getSDPath(){ 
-		boolean sdCardExist = Environment.getExternalStorageState()   
-				.equals(Environment.MEDIA_MOUNTED); 
-		if(sdCardExist)
-		{     
-			return (Environment.getExternalStorageDirectory()).toString(); 
-		}
-		return null; 
 	}
 	
 	private void makeNoitce(String err) {

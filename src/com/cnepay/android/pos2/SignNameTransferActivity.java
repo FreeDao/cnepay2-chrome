@@ -19,15 +19,12 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
@@ -38,8 +35,7 @@ import android.widget.Toast;
 import com.tangye.android.utils.MyDrawView;
 import com.tangye.android.utils.PicDrawTransTransfer;
 
-public class SignNameTransferActivity extends Activity implements View.OnClickListener,
-					ProgressDialog.OnCancelListener{
+public class SignNameTransferActivity extends UIBaseActivity implements View.OnClickListener {
 	private static final String TAG = "SignNameTransferActivity";
 	private static final String UPLOAD_URL = "http://203.81.23.4:18080/tompms/transCurrent/uploadVoucher";
 	private static final int TIMEOUTSOCKET = 10000;
@@ -57,9 +53,11 @@ public class SignNameTransferActivity extends Activity implements View.OnClickLi
 	Handler mHandler;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign);
+		setTitle("签名凭据");
+		setRequireLogon();
 		cleanSignName = (Button)findViewById(R.id.clean_sign);
 		finish = (Button)findViewById(R.id.upload_ticket);
 		signature = (MyDrawView)findViewById(R.id.signature_draw);
@@ -105,6 +103,7 @@ public class SignNameTransferActivity extends Activity implements View.OnClickLi
 		finish.setOnClickListener(this);
 		cleanSignName.setOnClickListener(this);
 	}
+	
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.upload_ticket:
@@ -247,21 +246,6 @@ public class SignNameTransferActivity extends Activity implements View.OnClickLi
 			signature.clear();
 			break;
 		}
-	}
-	
-	private String getSDPath(){ 
-		boolean sdCardExist = Environment.getExternalStorageState()   
-				.equals(Environment.MEDIA_MOUNTED); 
-				if(sdCardExist)
-				{     
-					return (Environment.getExternalStorageDirectory()).toString(); 
-				}
-				return null; 
-	}
-	
-	public void onCancel(DialogInterface dialog) {
-		// TODO Auto-generated method stub
-		progressDialog = null;
 	}
 	
 	private void makeNoitce(String err) {

@@ -21,6 +21,7 @@ public class MyDrawView extends View {
     private float   mX;
     private float   mY;
     private boolean isDrag;
+    private boolean isMoved;
 
     public MyDrawView(Context context) {
         super(context);
@@ -69,6 +70,7 @@ public class MyDrawView extends View {
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
+        isMoved = false;
     }
 	
     private void touch_move(float x, float y) {
@@ -78,12 +80,17 @@ public class MyDrawView extends View {
             mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
             mX = x;
             mY = y;
+            isMoved = true;
         }
     }
     
     private void touch_up() {
-        mPath.lineTo(mX, mY);
-        mCanvas.drawPath(mPath, mPaint);
+    	if(isMoved) {
+    		mPath.lineTo(mX, mY);
+    		mCanvas.drawPath(mPath, mPaint);
+    	} else {
+    		mCanvas.drawPoint(mX, mY, mPaint);
+    	}
         mPath.reset();
     }
 	

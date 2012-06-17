@@ -23,10 +23,10 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.consume);
-        this.hideTitleSubmit();
+        hideTitleSubmit();
         setTitle("消费结果");
         setRequireLogon();
-        //btnSubmit.setOnClickListener(this);
+
         btnFinish = (Button)findViewById(R.id.charge_finish);
         btnFinish.setOnClickListener(this);
         
@@ -68,7 +68,6 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.charge_finish:
 			v.setEnabled(false);

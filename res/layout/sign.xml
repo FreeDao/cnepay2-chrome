@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/main_bg"
     android:orientation="vertical" >
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="持卡人签名 (CARDHOLDER SIGNATURE):" />
 
     <com.tangye.android.utils.MyDrawView
@@ -19,31 +20,31 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="友情提示:" 
-        android:textSize="18sp"/>
+        android:layout_margin="10dp"
+        android:text="友情提示:"
+        android:textSize="18sp" />
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  如果没有SD卡会无法上传小票，但不会影响交易结果。\n  有了SD卡会在SD卡上保存交易记录，方便查询."
-        />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="如果没有SD卡会无法上传小票，但不会影响交易结果。\n有了SD卡会在SD卡上保存交易记录，方便查询." />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" 
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="10dp">
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/upload_ticket"
             android:layout_width="0dip"
             android:layout_height="40dp"
+            android:layout_marginRight="4dp"
             android:layout_weight="1"
-            android:layout_marginRight="2dp"
-            
             android:background="@drawable/button"
             android:shadowColor="#333333"
             android:shadowDx="2"
@@ -58,14 +59,14 @@
             android:id="@+id/clean_sign"
             android:layout_width="0dip"
             android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
             android:layout_weight="1"
-            android:layout_marginLeft="2dp"
             android:background="@drawable/button"
             android:shadowColor="#333333"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="1"
-            android:text="消除签名"
+            android:text="重新签名"
             android:textColor="#ffffff"
             android:textSize="18sp" />
     </LinearLayout>
