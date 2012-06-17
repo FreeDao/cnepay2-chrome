@@ -445,6 +445,7 @@ public class CNAPSHttpActivity extends Activity implements
 							commit.setEnabled(true);
 						}
 					});
+			builder.setCancelable(false);
 			builder.create().show();
 			break;
 		}

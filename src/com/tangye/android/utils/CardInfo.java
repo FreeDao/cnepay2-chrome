@@ -15,7 +15,7 @@ public class CardInfo {
 			}
 			ksn = args[1];
 			track2 = args[2];
-			card = "6222020200068682125";//args[3];
+			card = args[3];
 		} else {
 			throw new IllegalArgumentException("Args should be at least 4");
 		}
@@ -23,7 +23,7 @@ public class CardInfo {
 	
 	private boolean testID(String id) {
 		// TODO to test formatID, must = 34 or 39
-		if (id.equals("34")) {
+		if (id.equals("40")) {
 			return true;
 		}
 		return false;
