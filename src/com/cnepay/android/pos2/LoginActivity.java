@@ -10,6 +10,7 @@ import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.SignInMessage;
+import com.tangye.android.utils.AES;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.AlertDialog;
@@ -18,6 +19,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +29,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +39,7 @@ public class LoginActivity extends UIBaseActivity
 	private ProgressDialog progressDialog;
 	private Button btnLogin;
 	private EditText txtPhone, txtPasswd;
+	private CheckBox checkRemember;
 	private SignInMessage s;
 	private Handler mHandler;
 	
@@ -60,6 +65,20 @@ public class LoginActivity extends UIBaseActivity
 		btnLogin.setOnClickListener(this);
 		txtPhone = (EditText) findViewById(R.id.log_id);
 		txtPasswd = (EditText) findViewById(R.id.log_password);
+		checkRemember = (CheckBox) findViewById(R.id.log_remember);
+		SharedPreferences sp = getSharedPreferences("rem_info", 0);
+		String n1 = sp.getString("name", "");
+		if(n1.length() > 0) {
+			checkRemember.setChecked(true);
+			txtPhone.setText(n1);
+			String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
+			if (p1 != null && p1.length() >= 6) {
+				txtPasswd.setText(p1.substring(0, 6));
+			}
+		} else {
+			checkRemember.setChecked(false);
+			txtPasswd.setText("");
+		}
 		
 		showTitleSubmit();
 		btnSubmit.setOnClickListener(this);
@@ -81,6 +100,20 @@ public class LoginActivity extends UIBaseActivity
                         	makeError(info);
                         }
 	        			startActivity(intent);
+	        			String nam = txtPhone.getText().toString();
+	        			String pas = txtPasswd.getText().toString();
+	        			if (checkRemember.isChecked()) {
+	        				if (nam.length() > 0) {
+	        					Editor edit = getSharedPreferences("rem_info", 0).edit();
+	        					edit.putString("name", nam);
+	        					String pwd = AES.encryptTrack(pas + "0000000000", nam);
+	        					edit.putString("passwd", pwd);
+	        					edit.apply();
+	        				}
+	        			} else {
+	        				Editor edit = getSharedPreferences("rem_info", 0).edit();
+	        				edit.clear().apply();
+	        			}
 	        			finish();
                     }
                     break;

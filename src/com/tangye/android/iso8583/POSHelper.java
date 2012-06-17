@@ -1,6 +1,5 @@
 package com.tangye.android.iso8583;
 
-//import java.io.File;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -126,15 +125,13 @@ public class POSHelper {
      * @param phone is the phone number registered by the card holder
      * @return true for delete success, otherwise false
      */
-    /*
-    public static boolean deleteAccount(String phone) {
-    	java.io.File f = new java.io.File(PREFS_PATH + phone + ".xml");
-    	if(f.exists()) {
+    public static boolean deleteAccount(Context ctx, String phone) {
+    	String md5 = MD5.getMD5ofStr(phone);
+    	if(ctx.getSharedPreferences(md5, 0).edit().clear().commit()) {
     		Log.i(TAG, "Delete successfully");
-    		return f.delete();
+    		return true;
     	}
     	return false;
     }
-    */
     
 }

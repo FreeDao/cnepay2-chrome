@@ -12,7 +12,7 @@ import com.tangye.android.iso8583.IsoUtil;
 
 public class AES {
 	
-	// private static final String CRYPT_KEY = "ECRTIFJKDddfafad";
+	private static final String CRYPT_KEY = "ABCDEF0123456789";
 	
     public static byte[] encrypt(byte[] data, byte[] key)
     {
@@ -22,12 +22,14 @@ public class AES {
     		cipher.init(Cipher.ENCRYPT_MODE, sk);
 			byte[] enc = cipher.doFinal(data);
 			return enc;
-        } catch (javax.crypto.NoSuchPaddingException e) {
+    	} catch (Exception e) {
+    		e.printStackTrace();
+        }/* catch (javax.crypto.NoSuchPaddingException e) {
         } catch (java.security.NoSuchAlgorithmException e) {
         } catch (java.security.InvalidKeyException e) {
         } catch (javax.crypto.BadPaddingException e) {
 		} catch (IllegalBlockSizeException e) {
-		} 
+		} */
     	
     	return null;
     }
@@ -116,6 +118,7 @@ public class AES {
         try {
             return IsoUtil.byte2hex(encrypt(data.getBytes(), generateKey(key)));
         } catch (Exception e) {
+        	e.printStackTrace();
         }
         return null;
     }
@@ -147,7 +150,7 @@ public class AES {
 
     private final static byte[] generateKey(String key) {
         StringBuilder xb = new StringBuilder(key);
-        xb.reverse();
+        xb.reverse().append(CRYPT_KEY);
         try {
 			return xb.toString().substring(0, 16).getBytes("ISO-8859-1");
 		} catch (UnsupportedEncodingException e) {
