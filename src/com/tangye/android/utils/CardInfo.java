@@ -15,7 +15,7 @@ public class CardInfo {
 			}
 			ksn = args[1];
 			track2 = args[2];
-			card = "6222020200068682125";//args[3];
+			card = "6227000010690172079";//args[3];
 		} else {
 			throw new IllegalArgumentException("Args should be at least 4");
 		}

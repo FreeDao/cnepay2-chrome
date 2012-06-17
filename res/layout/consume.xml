@@ -2,15 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/allsrceen"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" 
-    >
+    android:layout_height="wrap_content" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="#f3f5f7"
         android:gravity="center"
-        android:orientation="vertical" 
-        android:background="#f3f5f7">
+        android:orientation="vertical" >
 
         <LinearLayout
             android:id="@+id/recharge_loading"
@@ -39,8 +38,11 @@
             android:alwaysDrawnWithCache="true"
             android:background="@drawable/ticketbg"
             android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:paddingTop="10dp"
             android:visibility="visible" >
 
             <LinearLayout
@@ -326,10 +328,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="备注(REFERENCE):" />
+
+                <TextView
+                    android:id="@+id/reference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp" />
+"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
@@ -338,53 +347,59 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本人确认以上交易" />
+                    android:text="\n本人确认以上交易"
+                    android:textSize="18dp" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="同意将其记入本卡账户" />
+                    android:text="同意将其记入本卡账户"
+                    android:textSize="18dp" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I ACKNOWLEDGE SATISFACTORY RECEI" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PT OF RELATIVE GOODS/SERVICE" />
 
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="20dp"
-                    android:text="商户存根(MERCHANT COPY)" />
+                    android:paddingBottom="20dp"
+                    android:text="商户存根(MERCHANT COPY)"
+                    android:textSize="18dp" />
             </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
+
+            <Button
+                android:id="@+id/charge_finish"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp" >
-
-                <Button
-                    android:id="@+id/charge_finish"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/button"
-                    android:shadowColor="#333333"
-                    android:shadowDx="2"
-                    android:shadowDy="2"
-                    android:shadowRadius="1"
-                    android:text="信息确认"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/button"
+                android:shadowColor="#333333"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:text="信息确认"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

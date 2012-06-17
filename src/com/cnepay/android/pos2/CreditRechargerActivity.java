@@ -17,12 +17,15 @@ import com.tangye.android.iso8583.protocol.ConsumeMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GBKBase64;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -52,6 +55,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 	private ConsumeMessage s;
 	private Handler mHandler;
 	private boolean isProcessing;
+	private ProgressDialog progressDialog;
 
 	private final static int SUCCESS = 0;
 	private final static int FAILURE = 1;
@@ -73,7 +77,13 @@ public class CreditRechargerActivity extends UIBaseActivity implements
         	public void handleMessage(Message msg) {
         		switch(msg.what) {
         		case SUCCESS:
-	        		String[] all = (String[]) msg.obj;
+        			String[] all = (String[]) msg.obj;
+	    			 if(progressDialog != null && all != null) {
+	                 	// register successfully
+	                     progressDialog.dismiss();
+	                     progressDialog = null; // For not fade card number
+	    			 }
+	      
 	        		if(all != null && all.length <= 14) {
 	        			// TODO consumption successfully
 	        			Intent i = new Intent(CreditRechargerActivity.this, ConsumeActivity.class);
@@ -85,6 +95,10 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		        	break;
         		case FAILURE:
         			String e = (String) msg.obj;
+        			if(progressDialog != null) {
+                         progressDialog.cancel();
+                     }
+        			
         			if (e != null) {
         				makeError(e);
         			}
@@ -301,6 +315,33 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 				stopSwipe();
 			}
 		});
+		
+		txtDescribe.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				if(s.toString().length() == 15){
+					Toast.makeText(CreditRechargerActivity.this,"描述最多输入10个字", 
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+		});
 	}
 
 	private void initNumPad() {
@@ -348,6 +389,12 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		}
 		final String passwd = password;
 		
+		
+		progressDialog = ProgressDialog.show(this, // context 
+				"",	// title 
+				"消费中...", // message 
+				true, //进度是否是不确定的，这只和创建进度条有关 
+				false);
 		(new Thread(TAG) {
 			public void run() {
 				POSEncrypt POS = POSHelper.getPOSEncrypt(CreditRechargerActivity.this, name);
@@ -458,4 +505,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		String transactionTime = sb2.toString();
 		return transactionTime;
 	}
+
+
+
 }
