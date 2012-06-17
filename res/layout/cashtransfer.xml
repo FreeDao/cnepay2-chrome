@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical" >
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +31,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="消费成功！"
+                    android:text="转账成功"
                     android:textColor="#119911"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -54,46 +53,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="商户名(MERCHANT NAME):" />
-
-                <TextView
-                    android:id="@+id/merchantname_ticket"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="商户号(MERCHANT NO):" />
-
-                <TextView
-                    android:id="@+id/merchantno_ticket"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="终端号(TERMINAL NO):" />
 
                 <TextView
-                    android:id="@+id/terminano_ticket"
+                    android:id="@+id/terminano_ticket_transfer"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -108,32 +71,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="卡号(CARD NO):"
+                    android:text="转出卡号(CARD NO):"
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/cardno_ticket"
+                    android:id="@+id/out_ticket_transfer"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="275dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收单行名：" />
+                    android:text="转入卡号(CARD NO):"
+                    android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/acquirername_ticket"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/in_ticket_transfer"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="中国银行" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -149,7 +106,7 @@
                     android:text="交易类型(TRANS TYPE):" />
 
                 <TextView
-                    android:id="@+id/transactiontype_ticket"
+                    android:id="@+id/transactiontype_ticket_transfer"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30dp"
@@ -168,7 +125,7 @@
                     android:text="批次号(BATCH NO):" />
 
                 <TextView
-                    android:id="@+id/batchno_ticket"
+                    android:id="@+id/batchno_ticket_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -185,7 +142,7 @@
                     android:text="凭证号(VOUCHER NO):" />
 
                 <TextView
-                    android:id="@+id/voucherno_ticket"
+                    android:id="@+id/voucherno_ticket_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -202,7 +159,7 @@
                     android:text="授权码(AUTH NO):" />
 
                 <TextView
-                    android:id="@+id/authno_ticket"
+                    android:id="@+id/authno_ticket_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -219,7 +176,7 @@
                     android:text="参考号(REFER NO):" />
 
                 <TextView
-                    android:id="@+id/referno_ticket"
+                    android:id="@+id/referno_ticket_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -236,7 +193,7 @@
                     android:text="交易日期(DATE):" />
 
                 <TextView
-                    android:id="@+id/transactiondate_ticket"
+                    android:id="@+id/transactiondate_ticket_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -253,7 +210,7 @@
                     android:text="交易时间(TIME):" />
 
                 <TextView
-                    android:id="@+id/transactiontime_ticket"
+                    android:id="@+id/transactiontime_ticket_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -289,7 +246,7 @@
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/amountticket"
+                    android:id="@+id/amountticket_transfer"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30dp"
@@ -307,13 +264,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="备注(REFERENCE):" />
-
-                <TextView
-                    android:id="@+id/reference"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="30dp" />
-"
             </LinearLayout>
 
             <LinearLayout
@@ -326,22 +276,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\n本人确认以上交易"
-                    android:textSize="18dp" />
+                    android:text="\n本人确认以上交易" 
+                    android:textSize="18sp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="同意将其记入本卡账户"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="I ACKNOWLEDGE SATISFACTORY RECEI" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="PT OF RELATIVE GOODS/SERVICE" />
 
@@ -359,12 +309,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="10dp"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp" >
+            android:paddingRight="10dp" >
 
             <Button
-                android:id="@+id/charge_finish"
+                android:id="@+id/charge_finish_transfer"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"

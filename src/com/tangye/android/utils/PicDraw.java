@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class PicDraw extends View{
@@ -38,6 +39,7 @@ public class PicDraw extends View{
 		if(null == path2)
 		{
 			//TODO提示没有SD卡
+			Toast.makeText(context, "手机没有sd卡", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		String path3 = path2+"/personInfo/Screen_1.png";
@@ -53,7 +55,7 @@ public class PicDraw extends View{
 		mapValue.put("referNo", allString[6]);
 		mapValue.put("dealDate", allString[7]);
 		mapValue.put("dealTime", allString[8]);
-		mapValue.put("amount", allString[9]);
+		mapValue.put("amount", "￥" + allString[9]);
 		mapValue.put("merchantName", allString[11]);
 		mapValue.put("reference", allString[13]);
 	}
@@ -114,11 +116,11 @@ public class PicDraw extends View{
 	private String getSDPath(){ 
 		boolean sdCardExist = Environment.getExternalStorageState()   
 				.equals(Environment.MEDIA_MOUNTED); 
-				if(sdCardExist)
-				{     
-					return (Environment.getExternalStorageDirectory()).toString(); 
-				}
-				return null; 
+		if(sdCardExist)
+		{     
+			return (Environment.getExternalStorageDirectory()).toString(); 
+		}
+		return null; 
 	}
 
 }

@@ -60,7 +60,7 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 		referNumber.setText(all[6]);
 		dealDate.setText(all[7]);
 		dealTime.setText(all[8]);
-		dealAmount.setText("￥" + all[9]);
+		dealAmount.setText("RMB￥" + all[9]);
 		merchantN.setText(all[11]);
 		reference.setText(all[13]);
 

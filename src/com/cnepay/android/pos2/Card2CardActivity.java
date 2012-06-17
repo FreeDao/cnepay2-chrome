@@ -18,6 +18,7 @@ import com.tangye.android.utils.HandlingFee;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
@@ -55,6 +56,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 	private boolean isProcessing;
 	private String user1, user2, bankid2, bankname2, card2;
 	private HandlingFee amountH;
+	private ProgressDialog progressDialog;
 
 	private final static int SUCCESS = 0;
 	private final static int FAILURE = 1;
@@ -84,24 +86,30 @@ public class Card2CardActivity extends UIBaseActivity implements
 		passwdIM = new PasswordInputMethod(btns, fnButton, delButton, txtPassword, this);
 		cashIM.init();
 		mHandler = new Handler() {
-        	@Override
-        	public void handleMessage(Message msg) {
-        		switch(msg.what) {
-        		case SUCCESS:
-	        		String[] all = (String[]) msg.obj;
-	        		if(all != null && all.length <= 14) {
-	        			// TODO transfer successfully
-	        			makeError("转账成功!");
-	        			
-	        			//Intent i = new Intent(Card2CardActivity.this, ConsumeActivity.class);
-	        			//String extra = POSHelper.getSessionString();
-	        			//i.putExtra(extra, all);
-	        			//startActivity(i);
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case SUCCESS:
+					String[] all = (String[]) msg.obj;
+					if (progressDialog != null && all != null) {
+						// register successfully
+						progressDialog.dismiss();
+						progressDialog = null; // For not fade card number
+					}
+					if (all != null && all.length <= 14) {
+						// TODO transfer successfully
+						makeError("转账成功!");
+	        			Intent i = new Intent(Card2CardActivity.this, CashTransferActivity.class);
+	        			i.putExtra("allstring", all);
+	        			startActivity(i);
 	        			finish();
 	        		}
 		        	break;
         		case FAILURE:
         			String e = (String) msg.obj;
+        			if(progressDialog != null) {
+                        progressDialog.dismiss();
+                    }
         			if (e != null) {
         				makeError(e);
         			}
@@ -403,6 +411,12 @@ public class Card2CardActivity extends UIBaseActivity implements
 		}
 		final String passwd = password;
 		
+		
+		progressDialog = ProgressDialog.show(this, // context 
+				"",	// title 
+				"转账中...", // message 
+				true, //进度是否是不确定的，这只和创建进度条有关 
+				false);
 		(new Thread(TAG) {
 			public void run() {
 				POSEncrypt POS = POSHelper.getPOSEncrypt(Card2CardActivity.this, name);
