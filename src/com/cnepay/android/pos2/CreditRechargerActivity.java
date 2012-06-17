@@ -96,7 +96,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
         		case FAILURE:
         			String e = (String) msg.obj;
         			if(progressDialog != null) {
-                         progressDialog.cancel();
+                         progressDialog.dismiss();
                      }
         			
         			if (e != null) {
