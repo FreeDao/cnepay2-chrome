@@ -97,8 +97,24 @@ public class CreditRechargerActivity extends UIBaseActivity implements
         			String e = (String) msg.obj;
         			if(progressDialog != null) {
                          progressDialog.dismiss();
-                     }
-        			
+                    }
+        			card.setText("");
+        			framePass.setVisibility(View.GONE);
+        			noteSwipe.setVisibility(View.VISIBLE);
+        			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
+        	                Animation.RELATIVE_TO_SELF, 0.5f, 
+        	                Animation.RELATIVE_TO_SELF, 0.5f);
+        	        sa.setDuration(200);
+        	        imgCardType.startAnimation(sa);
+        	        imgCardType.postDelayed(new Runnable() {
+        	            public void run() {
+        	            	imgCardType.setVisibility(View.GONE);
+        	            }
+        	        }, 200);
+        			cashIM.init();
+        			if(isPlugged()) {
+        				showTitleSubmit();
+        			}
         			if (e != null) {
         				makeError(e);
         			}
