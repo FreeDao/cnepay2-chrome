@@ -6,7 +6,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 
-
 public class UpdateService extends Service {
 
     public static final int UNCHECKED = -1;
@@ -20,7 +19,6 @@ public class UpdateService extends Service {
     @Override
     public void onCreate() {
     	super.onCreate();
-        Log.i(TAG, "Service created");
     }
 
     @Override
@@ -57,13 +55,7 @@ public class UpdateService extends Service {
     
     @Override
     public IBinder onBind(Intent arg0) {
-        // Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public void onDestroy() {
-       Log.i(TAG, "Service destroyed");
     }
 
 }

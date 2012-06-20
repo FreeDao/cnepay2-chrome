@@ -1,6 +1,5 @@
 package com.cnepay.android.pos2;
 
-
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -56,17 +55,18 @@ public class LoginActivity extends UIBaseActivity
 			Intent intent = new Intent(this, UpdateActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            //finish();
-            
+            finish();
+            return;
 		}
+		
 		if(POSHelper.getSession() > 0) {
             Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
             startActivity(intent);
             finish();
             return;
         }
-		setContentView(R.layout.login);
 		
+		setContentView(R.layout.login);
 		setTitleSubmitText("注册");
 		
 		btnLogin = (Button) findViewById(R.id.login);
@@ -155,9 +155,6 @@ public class LoginActivity extends UIBaseActivity
                 btnLogin.setEnabled(true);
             }
         };
-
-        // TEST JNI
-		//Toast.makeText(this, (new POSSession(this).getNativeK("d", "pp")).length() + "", Toast.LENGTH_SHORT).show();
 	}
 	
 	
@@ -172,6 +169,10 @@ public class LoginActivity extends UIBaseActivity
     @Override
 	public void onCancel(DialogInterface dialog) {
     	progressDialog = null;
+    	if (s != null) {
+    		s.stop();
+    		s = null;
+    	}
 	}
 
 	@Override
@@ -331,9 +332,9 @@ public class LoginActivity extends UIBaseActivity
                 } else {
                     mHandler.obtainMessage(SUCCESS, error).sendToTarget();
                 }
+	            s = null;
 			}
 		}).start();
-		
 	}
 
 	//发送序列号绑定报文

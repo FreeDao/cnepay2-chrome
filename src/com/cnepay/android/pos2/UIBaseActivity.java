@@ -118,21 +118,12 @@ public class UIBaseActivity extends BaseActivity {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title); // title为自己标题栏的布局
 		imgIndicator = (ImageView)getWindow().findViewById(R.id.icon_indicator);
 		imgIndicator.setClickable(true);
-		/*
-		 * if (SwipeService.getHeadsetState() == 0) {
-		 * imgIndicator.setImageResource(R.drawable.signup_reader_off); } else
-		 * if (SwipeService.getHeadsetState() == 1) {
-		 * imgIndicator.setImageResource(R.drawable.signup_reader); }
-		 */
 		txtTitle = (TextView)getWindow().findViewById(R.id.title_name);
 		btnSubmit = (ViewGroup)getWindow().findViewById(R.id.title_submit);
-		// init();
 	}
 
 	@Override
-	protected void onResume() {
-		
-		
+	protected void onResume() {		
 		if (SystemClock.elapsedRealtime() - lastLeaveTime < 10000) {
 			notNotify = true;
 		}
@@ -144,13 +135,11 @@ public class UIBaseActivity extends BaseActivity {
         }
 		/******login session control end*****/
 		
-		super.onResume();
-		
 		if(UpdateService.needUpgrade()) {
-				signoff();
-				finish();
+			signoff();
         }
 		
+		super.onResume();
 	}
 
 	@Override
