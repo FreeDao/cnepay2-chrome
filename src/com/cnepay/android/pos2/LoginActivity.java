@@ -152,6 +152,10 @@ public class LoginActivity extends UIBaseActivity
 		//Toast.makeText(this, (new POSSession(this).getNativeK("d", "pp")).length() + "", Toast.LENGTH_SHORT).show();
 	}
 	
+	@Override
+	protected void onResume(){
+		super.onResume();
+	}
     @Override
     protected void onPause() {
         super.onPause();

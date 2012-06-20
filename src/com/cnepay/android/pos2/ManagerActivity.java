@@ -49,6 +49,10 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         mGrid.setOnItemClickListener(this);
 	}
 	
+	protected void  onResume(){
+		super.onResume();
+	}
+	
 	class ItemsAdapter extends BaseAdapter {
         public ItemsAdapter() {
         }

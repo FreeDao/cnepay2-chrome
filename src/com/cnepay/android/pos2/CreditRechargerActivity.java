@@ -134,7 +134,6 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 
 	@Override
 	public void onSubmit(String password) {
-		// TODO clear screen::::::::::::::::::::::::::::::::::::::
 		Log.v(TAG, "onSubmit");
 		if(!doRequest(password)) {
 			// TODO finish();
@@ -146,7 +145,6 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		// 这个地方我们必须知道layout的信息，不合适
 		case R.id.title_submit:
 			InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			inputManager.hideSoftInputFromWindow(getCurrentFocus()

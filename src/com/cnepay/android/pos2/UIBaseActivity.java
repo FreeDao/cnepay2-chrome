@@ -5,10 +5,15 @@ import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.utils.PublicHelper;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +39,8 @@ public class UIBaseActivity extends BaseActivity {
 	protected ImageView imgIndicator = null;
 	protected TextView txtTitle = null;
 	protected ViewGroup btnSubmit = null;
-
+	
+	private final String TAG = "UIBaseActivity";
 	@Override
 	public void setTitle(CharSequence title) {
 		txtTitle.setText(title);
@@ -50,6 +56,8 @@ public class UIBaseActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		mToast = new Toast(this);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		Log.v(TAG, "start service");
+		startService(new Intent(this, UpdateService.class));
 		// setContentView(R.layout.main);
 	}
 
@@ -127,16 +135,67 @@ public class UIBaseActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
+		super.onResume();
+		
 		if (SystemClock.elapsedRealtime() - lastLeaveTime < 10000) {
 			notNotify = true;
 		}
 		mPlugged = false; // wait for KSN test result
+		
 		/**** login session control ****/
 		if(isInSession && POSHelper.getSession() <= 0) {
 			finish();
         }
-		/**** end control ****/
-		super.onResume();
+		/******login session control end*****/
+		
+		if(UpdateService.needUpgrade()) {	
+			SharedPreferences sp = getSharedPreferences("settings", 0);
+	        String ver = sp.getString("ver", null);
+	        final String src = sp.getString("src", null);
+	        String ext = sp.getString("ext", null);
+	        
+	        Log.v(TAG, "ver = " + ver);
+	        Log.v(TAG, "src = " + src);
+	        Log.v(TAG, "ext = " + ext);
+	        
+	        if(ver == null || src == null) {
+	            finish();
+	            return;
+	        }
+	        
+	        if(ext != null) {
+	            // TODO extra contains many user-defined domains, we treat the first to be
+	            // the size of this apk
+	            String[] extras = ext.split("\\s+");
+	            if(extras.length > 0) {
+	                ver += " " + extras[0];
+	                Log.v(TAG, "ver = " + ver);
+	            }
+	        }
+			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(UIBaseActivity.this);
+	        builder.setTitle("更新")
+	        .setIcon(android.R.drawable.ic_dialog_info)
+	        .setMessage("检测到程序更新，请更新后继续使用")
+	        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					 signoff();
+			         finish();
+				}})
+	        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	        	public void onClick(DialogInterface dialog, int which) {
+	        		Uri uri = Uri.parse(src);
+	                Intent i = new Intent(Intent.ACTION_VIEW, uri);
+	                startActivity(i);
+	                signoff();
+	                finish();
+	        	}
+	        });
+	        builder.create().show();
+        }
+		
 	}
 
 	@Override
