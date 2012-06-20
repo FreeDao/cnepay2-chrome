@@ -74,6 +74,7 @@ public class LoginActivity extends UIBaseActivity
 		txtPhone = (EditText) findViewById(R.id.log_id);
 		txtPasswd = (EditText) findViewById(R.id.log_password);
 		checkRemember = (CheckBox) findViewById(R.id.log_remember);
+		findViewById(R.id.log_rebind).setOnClickListener(this);
 		SharedPreferences sp = getSharedPreferences("rem_info", 0);
 		String n1 = sp.getString("name", "");
 		if(n1.length() > 0) {
@@ -178,6 +179,10 @@ public class LoginActivity extends UIBaseActivity
 	@Override
 	public void onClick(final View v) {
 		switch(v.getId()) {
+		case R.id.log_rebind:
+			Intent intent = new Intent(LoginActivity.this, ReBindActivity.class);
+			startActivity(intent);
+			break;
 		case R.id.title_submit:
 			v.setEnabled(false);
 			v.postDelayed(new Runnable() {

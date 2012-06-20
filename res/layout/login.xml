@@ -78,10 +78,12 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/log_rebind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right|center_vertical"
                     android:text="无法登录"
+                    android:background="@drawable/title_btn"
                     android:textColor="#555555"
                     android:textSize="15sp" />
             </LinearLayout>
