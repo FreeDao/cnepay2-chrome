@@ -51,6 +51,14 @@ public class LoginActivity extends UIBaseActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if(UpdateService.needUpgrade()){
+			Intent intent = new Intent(this, UpdateActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            //finish();
+            
+		}
 		if(POSHelper.getSession() > 0) {
             Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
             startActivity(intent);
@@ -152,10 +160,7 @@ public class LoginActivity extends UIBaseActivity
 		//Toast.makeText(this, (new POSSession(this).getNativeK("d", "pp")).length() + "", Toast.LENGTH_SHORT).show();
 	}
 	
-	@Override
-	protected void onResume(){
-		super.onResume();
-	}
+	
     @Override
     protected void onPause() {
         super.onPause();

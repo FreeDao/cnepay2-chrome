@@ -14,6 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.client.methods.HttpGet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -143,6 +144,10 @@ public class UpdateModel {
             edit.putString("ext", ext);
             Log.v(TAG, version + "," + src + "," + ext);
             edit.commit();
+            
+            Intent intent = new Intent(context, UpdateActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         } else {
             Log.e(TAG, "Server Configuration Error");
         }

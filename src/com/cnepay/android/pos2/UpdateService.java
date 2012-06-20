@@ -43,6 +43,7 @@ public class UpdateService extends Service {
                 public void run() {
                     UpdateModel um = new UpdateModel(UpdateService.this);
                     checkstate = um.update(getPackageName());
+                    //for test
                     //checkstate = um.update("com.cnepay.android.pos");
                     Log.i(TAG, "checking result: " + String.valueOf(checkstate));
                     updatethread = null;

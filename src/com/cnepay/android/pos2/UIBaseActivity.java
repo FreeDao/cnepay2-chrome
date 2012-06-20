@@ -5,11 +5,7 @@ import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -33,7 +29,7 @@ public class UIBaseActivity extends BaseActivity {
 	private boolean notNotify = false;
 	private static long lastLeaveTime = 0;
 	private boolean mPlugged = false;
-	private boolean isInSession = false;
+	private boolean isNeedSession = false;
 	private OnCNAPSResultListener cnapsListener = null;
 
 	protected ImageView imgIndicator = null;
@@ -106,7 +102,7 @@ public class UIBaseActivity extends BaseActivity {
 		// This can be override totally outside session
 		// Otherwise it must make sure to handle 
 		// #E_API2_INVALID_DEVICE# error
-		if (isInSession) {
+		if (isNeedSession) {
 			if (error == E_API2_INVALID_DEVICE) {
 				mToast.cancel();
 				mToast = Toast.makeText(this, "非法读卡器！请使用注册时绑定的读卡器!", Toast.LENGTH_SHORT);
@@ -135,7 +131,7 @@ public class UIBaseActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
-		super.onResume();
+		
 		
 		if (SystemClock.elapsedRealtime() - lastLeaveTime < 10000) {
 			notNotify = true;
@@ -143,57 +139,16 @@ public class UIBaseActivity extends BaseActivity {
 		mPlugged = false; // wait for KSN test result
 		
 		/**** login session control ****/
-		if(isInSession && POSHelper.getSession() <= 0) {
+		if(isNeedSession && POSHelper.getSession() <= 0) {
 			finish();
         }
 		/******login session control end*****/
 		
-		if(UpdateService.needUpgrade()) {	
-			SharedPreferences sp = getSharedPreferences("settings", 0);
-	        String ver = sp.getString("ver", null);
-	        final String src = sp.getString("src", null);
-	        String ext = sp.getString("ext", null);
-	        
-	        Log.v(TAG, "ver = " + ver);
-	        Log.v(TAG, "src = " + src);
-	        Log.v(TAG, "ext = " + ext);
-	        
-	        if(ver == null || src == null) {
-	            finish();
-	            return;
-	        }
-	        
-	        if(ext != null) {
-	            // TODO extra contains many user-defined domains, we treat the first to be
-	            // the size of this apk
-	            String[] extras = ext.split("\\s+");
-	            if(extras.length > 0) {
-	                ver += " " + extras[0];
-	                Log.v(TAG, "ver = " + ver);
-	            }
-	        }
-			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(UIBaseActivity.this);
-	        builder.setTitle("更新")
-	        .setIcon(android.R.drawable.ic_dialog_info)
-	        .setMessage("检测到程序更新，请更新后继续使用")
-	        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener(){
-
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					// TODO Auto-generated method stub
-					 signoff();
-			         finish();
-				}})
-	        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	        	public void onClick(DialogInterface dialog, int which) {
-	        		Uri uri = Uri.parse(src);
-	                Intent i = new Intent(Intent.ACTION_VIEW, uri);
-	                startActivity(i);
-	                signoff();
-	                finish();
-	        	}
-	        });
-	        builder.create().show();
+		super.onResume();
+		
+		if(UpdateService.needUpgrade()) {
+				signoff();
+				finish();
         }
 		
 	}
@@ -223,7 +178,7 @@ public class UIBaseActivity extends BaseActivity {
         menu.add(0, ABOUT_MENU_ID, 0, "关于")
         .setShortcut('2', 'a')
         .setIcon(android.R.drawable.ic_menu_info_details);
-        if(isInSession) {
+        if(isNeedSession) {
             menu.add(0, QUIT_MENU_ID, 0, "注销")
             .setShortcut('3', 'q')
             .setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -398,7 +353,7 @@ public class UIBaseActivity extends BaseActivity {
 	 * onCreate时调用，如果调用，则表示访问该activity必须登录
 	 */
 	public void setRequireLogon() {
-		isInSession = true;
+		isNeedSession = true;
 		setKsnTestListener(new KsnTestListener() {
 			@Override
 			public boolean test(String ksn) {
