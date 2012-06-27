@@ -117,11 +117,11 @@ public class LoginActivity extends UIBaseActivity
 	        					edit.putString("name", nam);
 	        					String pwd = AES.encryptTrack(pas + "0000000000", nam);
 	        					edit.putString("passwd", pwd);
-	        					edit.apply();
+	        					edit.commit();
 	        				}
 	        			} else {
 	        				Editor edit = getSharedPreferences("rem_info", 0).edit();
-	        				edit.clear().apply();
+	        				edit.clear().commit();
 	        			}
 	        			finish();
                     }
