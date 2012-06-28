@@ -17,6 +17,7 @@ public class POSEncrypt extends POSNative {
 	public final String USERMARK = "u";
 	public final String SETNUMBER = "sn";
 	public final String KEKENCODED = "kr";
+	public final String RANDOMCODE = "rc";
 	
 	private SharedPreferences sp;
 	
@@ -25,7 +26,7 @@ public class POSEncrypt extends POSNative {
 		sp = ctx.getApplicationContext().getSharedPreferences(md5, 0);
 	}
 	
-	public void init(IsoMessage msg, String passwd) throws IllegalStateException {
+	public void init(IsoMessage msg, String passwd, String randCode) throws IllegalStateException {
 		long x = new Date().getTime() % 999999 + 1;
 		String traceNumber = String.format("%06d", x);
 		// android.util.Log.e("KEKEncoded", msg.getField(46).toString());
@@ -40,13 +41,15 @@ public class POSEncrypt extends POSNative {
 		.put(USERMARK, msg.getField(42).toString()) // 商户号
 		.put(SETNUMBER, "000001") // 批次号
 		.put(KEKENCODED, pAES(ming, getNativeK(passwd, msg.getField(2).toString())))
+		.put(RANDOMCODE, randCode)
 		.commit(); // store permanently
 		ming = null;
 	}
 	
 	public boolean isInitialized() {
-		return has(TRACENUMBER) && has(TERMINAL) && has(USERMARK) && has(KEKENCODED);
+		return has(TRACENUMBER) && has(TERMINAL) && has(USERMARK) && has(KEKENCODED) && has(RANDOMCODE);
 	}
+	
 	
 	public String getPOSDecrypt(String key) {
 		if(!has(key)) throw new IllegalStateException("Yet not init POS");

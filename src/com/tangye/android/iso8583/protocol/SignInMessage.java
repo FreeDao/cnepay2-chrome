@@ -11,7 +11,6 @@ public class SignInMessage extends BaseMessageAbstract {
 
 	private String TraceType_60_1;
 	private String NetworkInfoManage_60_3;
-	private String OperatorNumber_63_1;
 
 	@Override
 	protected void onCreateRequestIsoMessage(IsoMessage requestMsg) {
@@ -20,7 +19,6 @@ public class SignInMessage extends BaseMessageAbstract {
         requestMsg.setValue(25, "01", IsoType.NUMERIC, 2); // 00 刷卡登录，01 手机号登录
 		TraceType_60_1 = "00";
 		NetworkInfoManage_60_3 = "001";
-		OperatorNumber_63_1 = "000";    // 操作员代码
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class SignInMessage extends BaseMessageAbstract {
         return this;
     }
     
-    public SignInMessage setPhoneNumber_63(String phone) {
+    public SignInMessage setPhoneNumber_63(String phone, String OperatorNumber_63_1) {
     	String x = OperatorNumber_63_1;
 		x += extAlpha(phone, 20); //手机号
         req.setValue(63, x, IsoType.LLLVAR);

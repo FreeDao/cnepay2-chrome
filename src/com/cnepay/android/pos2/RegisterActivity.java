@@ -398,6 +398,7 @@ public class RegisterActivity extends UIBaseActivity implements
 		(new Thread() {
 			public void run() {
 			    s = new SignUpMessage();
+			    String randomCode = PublicHelper.getRandomCode();
 	            s.setCardNumber_2(account)
 	             .setSource_16(getSource())
 	             .setSerialNum_54(serialNum)
@@ -405,7 +406,7 @@ public class RegisterActivity extends UIBaseActivity implements
 	             .setBankInfoGBK_47(bname)
 	             .setUserPassword_57(password)
 	             .setCardInfo(cardInfo)
-	             .setOtherInfo_63(pid, bid, phone);
+	             .setOtherInfo_63(pid, bid, phone, randomCode);
 	            boolean isOK = false;
 	            String error = "";
 	            try {
@@ -419,7 +420,7 @@ public class RegisterActivity extends UIBaseActivity implements
 								Log.i(TAG, "终端标识码：" + resp.getField(41).toString());
 								Log.i(TAG, "受卡方标识码：" + resp.getField(42).toString());
 			                    POSEncrypt POS = POSHelper.getPOSEncrypt(RegisterActivity.this, phone);
-		        				POS.init(resp, password);
+		        				POS.init(resp, password, randomCode);
 		        				POS.close();
 		        				error = account; // differ with stop by user
 			                    isOK = true;

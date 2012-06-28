@@ -1,9 +1,12 @@
 package com.tangye.android.utils;
 
 import java.lang.reflect.Constructor;
+import java.util.Random;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.text.format.Time;
+import android.util.Log;
 
 public class PublicHelper {
     
@@ -37,5 +40,25 @@ public class PublicHelper {
 			builder = new Builder(ctx);
 		}
     	return builder;
+    }
+    
+    private static final char validRandomCode[] = {
+    	'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'a', 'b', 'c', 'd', 'e', 'f' ,
+    	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v' ,
+    	'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L' ,
+    	'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '~', '!' ,
+    	'@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=', '[', ']', '{' ,
+    	'}', ';', ':', ',', '<', '.', '>', '?' 
+    };
+    
+    private static final int lengthOfRandCode = validRandomCode.length;
+    public static String getRandomCode(){
+    	final int LEN = 3;
+    	String result = "";
+    	Random random = new Random(System.currentTimeMillis());
+    	for(int i = 0; i < LEN; i++){
+    		result =result + validRandomCode[Math.abs(random.nextInt()) % lengthOfRandCode];
+    	}
+    	return result;
     }
 }

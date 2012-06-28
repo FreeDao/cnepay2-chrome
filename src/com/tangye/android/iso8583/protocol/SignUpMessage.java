@@ -9,16 +9,15 @@ import com.tangye.android.iso8583.IsoTemplate;
 import com.tangye.android.iso8583.IsoType;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GBKBase64;
+import com.tangye.android.utils.PublicHelper;
 
 public class SignUpMessage extends BaseMessageAbstract {
 
-    private String FixedValue_63_1;
     
 	@Override
 	protected void onCreateRequestIsoMessage(IsoMessage requestMsg) {
 		requestMsg.setType(0x0900);
 		requestMsg.setBinary(true);
-		FixedValue_63_1 = "000";
 		requestMsg.setValue(60, "03", IsoType.LLLVARBCD);
 	}
 
@@ -77,8 +76,8 @@ public class SignUpMessage extends BaseMessageAbstract {
 		return this;
 	}
 
-	public SignUpMessage setOtherInfo_63(String id, String bank, String phone) {
-		String x = FixedValue_63_1;
+	public SignUpMessage setOtherInfo_63(String id, String bank, String phone, String randomCode) {
+		String x = randomCode;
 		x += extAlpha(id, 20); // 身份证
 		x += extAlpha(bank, 20); //12位联行码
 		x += extAlpha(phone, 20); //手机号

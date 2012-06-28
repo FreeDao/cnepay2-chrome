@@ -8,17 +8,16 @@ import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.IsoTemplate;
 import com.tangye.android.iso8583.IsoType;
 import com.tangye.android.utils.GBKBase64;
+import com.tangye.android.utils.PublicHelper;
 
 public class ReBindMessage extends BaseMessageAbstract {
 
-    private String FixedValue_63_1;
     private String FixedValue_63_3;
     
 	@Override
 	protected void onCreateRequestIsoMessage(IsoMessage requestMsg) {
 		requestMsg.setType(0x0900);
 		requestMsg.setBinary(true);
-		FixedValue_63_1 = "000";
 		FixedValue_63_3 = "00000000000000000000";
 		requestMsg.setValue(60, "05", IsoType.LLLVARBCD);
 	}
@@ -62,8 +61,8 @@ public class ReBindMessage extends BaseMessageAbstract {
 		return this;
 	}
 
-	public ReBindMessage setOtherInfo_63(String id, String phone) {
-		String x = FixedValue_63_1;
+	public ReBindMessage setOtherInfo_63(String id, String phone, String randCode) {
+		String x = randCode;
 		x += extAlpha(id, 20); // 身份证
 		x += FixedValue_63_3;
 		x += extAlpha(phone, 20); //手机号

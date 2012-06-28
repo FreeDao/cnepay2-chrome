@@ -265,13 +265,14 @@ public class LoginActivity extends UIBaseActivity
                     return;
 			    }
 			    s = new SignInMessage();
+			    
 	            s.setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
 	             .setSource_16(getSource())
 	             .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
 	             .setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))
 	             .setUserPassword_57(passwd)
 	             .setSetNumber_60(POS.getPOSDecrypt(POS.SETNUMBER))
-	             .setPhoneNumber_63(account);
+	             .setPhoneNumber_63(account, POS.getPOSDecrypt(POS.RANDOMCODE));
 	            boolean isOK = false;
 	            String error = "";
 	            try {

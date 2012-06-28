@@ -12,6 +12,7 @@ import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.protocol.ReBindMessage;
 import com.tangye.android.utils.CardInfo;
+import com.tangye.android.utils.PublicHelper;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -329,10 +330,11 @@ public class ReBindActivity extends UIBaseActivity implements
 		(new Thread() {
 			public void run() {
 			    s = new ReBindMessage();
+			    String randomCode = PublicHelper.getRandomCode();
 	            s.setCardNumber_2(account)
 	             .setSource_16(getSource())
 	             .setUserPassword_57(password)
-	             .setOtherInfo_63(pid, phone);
+	             .setOtherInfo_63(pid, phone, randomCode);
 	            boolean isOK = false;
 	            String error = "";
 	            try {
@@ -346,7 +348,7 @@ public class ReBindActivity extends UIBaseActivity implements
 								Log.i(TAG, "终端标识码：" + resp.getField(41).toString());
 								Log.i(TAG, "受卡方标识码：" + resp.getField(42).toString());
 			                    POSEncrypt POS = POSHelper.getPOSEncrypt(ReBindActivity.this, phone);
-		        				POS.init(resp, password);
+			                    POS.init(resp, password, randomCode);
 		        				POS.close();
 		        				error = account; // differ with stop by user
 			                    isOK = true;
