@@ -5,8 +5,6 @@ import java.util.Random;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.text.format.Time;
-import android.util.Log;
 
 public class PublicHelper {
     

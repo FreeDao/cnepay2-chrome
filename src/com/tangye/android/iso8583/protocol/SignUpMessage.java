@@ -9,7 +9,6 @@ import com.tangye.android.iso8583.IsoTemplate;
 import com.tangye.android.iso8583.IsoType;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GBKBase64;
-import com.tangye.android.utils.PublicHelper;
 
 public class SignUpMessage extends BaseMessageAbstract {
 
