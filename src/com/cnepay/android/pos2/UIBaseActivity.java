@@ -5,7 +5,10 @@ import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.utils.PublicHelper;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -157,8 +160,21 @@ public class UIBaseActivity extends BaseActivity {
     }
     
     private void showAboutDialog() {
-    	// TODO show about dialog
-    	Toast.makeText(this, "关与菜单", Toast.LENGTH_SHORT).show();
+    	AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
+        builder.setTitle("关于" + getString(R.string.app_name))
+        .setIcon(android.R.drawable.ic_dialog_info)
+        .setMessage("版本号: " + getVersion())
+        .setPositiveButton(android.R.string.ok, null)
+        .show();
+    }
+    
+    private String getVersion() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0); 
+            return packInfo.versionName;
+        } catch(Exception e) {}
+        return "Error Version";
     }
 
     @Override

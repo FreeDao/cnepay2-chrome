@@ -136,16 +136,16 @@ public class LoginActivity extends UIBaseActivity
     	        		        AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(LoginActivity.this);
     	        		        builder.setTitle("序列号已被使用")
     	        		        .setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
-    	        		                .setNegativeButton(android.R.string.cancel, null);
-    	        		        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+    	        		        .setNegativeButton(android.R.string.cancel, null)
+    	        		        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
     	        		            public void onClick(DialogInterface dialog, int which) {
     	        		               String num = inputServer.getText().toString().toUpperCase().trim();
     	        		               InputMethodManager imm = (InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
     	        		               imm.hideSoftInputFromWindow(inputServer.getWindowToken(), 0);
     	        		               sendSerial(num);
     	        		             }
-    	        		        });
-    	        		        builder.create().show();
+    	        		        })
+    	        		        .show();
                         	} else {
                         		makeError(info);
                         	}
@@ -190,7 +190,6 @@ public class LoginActivity extends UIBaseActivity
 					v.setEnabled(true);
 				}
 			}, ENABLE_TIMEOUT);
-			//startActivity(new Intent(this, ManagerActivity.class));
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
             builder.setMessage("请认真填写银行卡号、序列号、手机号码，一经注册成功，实名认证通过将不得更改");
             builder.setTitle("提示");
@@ -202,7 +201,7 @@ public class LoginActivity extends UIBaseActivity
                 }
             });
             builder.setNegativeButton(android.R.string.cancel, null);
-            builder.create().show();
+            builder.show();
 			break;
 		case R.id.login:
 			if(progressDialog == null) {

@@ -172,7 +172,7 @@ public class RegisterActivity extends UIBaseActivity implements
 				errText("刷卡不稳定，请重试");
 				break;
 			case E_API2_INVALID_DEVICE:
-				errText("非法读卡器，请使用正规对卡器");
+				errText("非法读卡器，请使用正规读卡器");
 				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;

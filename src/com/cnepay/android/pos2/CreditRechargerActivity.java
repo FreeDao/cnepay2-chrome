@@ -272,7 +272,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 				makeError("刷卡不稳定，请重试");
 				break;
 			case E_API2_INVALID_DEVICE:
-				makeError("非法读卡器，请使用正规对卡器");
+				makeError("非法读卡器，请使用正规读卡器");
 				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;
