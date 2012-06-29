@@ -50,6 +50,14 @@ public class POSEncrypt extends POSNative {
 		return has(TRACENUMBER) && has(TERMINAL) && has(USERMARK) && has(KEKENCODED) && has(RANDOMCODE);
 	}
 	
+	public boolean isInitializedExceptRanCode(){
+		return has(TRACENUMBER) && has(TERMINAL) && has(USERMARK) && has(KEKENCODED);
+	}
+	
+	public boolean isInitializedRanCode(){
+		return has(RANDOMCODE);
+	}
+	
 	
 	public String getPOSDecrypt(String key) {
 		if(!has(key)) throw new IllegalStateException("Yet not init POS");
@@ -79,6 +87,15 @@ public class POSEncrypt extends POSNative {
         return this;
     }
 	
+	public POSEncrypt setRandomCode(String ranCode){
+		if(ranCode == null || ranCode.equals("") || ranCode.length() != 3){
+			return this;
+		}
+		new ready(sp.edit())
+		.put(RANDOMCODE, ranCode)
+		.commit();
+		return this;
+	}
 	public POSEncrypt addSetNumber(String setNumber) {
 	    // 如果长度不是6位或者与以前的值相同，则采用自己+1的方案
 	    if(setNumber.length() != 6 || setNumber.equals(get(SETNUMBER, "000100"))) {

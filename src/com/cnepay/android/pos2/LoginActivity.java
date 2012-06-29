@@ -258,11 +258,12 @@ public class LoginActivity extends UIBaseActivity
 		(new Thread() {
 			public void run() {
 			    POSEncrypt POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);
-			    if(!POS.isInitialized()) {
+			    if(!POS.isInitializedExceptRanCode()) {
                     POS.close();
                     mHandler.obtainMessage(FAILURE, "该手机未绑定此账号").sendToTarget();
                     return;
 			    }
+			    
 			    s = new SignInMessage();
 			    
 	            s.setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
@@ -270,8 +271,14 @@ public class LoginActivity extends UIBaseActivity
 	             .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
 	             .setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))
 	             .setUserPassword_57(passwd)
-	             .setSetNumber_60(POS.getPOSDecrypt(POS.SETNUMBER))
-	             .setPhoneNumber_63(account, POS.getPOSDecrypt(POS.RANDOMCODE));
+	             .setSetNumber_60(POS.getPOSDecrypt(POS.SETNUMBER));
+	            String ranCode = "";
+	            if(POS.isInitializedRanCode()){
+	            	s.setPhoneNumber_63(account, POS.getPOSDecrypt(POS.RANDOMCODE));
+	            }else{
+	            	ranCode = PublicHelper.getRandomCode();
+	            	s.setPhoneNumber_63(account, ranCode);
+	            }
 	            boolean isOK = false;
 	            String error = "";
 	            try {
@@ -286,7 +293,9 @@ public class LoginActivity extends UIBaseActivity
 	                    		 || statusCode.equals("X8")
 	                    		 || statusCode.equals("X7")
 	                    		 || statusCode.equals("X6")
-	                    		 || statusCode.equals("X5") ) {
+	                    		 || statusCode.equals("X5")
+	                    		 || statusCode.equals("R9")) {
+	                    	//??这个地方的逻辑，我有点迷糊，有空告诉我一下
 	                    	msg = getError(statusCode);
 	                    }
 	                	if (msg != null) {
@@ -299,6 +308,9 @@ public class LoginActivity extends UIBaseActivity
 		                    			   msg.length() == 0).close();
 		                    String setn = resp.getField(60).toString().substring(2, 8);
 		                    POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);
+		                    if(POS.isInitializedExceptRanCode() && !POS.isInitializedRanCode()){
+		                    	POS.setRandomCode(ranCode);
+		                    }
 		                    POS.setSetNumber(setn).close();
 		                    Log.i(TAG, "Log Set Number: " + setn);
 	        				error = msg; // differ with stop by user
