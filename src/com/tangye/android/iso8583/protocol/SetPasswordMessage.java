@@ -11,25 +11,23 @@ import com.tangye.android.utils.GBKBase64;
 
 public class SetPasswordMessage extends BaseMessageAbstract {
 	
-	private String FixedValue_60_1;
-
 	@Override
 	protected void onCreateRequestIsoMessage(IsoMessage requestMsg) {
-		// TODO Auto-generated method stub
 		requestMsg.setType(0x0900);
 		requestMsg.setBinary(true);
-		FixedValue_60_1 = "06";
+		req.setValue(60, "06", IsoType.LLLVARBCD);
 	}
 
 	@Override
 	protected void onCreateResponseIsoTemplate(IsoTemplate respTemp) {
-		// TODO Auto-generated method stub
 		respTemp.setType(0x0910);
 		respTemp.setValue(2, IsoType.LLVARBCD);
 		respTemp.setValue(16, IsoType.NUMERIC, 4);
-		respTemp.setValue(25, IsoType.NUMERIC,2);
 		respTemp.setValue(39, IsoType.ALPHA, 2);
+		respTemp.setValue(56, IsoType.LLLVAR);
+		respTemp.setValue(57, IsoType.LLLVAR);
 		respTemp.setValue(60, IsoType.LLLVARBCD);
+		respTemp.setValue(64, IsoType.ALPHA, 8);
 	}
 
 	@Override
@@ -54,28 +52,21 @@ public class SetPasswordMessage extends BaseMessageAbstract {
         return this;
     }
     
-    public SetPasswordMessage oldPassword_56(String oldPwd){
+    public SetPasswordMessage setOldPassword_56(String oldPwd){
     	try {
 			req.setValue(56, GBKBase64.encode(oldPwd), IsoType.LLLVAR);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			Log.e("aboutPassword", "56's setValue");
 		}
     	return this;
     }
     
-    public SetPasswordMessage newPassword_57(String newPassword){
+    public SetPasswordMessage setNewPassword_57(String newPassword){
     	try {
 			req.setValue(57, GBKBase64.encode(newPassword), IsoType.LLLVAR);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			Log.e("aboutPassword", "57's setValue");
 		}
-    	return this;
-    }
-    
-    public SetPasswordMessage setTransactionType_60(){
-    	req.setValue(60, FixedValue_60_1, IsoType.LLLVARBCD);
     	return this;
     }
     

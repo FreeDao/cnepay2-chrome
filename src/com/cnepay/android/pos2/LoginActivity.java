@@ -227,7 +227,7 @@ public class LoginActivity extends UIBaseActivity
 	
 	private void makeError(String txt) {
 		Toast t = Toast.makeText(this, txt, Toast.LENGTH_SHORT);
-		t.setGravity(Gravity.CENTER, 0, 0);
+		t.setGravity(Gravity.BOTTOM, 0, 0);
 		t.show();
 	}
 	

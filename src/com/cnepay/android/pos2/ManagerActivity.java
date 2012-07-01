@@ -32,18 +32,17 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         tv = (TextView)findViewById(R.id.mananger_notice_text);
         POSSession SESSION = POSHelper.getPOSSession();
         if(SESSION != null && !SESSION.isAuthenticated()) {
-        	 mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, null));
+        	 mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
         	 mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
         	 tv.setVisibility(View.VISIBLE);
         } else {
         	tv.setVisibility(View.GONE);
             mApps.add(new App(R.drawable.recharger, R.string.charge_mgr, CreditRechargerActivity.class));
             mApps.add(new App(R.drawable.card2card, R.string.transfer_mgr, RemitActivity.class));
-            mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, null));
+            mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
             mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
             mApps.add(new App(R.drawable.checkrecord, R.string.records_mgr, null));
             mApps.add(new App(R.drawable.device_manage, R.string.device_mgr, DeviceManageActivity.class));
-            mApps.add(new App(R.drawable.change_password, R.string.change_pwd, DeviceManageActivity.class));
             
         }
         
