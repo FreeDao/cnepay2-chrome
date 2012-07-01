@@ -3,14 +3,12 @@ package com.cnepay.android.pos2;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.Calendar;
 
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.KSNRaplaceMessage;
-import com.tangye.android.iso8583.protocol.TransferMessage;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.AlertDialog;
@@ -24,10 +22,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 

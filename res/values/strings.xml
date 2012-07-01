@@ -99,6 +99,8 @@
 	<string name="real_name_mgr">实名认证</string>
 	<string name="records_mgr">查看历史记录</string>
 	<string name="device_mgr">设备管理</string>
+	<string name="change_pwd">修改密码</string>
+	
 	
 	
 </resources>
