@@ -28,7 +28,7 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manager);
         setTitle("账户管理");
-        setRequireLogon();
+        setActivityPara(true ,true);
         tv = (TextView)findViewById(R.id.mananger_notice_text);
         POSSession SESSION = POSHelper.getPOSSession();
         if(SESSION != null && !SESSION.isAuthenticated()) {
@@ -42,6 +42,7 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
             mApps.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, null));
             mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
             mApps.add(new App(R.drawable.checkrecord, R.string.records_mgr, null));
+            mApps.add(new App(R.drawable.real_name, R.string.device_mgr, DeviceManageActivity.class));
         }
         
         mGrid = (GridView)findViewById(R.id.manager_grid);

@@ -133,7 +133,7 @@ public class UIBaseActivity extends BaseActivity {
 		mPlugged = false; // wait for KSN test result
 		
 		/**** login session control ****/
-		if(isNeedSession && POSHelper.getSession() <= 0) {
+		if(isNeedSession && POSHelper.getSessionID() <= 0) {
 			finish();
         }
 		/******login session control end*****/
@@ -355,17 +355,23 @@ public class UIBaseActivity extends BaseActivity {
     }
 	
 	/**
-	 * onCreate时调用，如果调用，则表示访问该activity必须登录
+	 * onCreate时调用,初始化Activity相关参数
+	 * @param needSeesion 需要登录
+	 * @param needKsnListener 检测ksn
 	 */
-	public void setRequireLogon() {
-		isNeedSession = true;
-		setKsnTestListener(new KsnTestListener() {
-			@Override
-			public boolean test(String ksn) {
-				POSSession session = POSHelper.getPOSSession();
-				return session != null && session.testKsn(ksn);
-			}
-		});
+	public void setActivityPara(boolean needSeesion, boolean needKsnListener) {
+		isNeedSession = needSeesion;
+		if(needKsnListener){
+			setKsnTestListener(new KsnTestListener() {
+				@Override
+				public boolean test(String ksn) {
+					POSSession session = POSHelper.getPOSSession();
+					return session != null && session.testKsn(ksn);
+				}
+			});
+		}else{
+			setKsnTestListener(null);
+		}
 	}
 	
 	/**

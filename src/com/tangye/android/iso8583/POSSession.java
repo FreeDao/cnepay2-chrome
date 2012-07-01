@@ -146,6 +146,10 @@ public class POSSession extends POSNative {
 		return KSN.substring(0, 14).equalsIgnoreCase(ksn);
 	}
     
+    public String getKsn(){
+    	return ksn;
+    }
+    
     public boolean isAuthenticated() {
     	return ready;
     }

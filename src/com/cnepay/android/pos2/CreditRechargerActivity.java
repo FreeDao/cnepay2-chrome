@@ -66,7 +66,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recharger);
 		setTitle("POS收款");
-		setRequireLogon();
+		setActivityPara(true, true);
 		btnSubmit.setOnClickListener(this);
 		initUI();
 		cashIM = new CashInputMethod(btns, fnButton, delButton, txtInput);

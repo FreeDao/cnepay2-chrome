@@ -67,7 +67,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.card2card);
 		setTitle("汇款操作");
-		setRequireLogon();
+		setActivityPara(true, true);
 		
 		Intent i = getIntent();
 		String all[] = i.getStringArrayExtra("info");

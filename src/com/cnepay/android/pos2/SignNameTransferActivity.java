@@ -57,7 +57,7 @@ public class SignNameTransferActivity extends UIBaseActivity implements View.OnC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign);
 		setTitle("签名凭据");
-		setRequireLogon();
+		setActivityPara(true, true);
 		cleanSignName = (Button)findViewById(R.id.clean_sign);
 		finish = (Button)findViewById(R.id.upload_ticket);
 		signature = (MyDrawView)findViewById(R.id.signature_draw);

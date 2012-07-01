@@ -20,7 +20,7 @@ public class CashTransferActivity extends UIBaseActivity implements View.OnClick
 		setContentView(R.layout.cashtransfer);
         hideTitleSubmit();
         setTitle("转账结果");
-        setRequireLogon();
+        setActivityPara(true, true);
 
         btnFinish = (Button)findViewById(R.id.charge_finish_transfer);
         btnFinish.setOnClickListener(this);

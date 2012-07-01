@@ -59,7 +59,7 @@ public class LoginActivity extends UIBaseActivity
             return;
 		}
 		
-		if(POSHelper.getSession() > 0) {
+		if(POSHelper.getSessionID() > 0) {
             Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
             startActivity(intent);
             finish();
@@ -293,8 +293,7 @@ public class LoginActivity extends UIBaseActivity
 	                    		 || statusCode.equals("X8")
 	                    		 || statusCode.equals("X7")
 	                    		 || statusCode.equals("X6")
-	                    		 || statusCode.equals("X5")
-	                    		 || statusCode.equals("R9")) {
+	                    		 || statusCode.equals("X5")){
 	                    	//??这个地方的逻辑，我有点迷糊，有空告诉我一下
 	                    	msg = getError(statusCode);
 	                    }

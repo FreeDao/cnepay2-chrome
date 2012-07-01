@@ -69,7 +69,7 @@ public class IDPhotoActivity extends UIBaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.idphoto);
 		setTitle("实名认证");
-		setRequireLogon();
+		setActivityPara(true, true);
 		viewer = (ImageView) findViewById(R.id.photp_viewer);
 		path = getSDPath();
 		if (null == path) {

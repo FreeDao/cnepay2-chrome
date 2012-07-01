@@ -25,7 +25,7 @@ public class ConsumeActivity extends UIBaseActivity implements View.OnClickListe
 		setContentView(R.layout.consume);
         hideTitleSubmit();
         setTitle("消费结果");
-        setRequireLogon();
+        setActivityPara(true, true);
 
         btnFinish = (Button)findViewById(R.id.charge_finish);
         btnFinish.setOnClickListener(this);

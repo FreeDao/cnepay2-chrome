@@ -105,7 +105,7 @@ public class POSHelper {
 	 * get the current sessionID
 	 * @return the current sessionID
 	 */
-    public static long getSession() {
+    public static long getSessionID() {
     	// TODO expired the session
     	return sessionId;
     }
@@ -116,7 +116,7 @@ public class POSHelper {
      */
     public static String getSessionString() {
     	if(sessionId > 0)
-    		return String.valueOf(getSession());
+    		return String.valueOf(getSessionID());
     	return null;
     }
     

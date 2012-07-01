@@ -33,7 +33,7 @@ public class RemitActivity extends UIBaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.remit);
 		setTitle("转账服务");
-		setRequireLogon();
+		setActivityPara(true, true);
 		setOnCNAPSResultListener(this); // 增加选择开户银行功能
 		setTitleSubmitText("刷卡获得卡号");
 		btnSubmit.setOnClickListener(this);
