@@ -250,6 +250,10 @@ public class UIBaseActivity extends BaseActivity {
 	public static void updateLastLeaveTime() {
 		lastLeaveTime = SystemClock.elapsedRealtime();
 	}
+	
+	public static long getLastLeaveTime() {
+		return lastLeaveTime;
+	}
 
 	/**
 	 * 显示actionbar的button
