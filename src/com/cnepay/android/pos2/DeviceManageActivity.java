@@ -33,11 +33,9 @@ import android.widget.Toast;
 
 public class DeviceManageActivity extends UIBaseActivity implements OnClickListener {
 	
-	private EditText ksnId;
-	private Button replace;
-	private TextView hint;
-	private TextView currentKSN;
-	private String newKsn = null;
+	private TextView boundKSN;
+	private TextView userHint;
+	private String currentKsn = null;
 	private Handler mHandler;
 	private boolean isProcessing;
 	
@@ -53,6 +51,7 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device_manage);
 		setTitle("设备管理");
+		initUI();
 		setActivityPara(true, false, new KsnTestListener() {
 			@Override
 			public boolean test(String ksn) {
@@ -62,17 +61,22 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 					return false;
 				}
 				if(session != null && session.testKsn(ksn)) {
-					// 插入了老读卡器，不能替换执行替换
-					newKsn = null;
+					userHint.setText("请插入新刷卡器");
+					hideTitleSubmit();
+					currentKsn = null;
 				} else {
 					// 获得新的ksn
-					newKsn = ksn;
+					if(!isProcessing){
+						DeviceManageActivity.this.showTitleSubmit();
+						userHint.setText("请点击右上角按钮替换刷卡器");
+					}
+					currentKsn = ksn;
 				}
 				return true;
 			}
 		});
 		
-		initUI();
+		
 		
 		mHandler = new Handler(){
 			@Override
@@ -83,11 +87,13 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 						progressDialog.dismiss();
 					}
 					makeError("ksn替换成功");
+					finish();
 					break;
 				case FAILURE:
 					if(progressDialog != null){
 						progressDialog.dismiss();
 					}
+					DeviceManageActivity.this.showTitleSubmit();
 					String error = (String)msg.obj;
 					makeError(error);
 					break;
@@ -99,19 +105,17 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 	}
 	
 	private void initUI(){
-		ksnId = (EditText)findViewById(R.id.edit_text_ksnId);
-		replace = (Button)findViewById(R.id.button_replace);
-		hint = (TextView)findViewById(R.id.text_view_hint);
-		currentKSN = (TextView)findViewById(R.id.text_view_currentKsn);
+		this.setTitleSubmitText("刷卡器替换");
+		boundKSN = (TextView)findViewById(R.id.dev_manage_current_ksn);
+		userHint = (TextView)findViewById(R.id.dev_manage_user_hint);
 		POSSession posSession = POSHelper.getPOSSession();
 		final String ksn = posSession.getKsn();
 		if(ksn == null || ksn.equals("")) {
 			finish();
 			return;
 		}
-		ksnId.setText(ksn);
+		boundKSN.setText(ksn);
 		btnSubmit.setOnClickListener(this);
-		replace.setOnClickListener(this);
 	}
 	
 	@Override
@@ -121,6 +125,13 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 			noSwipeCardHint.dismiss();
 			noSwipeCardHint = null;
 		}
+	}
+	
+	public void onPlugout(){
+		super.onPlugout();
+		this.hideTitleSubmit();
+		userHint.setText("请插入读卡器");
+		
 	}
 	
 	private void makeError(String err) {
@@ -163,12 +174,14 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 				true, 
 				false);
 		
+		final String newKsn = currentKsn;
+		Log.v(TAG, "newKsn = " + newKsn);
 		(new Thread(TAG) {
 			public void run() {
 				KSNRaplaceMessage s = new KSNRaplaceMessage();
-				s.setTerminalMark_41(POS.TERMINAL)
-				.setUserMark_42(POS.USERMARK)
-				.setKSN_58(session.getKsn());
+				s.setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
+				.setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))
+				.setKSN_58(newKsn);
 				boolean isOk = false;
 	            String error = "";
 	            try {
@@ -221,29 +234,21 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 
 	@Override
 	public void onClick(View v) {
-		if(!DeviceManageActivity.this.isPlugged()){
-			noSwipeCardHint = new ProgressDialog(DeviceManageActivity.this);
-			noSwipeCardHint.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			noSwipeCardHint.setMessage("请插入刷卡器...");
-			noSwipeCardHint.show();
-		}else{
-			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
-	        builder.setTitle("刷卡器替换")
-	        .setIcon(android.R.drawable.ic_dialog_info)
-	        .setMessage("是否替换刷卡器？" + "\n原刷卡器将不能二次绑定")
-	        .setCancelable(false)
-	        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					
+		AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
+	    builder.setTitle("刷卡器替换")
+	    .setIcon(android.R.drawable.ic_dialog_info)
+	    .setMessage("是否替换刷卡器？" + "\n原刷卡器将不能二次绑定")
+	    .setCancelable(false)
+	    .setNegativeButton(android.R.string.cancel, null)
+	    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int which) {
+	    		DeviceManageActivity.this.hideTitleSubmit();
+				if(!processKSNReplace()){
+					DeviceManageActivity.this.showTitleSubmit();
 				}
-			})
-	        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	        	public void onClick(DialogInterface dialog, int which) {
-        			processKSNReplace();
-	        	}
-	        });
-	        builder.create().show();
-		}
+	    	}
+	    });
+	    builder.show();
 	}
-	
+
 }
