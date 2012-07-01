@@ -357,11 +357,12 @@ public class UIBaseActivity extends BaseActivity {
 	/**
 	 * onCreate时调用,初始化Activity相关参数
 	 * @param needSeesion 需要登录
-	 * @param needKsnListener 检测ksn
+	 * @param needDefaultKsnListener 是否检测默认ksn
+	 * @param ksnTestListeners, 如果不需要默认检测，则使用自定检测函数
 	 */
-	public void setActivityPara(boolean needSeesion, boolean needKsnListener) {
+	public void setActivityPara(boolean needSeesion, boolean needDefaultKsnListener, KsnTestListener...ksnTestListeners ) {
 		isNeedSession = needSeesion;
-		if(needKsnListener){
+		if(needDefaultKsnListener){
 			setKsnTestListener(new KsnTestListener() {
 				@Override
 				public boolean test(String ksn) {
@@ -369,8 +370,10 @@ public class UIBaseActivity extends BaseActivity {
 					return session != null && session.testKsn(ksn);
 				}
 			});
-		}else{
+		} else if (ksnTestListeners == null || ksnTestListeners.length == 0) {
 			setKsnTestListener(null);
+		} else {
+			setKsnTestListener(ksnTestListeners[0]);
 		}
 	}
 	

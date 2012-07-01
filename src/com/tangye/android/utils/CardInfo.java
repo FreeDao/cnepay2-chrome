@@ -38,11 +38,7 @@ public class CardInfo {
 	
 	public String getCard(boolean masked) {
 		if (masked && card.length() > 10) {
-			StringBuilder c = new StringBuilder(card);
-			for (int i = 6; i < card.length() - 4; i++) {
-				c = c.replace(i, i+1, "X");
-			}
-			return c.toString();
+			return PublicHelper.getMaskedString(card, 6, 4, 'X');
 		}
 		return card;
 	}

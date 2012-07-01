@@ -50,6 +50,7 @@ public class PublicHelper {
     };
     
     private static final int lengthOfRandCode = validRandomCode.length;
+
     public static String getRandomCode(){
     	final int LEN = 3;
     	String result = "";
@@ -58,5 +59,17 @@ public class PublicHelper {
     		result =result + validRandomCode[Math.abs(random.nextInt()) % lengthOfRandCode];
     	}
     	return result;
+    }
+    
+    public static String getMaskedString(String orig, int start, int end, char mask) {
+    	StringBuilder c = new StringBuilder(orig);
+    	try {
+			for (int i = start; i < orig.length() - end; i++) {
+				c = c.replace(i, i+1, String.valueOf(mask));
+			}
+    	} catch (Exception e) {
+    		return orig;
+    	}
+		return c.toString();
     }
 }

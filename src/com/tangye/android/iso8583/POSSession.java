@@ -3,6 +3,7 @@ package com.tangye.android.iso8583;
 import java.io.UnsupportedEncodingException;
 
 import com.tangye.android.utils.DES;
+import com.tangye.android.utils.PublicHelper;
 
 import android.content.Context;
 
@@ -147,7 +148,7 @@ public class POSSession extends POSNative {
 	}
     
     public String getKsn(){
-    	return ksn;
+    	return PublicHelper.getMaskedString(ksn, 3, 4, 'X');
     }
     
     public boolean isAuthenticated() {
