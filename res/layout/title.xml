@@ -13,14 +13,19 @@
         android:padding="6dp"
         android:src="@drawable/signup_reader" />
     
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
+    <LinearLayout
         android:id="@+id/icon_detecting"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/title_btn"
         android:padding="6dp"
-        android:visibility="gone" />
+        android:gravity="center"
+        android:visibility="gone">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/title_name"

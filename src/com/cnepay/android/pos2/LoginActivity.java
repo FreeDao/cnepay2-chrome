@@ -105,9 +105,9 @@ public class LoginActivity extends UIBaseActivity
                         String info = (String) msg.obj;
                         Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                         if (info.length() == 0) {
-                        	makeError("登录成功");
+                        	Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         } else {
-                        	makeError(info);
+                        	Toast.makeText(LoginActivity.this, info, Toast.LENGTH_SHORT).show();
                         }
 	        			startActivity(intent);
 	        			String nam = txtPhone.getText().toString();
@@ -233,7 +233,7 @@ public class LoginActivity extends UIBaseActivity
 	
 	private void makeError(String txt) {
 		Toast t = Toast.makeText(this, txt, Toast.LENGTH_SHORT);
-		t.setGravity(Gravity.BOTTOM, 0, 0);
+		t.setGravity(Gravity.CENTER, 0, 0);
 		t.show();
 	}
 	

@@ -11,7 +11,7 @@ public class CardInfo {
 		if (args.length > 3) {
 			formatID = args[0];
 			if (!testID(formatID)) {
-				throw new IllegalStateException("formatID " + formatID + "is not supported");
+				throw new IllegalStateException("formatID " + formatID + " is not supported");
 			}
 			ksn = args[1];
 			track2 = args[2];

@@ -74,12 +74,13 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 		mHandler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
+				AlertDialog.Builder builder;
 				switch(msg.what) {
 				case SUCCESS:
 					if(progressDialog != null){
 						progressDialog.dismiss();
 					}
-					AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
+					builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
 				    builder.setTitle("刷卡器替换")
 				    .setIcon(android.R.drawable.ic_dialog_info)
 				    .setMessage("刷卡器替换成功！新的刷卡器号码为\n" + (String)msg.obj)
@@ -99,7 +100,14 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 						progressDialog.cancel();
 					}
 					String error = (String)msg.obj;
-					userHint.setText(error);
+					builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
+				    builder.setTitle("刷卡器替换")
+				    .setIcon(android.R.drawable.ic_dialog_alert)
+				    .setMessage(error)
+				    .setCancelable(true)
+				    .setPositiveButton(android.R.string.ok, null);
+				    builder.show();
+					userHint.setText("请插入其他刷卡器");
 					break;
 				}
 				if(isPlugged()) {

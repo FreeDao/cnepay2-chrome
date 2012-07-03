@@ -12,7 +12,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:text="提示：一个刷卡器对应一个账号,您可以在此页面进行刷卡器绑定,同时原刷卡器将不能使用。"
+        android:text="提示：一个刷卡器对应一个账号，您可以在此页面进行刷卡器绑定，同时原刷卡器将不能使用。"
         android:textSize="15sp" />
 
     <TextView
@@ -50,6 +50,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:text="正在检测刷卡器..."
         android:textColor="#ff0000"
         android:textSize="18sp"
         android:textStyle="bold" />
