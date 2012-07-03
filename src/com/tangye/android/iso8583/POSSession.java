@@ -170,4 +170,12 @@ public class POSSession extends POSNative {
 	    account = null;
 	    // TODO stop expired the session
 	}
+	
+	public boolean setKSN(final String newKSN){
+		if(newKSN == null || newKSN.length() != 14){
+			return false;
+		}
+		ksn = newKSN;
+		return true;
+	}
 }
