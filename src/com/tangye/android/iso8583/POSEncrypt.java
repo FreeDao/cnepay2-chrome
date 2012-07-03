@@ -166,8 +166,11 @@ public class POSEncrypt extends POSNative {
 		}
 	}
 	
-	public boolean setPwdChange(String oldPwd, String newPwd, String cardNumber){
-		if(PublicHelper.isEmptyString(oldPwd) || PublicHelper.isEmptyString(newPwd) || PublicHelper.isEmptyString(cardNumber)){
+	public boolean setPwdChange(String oldPwd, String newPwd, IsoMessage resp) {
+		String cardNumber = resp.getField(2).toString();
+		if(PublicHelper.isEmptyString(oldPwd) ||
+		   PublicHelper.isEmptyString(newPwd) ||
+		   PublicHelper.isEmptyString(cardNumber)) {
 			return false;
 		}
 		String mi = getPOSDecrypt(KEKENCODED);

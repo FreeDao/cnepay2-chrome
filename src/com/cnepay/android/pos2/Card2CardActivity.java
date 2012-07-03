@@ -455,6 +455,7 @@ public class Card2CardActivity extends UIBaseActivity implements
                 .setReceiverUserName_56(user2)
                 .setSetNumber_60(POS.getPOSDecrypt(POS.SETNUMBER))
                 .setUseMac_64();
+				POS.close();
 				boolean isOk = false;
 	            String error = "";
 	            String[] allMessage = null;

@@ -309,7 +309,7 @@ public class LoginActivity extends UIBaseActivity
 		                    			   account,
 		                    			   passwd,
 		                    			   resp.getField(2).toString(),
-		                    			   resp.getField(58).toString().substring(0, 14),
+		                    			   resp.getField(58).toString(),
 		                    			   msg.length() == 0).close();
 		                    String setn = resp.getField(60).toString().substring(2, 8);
 		                    POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);

@@ -24,6 +24,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -70,8 +71,7 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 				    	}
 				    });
 				    builder.show();
-				    //清空现场
-				    oldPwd.setText("");
+ 				    oldPwd.setText("");
 				    newPwd.setText("");
 				    newPwdRepeat.setText("");
 					break;
@@ -82,10 +82,6 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 					submit.setEnabled(true);
 					String error = (String)msg.obj;
 					makeError(error);
-					//清空现场
-				    oldPwd.setText("");
-				    newPwd.setText("");
-				    newPwdRepeat.setText("");
 					break;
 					
 				}
@@ -105,6 +101,9 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.change_pwd_submit:
+			InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+			inputManager.hideSoftInputFromWindow(getCurrentFocus()
+					.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			submit.setEnabled(false);
 			final String oldPwdStr = oldPwd.getText().toString();
 			final String newPwdStr = newPwd.getText().toString();
@@ -120,7 +119,6 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 					return;
 				}
 			}
-			
 			if (newPwdStr.length() == 0 || newPwdStr == null
 					|| newPwdStr.length() != 6) {
 				makeError("请输入6位密码");
@@ -140,20 +138,24 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 			
 			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
 		    builder.setTitle("修改密码")
-		    .setIcon(android.R.drawable.ic_dialog_info)
+		    .setIcon(android.R.drawable.ic_dialog_alert)
 		    .setMessage("确定修改密码？")
 		    .setCancelable(false)
-		    .setNegativeButton(android.R.string.cancel, null)
+		    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		    	public void onClick(DialogInterface dialog, int which) {
+						submit.setEnabled(true);
+		    	}
+		    })
 		    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 		    	public void onClick(DialogInterface dialog, int which) {
 		    		if(!setPassword(oldPwdStr, newPwdStr)){
 		    			isProcessing = false;
 						submit.setEnabled(true);
+						finish(); // should not happen
 					}
 		    	}
 		    });
-		    builder.show();
-			
+		    builder.show();			
 		}
 	}
 	
@@ -217,7 +219,7 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 			    .setOldPassword_56(oldPwd)
 			    .setNewPassword_57(newPwd)
 			    .setUseMac_64();
-	         
+	            POS.close();
 	            boolean isOK = false;
 	            String error = "";
 	            try {
@@ -226,13 +228,12 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 	                if(resp != null) {
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
-	                		String cardNumber = resp.getField(2).toString();
-	                		Log.v(TAG, "cardNumber = " + cardNumber);
-	                		if(POS.setPwdChange(oldPwd, newPwd, cardNumber)){
+	                		POSEncrypt POS =  POSHelper.getPOSEncrypt(ChangePasswordActivity.this, name);
+	                		if(POS.setPwdChange(oldPwd, newPwd, resp)){
 	                			isOK = true;
 	                		}else{
 	                			isOK = false;
-	                			error = "解密错误，请重新登录再修改密码";
+	                			error = "Fatal error with info data"; // should not happen
 	                		}
 	                	} else {
 	                		error = getError(statusCode);

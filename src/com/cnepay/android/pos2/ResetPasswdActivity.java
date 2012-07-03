@@ -305,9 +305,6 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 	                if(resp != null) {
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
-                			Log.i(TAG, "应答码：" + resp.getField(39).toString());
-							Log.i(TAG, "终端标识码：" + resp.getField(41).toString());
-							Log.i(TAG, "受卡方标识码：" + resp.getField(42).toString());
 		                    POSEncrypt POS = POSHelper.getPOSEncrypt(ResetPasswdActivity.this, phone);
 		                    //TODO POS reset passwd;
 	        				POS.close();

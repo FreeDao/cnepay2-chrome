@@ -65,7 +65,7 @@ public class POSSession extends POSNative {
 			// android.util.Log.e("KEKDecoded", kek);
 	        account = mAccount;
 	        card = mCard;
-	        ksn = mKsn;
+	        setKSN(mKsn); // TODO need to test boolean return?
 	        ready = mReady;
 		} else {
 		    throw new IllegalArgumentException("Fatal error when get WK");
@@ -172,10 +172,10 @@ public class POSSession extends POSNative {
 	}
 	
 	public boolean setKSN(final String newKSN){
-		if(newKSN == null || newKSN.length() != 14){
+		if(newKSN == null || newKSN.length() < 14){
 			return false;
 		}
-		ksn = newKSN;
+		ksn = newKSN.substring(0, 14);
 		return true;
 	}
 }
