@@ -72,4 +72,8 @@ public class PublicHelper {
     	}
 		return c.toString();
     }
+    
+    public static boolean isEmptyString(String str){
+    	return str == null || str.equals("");
+    }
 }

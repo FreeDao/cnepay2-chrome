@@ -51,7 +51,9 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 			public boolean test(String ksn) {
 				POSSession session = POSHelper.getPOSSession();
 				if (session == null) {
-					finish();
+					userHint.setText("请重新登录");
+					hideTitleSubmit();
+					currentKsn = null;
 					return false;
 				}
 				if(session != null && session.testKsn(ksn)) {
@@ -64,7 +66,14 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 						DeviceManageActivity.this.showTitleSubmit();
 						userHint.setText("请点击右上角按钮替换刷卡器");
 					}
-					currentKsn = ksn;
+					if(ksn.length()>14){
+						currentKsn = ksn.substring(0, 14);
+					}else if(ksn.length() == 14){
+						currentKsn = ksn;
+					}else{
+						makeError("刷卡器出错，请重新插入");
+					}
+					
 				}
 				return true;
 			}
@@ -80,14 +89,28 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 					if(progressDialog != null){
 						progressDialog.dismiss();
 					}
-					makeError("ksn替换成功");
-					finish();
+					AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
+				    builder.setTitle("刷卡器替换")
+				    .setIcon(android.R.drawable.ic_dialog_info)
+				    .setMessage("刷卡器替换成功")
+				    .setCancelable(true)
+				    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				    	public void onClick(DialogInterface dialog, int which) {
+				    		finish();
+				    	}
+				    });
+				    builder.show();
+				    //清理现场
+				    POSSession posSession = POSHelper.getPOSSession();
+					final String ksn = posSession.getKsn();
+					boundKSN.setText(ksn);
+					userHint.setText("请插入新刷卡器");
 					break;
 				case FAILURE:
 					if(progressDialog != null){
 						progressDialog.dismiss();
 					}
-					DeviceManageActivity.this.showTitleSubmit();
+					showTitleSubmit();
 					String error = (String)msg.obj;
 					makeError(error);
 					break;
@@ -186,8 +209,14 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 	                	String statusCode = resp.getField(39).toString();
 	                	Log.v(TAG, "statusCode = " + statusCode);
 	                	if (statusCode.equals("00")) {
-	                		
-		                    isOk = true;
+	                		String returnKSN = resp.getField(58).toString();
+	                		if(!returnKSN.equals(newKsn)){
+	                			isOk = false;
+	                			error = "服务器故障，请稍后尝试";
+	                		}else{
+	                			session.setKSN(newKsn);
+	                			isOk = true;
+	                		}
 	                	} else {
                     		error = getError(statusCode);
 	                	}
@@ -221,6 +250,7 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 	            	mHandler.obtainMessage(SUCCESS, error).sendToTarget();
 	            }
 	            isProcessing = false;
+	            POS.close();
 			}
 		}).start();
 		return true;
@@ -238,11 +268,12 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 	    	public void onClick(DialogInterface dialog, int which) {
 	    		DeviceManageActivity.this.hideTitleSubmit();
 				if(!processKSNReplace()){
+					isProcessing = false;
 					DeviceManageActivity.this.showTitleSubmit();
 				}
 	    	}
 	    });
 	    builder.show();
 	}
-
+	
 }

@@ -11,15 +11,17 @@ import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.SetPasswordMessage;
-import com.tangye.android.iso8583.protocol.SignUpMessage;
 import com.tangye.android.utils.PublicHelper;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -57,8 +59,21 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 					if(progressDialog != null){
 						progressDialog.dismiss();
 					}
-					makeError("修改密码成功");
-					finish();
+					AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
+				    builder.setTitle("修改密码")
+				    .setIcon(android.R.drawable.ic_dialog_info)
+				    .setMessage("密码修改成功")
+				    .setCancelable(true)
+				    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				    	public void onClick(DialogInterface dialog, int which) {
+				    		finish();
+				    	}
+				    });
+				    builder.show();
+				    //清空现场
+				    oldPwd.setText("");
+				    newPwd.setText("");
+				    newPwdRepeat.setText("");
 					break;
 				case FAILURE:
 					if(progressDialog != null){
@@ -67,6 +82,10 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 					submit.setEnabled(true);
 					String error = (String)msg.obj;
 					makeError(error);
+					//清空现场
+				    oldPwd.setText("");
+				    newPwd.setText("");
+				    newPwdRepeat.setText("");
 					break;
 					
 				}
@@ -87,8 +106,8 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 		switch(v.getId()){
 		case R.id.change_pwd_submit:
 			submit.setEnabled(false);
-			String oldPwdStr = oldPwd.getText().toString();
-			String newPwdStr = newPwd.getText().toString();
+			final String oldPwdStr = oldPwd.getText().toString();
+			final String newPwdStr = newPwd.getText().toString();
 			String newPwdRepeatStr = newPwdRepeat.getText().toString();
 			if (oldPwdStr.length() == 0 || oldPwdStr == null
 					|| oldPwdStr.length() != 6) {
@@ -119,9 +138,21 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 				return;
 			}
 			
-			if(!setPassword(oldPwdStr, newPwdStr)){
-				submit.setEnabled(true);
-			};
+			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
+		    builder.setTitle("修改密码")
+		    .setIcon(android.R.drawable.ic_dialog_info)
+		    .setMessage("确定修改密码？")
+		    .setCancelable(false)
+		    .setNegativeButton(android.R.string.cancel, null)
+		    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		    	public void onClick(DialogInterface dialog, int which) {
+		    		if(!setPassword(oldPwdStr, newPwdStr)){
+		    			isProcessing = false;
+						submit.setEnabled(true);
+					}
+		    	}
+		    });
+		    builder.show();
 			
 		}
 	}
@@ -195,8 +226,14 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 	                if(resp != null) {
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
-	                		isOK = true;
-	                		
+	                		String cardNumber = resp.getField(2).toString();
+	                		Log.v(TAG, "cardNumber = " + cardNumber);
+	                		if(POS.setPwdChange(oldPwd, newPwd, cardNumber)){
+	                			isOK = true;
+	                		}else{
+	                			isOK = false;
+	                			error = "解密错误，请重新登录再修改密码";
+	                		}
 	                	} else {
 	                		error = getError(statusCode);
 	                	}
@@ -227,10 +264,20 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
                     mHandler.obtainMessage(SUCCESS, error).sendToTarget();
                 }
 	            isProcessing = false;
+	            POS.close();
 			}
 		}).start();
 		
 		return true;
 	}
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && isProcessing) {
+        	makeError("不能中止交易");
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 	
 }

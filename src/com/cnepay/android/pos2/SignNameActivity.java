@@ -1,4 +1,4 @@
-package com.cnepay.android.pos2;
+	package com.cnepay.android.pos2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

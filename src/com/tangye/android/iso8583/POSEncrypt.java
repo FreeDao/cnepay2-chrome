@@ -5,6 +5,7 @@ import java.util.Date;
 import com.tangye.android.utils.AES;
 import com.tangye.android.utils.DES;
 import com.tangye.android.utils.MD5;
+import com.tangye.android.utils.PublicHelper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -163,5 +164,20 @@ public class POSEncrypt extends POSNative {
 			edit.commit();
 			edit = null;
 		}
+	}
+	
+	public boolean setPwdChange(String oldPwd, String newPwd, String cardNumber){
+		if(PublicHelper.isEmptyString(oldPwd) || PublicHelper.isEmptyString(newPwd) || PublicHelper.isEmptyString(cardNumber)){
+			return false;
+		}
+		String mi = getPOSDecrypt(KEKENCODED);
+		String ming = dAES(mi, getNativeK(oldPwd, cardNumber));
+		mi = pAES(ming, getNativeK(newPwd, cardNumber));
+		new ready(sp.edit())
+        .put(KEKENCODED, mi)
+        .commit();
+		ming = null;
+		mi = null;
+		return true;
 	}
 }
