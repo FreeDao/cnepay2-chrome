@@ -78,6 +78,16 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/log_resetpd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="right|center_vertical"
+                    android:text="忘记密码"
+                    android:background="@drawable/title_btn"
+                    android:textColor="#555555"
+                    android:textSize="15sp" />
+                <TextView
                     android:id="@+id/log_rebind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

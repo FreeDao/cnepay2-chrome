@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class UIBaseActivity extends BaseActivity {
 	private OnCNAPSResultListener cnapsListener = null;
 
 	protected ImageView imgIndicator = null;
+	protected ProgressBar viewDetect = null;
 	protected TextView txtTitle = null;
 	protected ViewGroup btnSubmit = null;
 	
@@ -119,8 +121,9 @@ public class UIBaseActivity extends BaseActivity {
 	public void setContentView(int view) {
 		super.setContentView(view);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title); // title为自己标题栏的布局
-		imgIndicator = (ImageView)getWindow().findViewById(R.id.icon_indicator);
+		imgIndicator = (ImageView) getWindow().findViewById(R.id.icon_indicator);
 		imgIndicator.setClickable(true);
+		viewDetect = (ProgressBar) getWindow().findViewById(R.id.icon_detecting);
 		txtTitle = (TextView)getWindow().findViewById(R.id.title_name);
 		btnSubmit = (ViewGroup)getWindow().findViewById(R.id.title_submit);
 	}
@@ -149,6 +152,19 @@ public class UIBaseActivity extends BaseActivity {
 	protected void onPause() {
 		super.onPause();
 		lastLeaveTime = SystemClock.elapsedRealtime();
+	}
+	
+	@Override
+	protected void deviceDetecting(boolean detect) {
+		if (imgIndicator != null) {
+			if (detect) {
+				imgIndicator.setVisibility(View.GONE);
+				viewDetect.setVisibility(View.VISIBLE);
+			} else {
+				imgIndicator.setVisibility(View.VISIBLE);
+				viewDetect.setVisibility(View.GONE);
+			}
+		}
 	}
 	
 	private static final int ABOUT_MENU_ID = Menu.FIRST;

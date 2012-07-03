@@ -18,14 +18,16 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 
-public class BaseActivity extends Activity implements CardReaderListener {
+public abstract class BaseActivity extends Activity implements CardReaderListener {
 
 	private final static String TAG = "BaseActivity";
 	private final static int T_SUCCESS = 150;
+	private final static int MAX_DETECT_TIME = 3;
 	//private final static int T_FAILURE = 50;
 
 	// BEGIN API2
 	private boolean testAPI = false;
+	private int testTimes = 0;
 	private CSwiperController cswiperController = null;
 	private CSwiperStateChangedListener stateChangedListener2 = null;
 	private KsnTestListener ksnTestListener = null;
@@ -113,11 +115,15 @@ public class BaseActivity extends Activity implements CardReaderListener {
 		
 		if (cswiperController.isDevicePresent()) {
 			testAPI = true;
+			testTimes = 0;
+			deviceDetecting(testAPI);
 			cswiperController.getCSwiperKsn();
 		} else {
 			onPlugout();
 		}
 	}
+	
+	protected abstract void deviceDetecting(boolean detect);
 
 	@Override
 	protected void onPause() {
@@ -223,6 +229,8 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			Log.v(TAG, "onDevicePlugged");
 			if (cswiperController.isDevicePresent()) {
 				testAPI = true;
+				testTimes = 0;
+				deviceDetecting(testAPI);
 				cswiperController.getCSwiperKsn();
 			} else {
 				// FIXME need ?
@@ -234,6 +242,8 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			Log.v(TAG, "onDeviceUnplugged");
 			// FIXME
 			// IF ksn failure and plugged, we should not call onPlugout
+			testAPI = false;
+			deviceDetecting(testAPI);
 			BaseActivity.this.onPlugout();
 		}
 
@@ -241,6 +251,11 @@ public class BaseActivity extends Activity implements CardReaderListener {
 			Log.v(TAG, "API2 onError:" + message);
 			if (testAPI && cswiperController != null
 					&& error == CSwiperController.ERROR_FAIL_TO_GET_KSN) {
+				// TODO FIXME， to enable 3 times verification, error should be non-device
+				if (testTimes++ < MAX_DETECT_TIME) {
+					cswiperController.getCSwiperKsn();
+					return;
+				}
 				onPlugout();
 				BaseActivity.this.onError(E_API2_INVALID_DEVICE);
 			} else {
@@ -256,9 +271,11 @@ public class BaseActivity extends Activity implements CardReaderListener {
 				default:
 					errout = E_API2_FATAL;
 				}
+				
 				BaseActivity.this.onError(errout);
 			}
 			testAPI = false;
+			deviceDetecting(testAPI);
 		}
 
 		public void onGetKsnCompleted(String ksn) {
@@ -271,6 +288,7 @@ public class BaseActivity extends Activity implements CardReaderListener {
 					BaseActivity.this.onError(E_API2_INVALID_DEVICE);
 				}
 				testAPI = false;
+				deviceDetecting(testAPI);
 			}
 			// TODO
 			// if we need ksn recorded here

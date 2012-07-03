@@ -12,6 +12,15 @@
         android:background="@drawable/title_btn"
         android:padding="6dp"
         android:src="@drawable/signup_reader" />
+    
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:id="@+id/icon_detecting"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/title_btn"
+        android:padding="6dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/title_name"

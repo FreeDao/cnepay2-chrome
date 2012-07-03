@@ -513,7 +513,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 	            } catch (Exception e) {
 	            	error = "报文错误，请联系客服";
 	                Log.i(TAG, "Parse Error: " + e);
-				}  
+		        }
 	            if(!isOk) {
 	                mHandler.obtainMessage(FAILURE, error).sendToTarget();
 	            } else {	            	 
