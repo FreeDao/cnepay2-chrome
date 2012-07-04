@@ -166,12 +166,12 @@ public class UIBaseActivity extends BaseActivity {
 	
 	@Override
 	protected void deviceDetecting(boolean detect) {
-		if (imgIndicator != null && !notNotify) {
+		if (viewDetect != null && !notNotify) {
 			if (detect) {
-				imgIndicator.setVisibility(View.GONE);
+				//imgIndicator.setVisibility(View.GONE);
 				viewDetect.setVisibility(View.VISIBLE);
 			} else {
-				imgIndicator.setVisibility(View.VISIBLE);
+				//imgIndicator.setVisibility(View.VISIBLE);
 				viewDetect.setVisibility(View.GONE);
 			}
 		}
