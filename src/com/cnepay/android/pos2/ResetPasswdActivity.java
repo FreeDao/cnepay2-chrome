@@ -3,14 +3,11 @@ package com.cnepay.android.pos2;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
-import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.ResetPasswdMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.PublicHelper;
@@ -19,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -76,6 +74,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
                 switch(msg.what) {
                 case SUCCESS:
                     if(progressDialog != null && msg.obj != null) {
+                    	setResult(RESULT_OK);
                     	// register successfully
                         progressDialog.dismiss();
                         progressDialog = null; // For not fade card number
@@ -126,7 +125,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 				dialog.show();
 				this.startSwipe();
 			} else {
-				errText("请插入读卡器");
+				errText("请插入刷卡器");
 			}
 			break;
 		case R.id.resetpd_submit:
@@ -158,7 +157,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 				errText("刷卡不稳定，请重试");
 				break;
 			case E_API2_INVALID_DEVICE:
-				errText("非法读卡器，请使用正规读卡器");
+				errText("非法刷卡器，请使用正规刷卡器");
 				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;
@@ -168,8 +167,12 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 		} else {
 			switch (err) {
 			case E_API2_INVALID_DEVICE:
-				errText("无法识别该读卡器，请选择新的读卡器或者重新拔插");
-				card.setHint("请拔掉此读卡器，重新插入");
+				errText("无法识别该刷卡器，请选择新的刷卡器或者重新拔插");
+				card.setHint("请拔掉此刷卡器，重新插入");
+				break;
+			case E_API2_INVALID_KSN:
+				errText("非法刷卡器，请使用已注册绑定的刷卡器");
+				card.setHint("请拔掉此刷卡器，重新插入");
 				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;
@@ -200,7 +203,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 	@Override
 	public void onPlugout() {
 		super.onPlugout(); // UIBASE action
-		card.setHint("请插入读卡器");
+		card.setHint("请插入刷卡器");
 	}
 
 	@Override
@@ -271,7 +274,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 		}
 		final POSEncrypt POS = POSHelper.getPOSEncrypt(this, phone);
 		if(POS == null || !POS.isInitializedRanCode()){
-			verify_failure(txtPhone, "并未绑定该手机信息，请使用无法登陆功能");
+			verify_failure(txtPhone, "并未绑定该手机号账户，请使用【无法登陆】功能");
 			return;
 		}
 		if (card.getText().length() == 0 || ci == null) {
@@ -295,6 +298,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 	             .setSource_16(getSource())
 	             .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
 	             .setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))
+	             .setCardInfo(cardInfo)
 	             .setOtherInfo_63(phone, POS.getPOSDecrypt(POS.RANDOMCODE));
 	            POS.close();
 	            boolean isOK = false;
@@ -306,7 +310,10 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
 		                    POSEncrypt POS = POSHelper.getPOSEncrypt(ResetPasswdActivity.this, phone);
-		                    //TODO POS reset passwd;
+		                    POS.reset(resp);
+		                    Editor edit = getSharedPreferences("rem_info", 0).edit();
+		                    edit.remove("passwd");
+		                    edit.commit();
 	        				POS.close();
 	        				error = account; // differ with stop by user
 		                    isOK = true;
@@ -339,6 +346,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
                 } else {
                     mHandler.obtainMessage(SUCCESS, error).sendToTarget();
                 }
+	            s = null;
 			}
 		}).start();
 		

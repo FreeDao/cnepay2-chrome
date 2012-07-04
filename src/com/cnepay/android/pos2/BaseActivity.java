@@ -51,6 +51,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 	public final static int E_API2_INIT 			= E_API2_BASE + 7;
 	public final static int E_API2_KSN 				= E_API2_BASE + 8;
 	public final static int E_API2_INVALID_DEVICE	= E_API2_BASE + 9;
+	public final static int E_API2_INVALID_KSN		= E_API2_BASE + 10;
 
 	// END ERROR INFO
 	/**************************************************/
@@ -114,10 +115,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 		initAPI2();
 		
 		if (cswiperController.isDevicePresent()) {
-			testAPI = true;
-			testTimes = 0;
-			deviceDetecting(testAPI);
-			cswiperController.getCSwiperKsn();
+			startTestDeviceKsn();
 		} else {
 			onPlugout();
 		}
@@ -135,7 +133,6 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 	protected void onDestroy() {
 		super.onDestroy();
 		// FIXME is there anything to destroy
-		// TODO somthing
 		ci = null;
 	}
 
@@ -196,7 +193,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 				vibrate(T_SUCCESS);
 				BaseActivity.this.onComplete(ci.getCard(true));
 			} catch (IllegalStateException e) {
-				e.printStackTrace();
+				Log.w(TAG, e.getMessage());
 				ci = null;
 				BaseActivity.this.onError(E_API2_INVALID_DEVICE);
 			}
@@ -228,10 +225,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 		public void onDevicePlugged() {
 			Log.v(TAG, "onDevicePlugged");
 			if (cswiperController.isDevicePresent()) {
-				testAPI = true;
-				testTimes = 0;
-				deviceDetecting(testAPI);
-				cswiperController.getCSwiperKsn();
+				startTestDeviceKsn();
 			} else {
 				// FIXME need ?
 				onPlugout();
@@ -242,9 +236,9 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 			Log.v(TAG, "onDeviceUnplugged");
 			// FIXME
 			// IF ksn failure and plugged, we should not call onPlugout
+			BaseActivity.this.onPlugout();
 			testAPI = false;
 			deviceDetecting(testAPI);
-			BaseActivity.this.onPlugout();
 		}
 
 		public void onError(int error, String message) {
@@ -253,7 +247,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 					&& error == CSwiperController.ERROR_FAIL_TO_GET_KSN) {
 				// TODO FIXME， to enable 3 times verification, error should be non-device
 				if (testTimes++ < MAX_DETECT_TIME) {
-					cswiperController.getCSwiperKsn();
+					startTestDeviceKsn(true);
 					return;
 				}
 				onPlugout();
@@ -285,7 +279,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 					BaseActivity.this.onPlugin();
 				} else {
 					onPlugout();
-					BaseActivity.this.onError(E_API2_INVALID_DEVICE);
+					BaseActivity.this.onError(E_API2_INVALID_KSN);
 				}
 				testAPI = false;
 				deviceDetecting(testAPI);
@@ -342,6 +336,22 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 			}
 			cswiperController.deleteCSwiper();
 			cswiperController = null;
+		}
+	}
+	
+	private void startTestDeviceKsn(boolean...retry) {
+		try {
+			if (retry.length == 0 || !retry[0]) {
+				testTimes = 0;
+				testAPI = true;
+				deviceDetecting(testAPI);
+			}
+			cswiperController.getCSwiperKsn();
+		} catch(Exception e) {
+			onPlugout();
+			testAPI = false;
+			deviceDetecting(testAPI);
+			onError(E_API2_INVALID_DEVICE);
 		}
 	}
 

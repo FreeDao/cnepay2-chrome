@@ -23,7 +23,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +31,13 @@ public class UIBaseActivity extends BaseActivity {
 	private Toast mToast;
 	private boolean notNotify = false;
 	private static long lastLeaveTime = 0;
+	private static int lastIndicatorResId = 0;
 	private boolean mPlugged = false;
 	private boolean isNeedSession = false;
 	private OnCNAPSResultListener cnapsListener = null;
 
 	protected ImageView imgIndicator = null;
-	protected ProgressBar viewDetect = null;
+	protected View viewDetect = null;
 	protected TextView txtTitle = null;
 	protected ViewGroup btnSubmit = null;
 	
@@ -64,7 +64,8 @@ public class UIBaseActivity extends BaseActivity {
 
 	@Override
 	public void onPlugin() {
-		imgIndicator.setImageResource(R.drawable.signup_reader);
+		lastIndicatorResId = R.drawable.signup_reader;
+		imgIndicator.setImageResource(lastIndicatorResId);
 		mPlugged = true;
 		if (notNotify) {
 			notNotify = false;
@@ -83,7 +84,8 @@ public class UIBaseActivity extends BaseActivity {
 
 	@Override
 	public void onPlugout() {
-		imgIndicator.setImageResource(R.drawable.signup_reader_off);
+		lastIndicatorResId = R.drawable.signup_reader_off;
+		imgIndicator.setImageResource(lastIndicatorResId);
 		if (notNotify) {
 			notNotify = false;
 			mPlugged = false;
@@ -108,9 +110,14 @@ public class UIBaseActivity extends BaseActivity {
 		// Otherwise it must make sure to handle 
 		// #E_API2_INVALID_DEVICE# error
 		if (isNeedSession) {
-			if (error == E_API2_INVALID_DEVICE) {
+			if (error == E_API2_INVALID_KSN) {
 				mToast.cancel();
-				mToast = Toast.makeText(this, "非法读卡器！请使用注册时绑定的读卡器!", Toast.LENGTH_SHORT);
+				mToast = Toast.makeText(this, "非法刷卡器！请使用注册时绑定的刷卡器!", Toast.LENGTH_SHORT);
+				mToast.setGravity(Gravity.CENTER, 0, 0);
+				mToast.show();
+			} else if (error == E_API2_INVALID_DEVICE) {
+				mToast.cancel();
+				mToast = Toast.makeText(this, "无法识别该刷卡器，请选择新的刷卡器或者重新拔插!", Toast.LENGTH_SHORT);
 				mToast.setGravity(Gravity.CENTER, 0, 0);
 				mToast.show();
 			}
@@ -122,8 +129,11 @@ public class UIBaseActivity extends BaseActivity {
 		super.setContentView(view);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title); // title为自己标题栏的布局
 		imgIndicator = (ImageView) getWindow().findViewById(R.id.icon_indicator);
+		if (lastIndicatorResId != 0) {
+			imgIndicator.setImageResource(lastIndicatorResId);
+		}
 		imgIndicator.setClickable(true);
-		viewDetect = (ProgressBar) getWindow().findViewById(R.id.icon_detecting);
+		viewDetect = getWindow().findViewById(R.id.icon_detecting);
 		txtTitle = (TextView)getWindow().findViewById(R.id.title_name);
 		btnSubmit = (ViewGroup)getWindow().findViewById(R.id.title_submit);
 	}
@@ -156,12 +166,12 @@ public class UIBaseActivity extends BaseActivity {
 	
 	@Override
 	protected void deviceDetecting(boolean detect) {
-		if (imgIndicator != null) {
+		if (viewDetect != null && !notNotify) {
 			if (detect) {
-				imgIndicator.setVisibility(View.GONE);
+				//imgIndicator.setVisibility(View.GONE);
 				viewDetect.setVisibility(View.VISIBLE);
 			} else {
-				imgIndicator.setVisibility(View.VISIBLE);
+				//imgIndicator.setVisibility(View.VISIBLE);
 				viewDetect.setVisibility(View.GONE);
 			}
 		}

@@ -238,7 +238,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
             }, 200);
         }
 		hideTitleSubmit();
-		noteSwipe.setText("请插入读卡器");
+		noteSwipe.setText("请插入刷卡器");
 	}
 
 	@Override
@@ -272,7 +272,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 				makeError("刷卡不稳定，请重试");
 				break;
 			case E_API2_INVALID_DEVICE:
-				makeError("非法读卡器，请使用正规读卡器");
+				makeError("非法刷卡器，请使用正规刷卡器");
 				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;
@@ -282,8 +282,12 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		} else {
 			switch (err) {
 			case E_API2_INVALID_DEVICE:
-				makeError("无法识别该读卡器，请选择新的读卡器或者重新拔插");
-				noteSwipe.setText("请拔掉此读卡器，重新插入");
+				makeError("无法识别该刷卡器，请选择新的刷卡器或者重新拔插");
+				noteSwipe.setText("请拔掉此刷卡器，重新插入");
+				break;
+			case E_API2_INVALID_KSN:
+				makeError("非法刷卡器，请使用已注册绑定的刷卡器");
+				noteSwipe.setText("请拔掉此刷卡器，重新插入");
 				break;
 			case E_API2_INTERRUPT:
 				isInterrupt = true;

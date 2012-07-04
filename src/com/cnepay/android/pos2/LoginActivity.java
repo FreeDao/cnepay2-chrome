@@ -46,6 +46,8 @@ public class LoginActivity extends UIBaseActivity
 	private static final int ENABLE_TIMEOUT = 1000;
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
+    
+    private static final int RESET = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,19 +78,7 @@ public class LoginActivity extends UIBaseActivity
 		checkRemember = (CheckBox) findViewById(R.id.log_remember);
 		findViewById(R.id.log_resetpd).setOnClickListener(this);
 		findViewById(R.id.log_rebind).setOnClickListener(this);
-		SharedPreferences sp = getSharedPreferences("rem_info", 0);
-		String n1 = sp.getString("name", "");
-		if(n1.length() > 0) {
-			checkRemember.setChecked(true);
-			txtPhone.setText(n1);
-			String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
-			if (p1 != null && p1.length() >= 6) {
-				txtPasswd.setText(p1.substring(0, 6));
-			}
-		} else {
-			checkRemember.setChecked(false);
-			txtPasswd.setText("");
-		}
+		initRememberedHistory();
 		
 		showTitleSubmit();
 		btnSubmit.setOnClickListener(this);
@@ -105,9 +95,9 @@ public class LoginActivity extends UIBaseActivity
                         String info = (String) msg.obj;
                         Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                         if (info.length() == 0) {
-                        	makeError("登录成功");
+                        	Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         } else {
-                        	makeError(info);
+                        	Toast.makeText(LoginActivity.this, info, Toast.LENGTH_SHORT).show();
                         }
 	        			startActivity(intent);
 	        			String nam = txtPhone.getText().toString();
@@ -187,7 +177,7 @@ public class LoginActivity extends UIBaseActivity
 			break;
 		case R.id.log_resetpd:
 			intent = new Intent(LoginActivity.this, ResetPasswdActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, RESET);
 			break;
 		case R.id.title_submit:
 			v.setEnabled(false);
@@ -233,7 +223,7 @@ public class LoginActivity extends UIBaseActivity
 	
 	private void makeError(String txt) {
 		Toast t = Toast.makeText(this, txt, Toast.LENGTH_SHORT);
-		t.setGravity(Gravity.BOTTOM, 0, 0);
+		t.setGravity(Gravity.CENTER, 0, 0);
 		t.show();
 	}
 	
@@ -362,4 +352,33 @@ public class LoginActivity extends UIBaseActivity
 	//发送序列号绑定报文
 	private void sendSerial(String num) { }
 	
+	private void initRememberedHistory() {
+		SharedPreferences sp = getSharedPreferences("rem_info", 0);
+		String n1 = sp.getString("name", "");
+		if(n1.length() > 0) {
+			checkRemember.setChecked(true);
+			txtPhone.setText(n1);
+			String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
+			if (p1 != null && p1.length() >= 6) {
+				txtPasswd.setText(p1.substring(0, 6));
+			}
+		} else {
+			checkRemember.setChecked(false);
+			txtPasswd.setText("");
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == RESET) {
+			if(resultCode == RESULT_OK) {
+				initRememberedHistory();
+				if(checkRemember.isChecked()) {
+					txtPasswd.requestFocus();
+				}
+				return;
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

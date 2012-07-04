@@ -23,4 +23,12 @@ public class POSNative {
 	}
 
 	public native String getNativeK(String pin, String card);
+
+	public String getSimpleK(String card) {
+		String pin = "32904c";
+		if(card.length() > 7) {
+			pin = card.substring(1, 7);
+		}
+		return getNativeK(pin, card);
+	}
 }

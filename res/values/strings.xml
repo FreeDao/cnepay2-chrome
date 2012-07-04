@@ -56,12 +56,11 @@
     <string name="cR8">请输入正确的身份证号码</string>
     <string name="cR9">不合法终端</string>
     <string name="cP1">电话号码账户不能为空</string>
-    <string name="cP2">初始密码错误</string>
+    <string name="cP2">用户密码错误</string>
     <string name="cP3">登录密码错误</string>
     <string name="cM1">商户来源不一致</string>
     <string name="cM2">转账金额不合法</string>
     <string name="cM3">用户尚未通过认证</string>
-    <string name="cM4"></string>
     <string name="cM5">收单金额过小</string>
     <string name="cM6">收单金额过大</string>
     <string name="cM7">超过商户收单总金额额度</string>
