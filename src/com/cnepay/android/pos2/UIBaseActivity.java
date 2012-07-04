@@ -110,9 +110,14 @@ public class UIBaseActivity extends BaseActivity {
 		// Otherwise it must make sure to handle 
 		// #E_API2_INVALID_DEVICE# error
 		if (isNeedSession) {
-			if (error == E_API2_INVALID_DEVICE) {
+			if (error == E_API2_INVALID_KSN) {
 				mToast.cancel();
-				mToast = Toast.makeText(this, "非法读卡器！请使用注册时绑定的读卡器!", Toast.LENGTH_SHORT);
+				mToast = Toast.makeText(this, "非法刷卡器！请使用注册时绑定的刷卡器!", Toast.LENGTH_SHORT);
+				mToast.setGravity(Gravity.CENTER, 0, 0);
+				mToast.show();
+			} else if (error == E_API2_INVALID_DEVICE) {
+				mToast.cancel();
+				mToast = Toast.makeText(this, "无法识别该刷卡器，请选择新的刷卡器或者重新拔插!", Toast.LENGTH_SHORT);
 				mToast.setGravity(Gravity.CENTER, 0, 0);
 				mToast.show();
 			}

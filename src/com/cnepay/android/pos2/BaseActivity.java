@@ -51,6 +51,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 	public final static int E_API2_INIT 			= E_API2_BASE + 7;
 	public final static int E_API2_KSN 				= E_API2_BASE + 8;
 	public final static int E_API2_INVALID_DEVICE	= E_API2_BASE + 9;
+	public final static int E_API2_INVALID_KSN		= E_API2_BASE + 10;
 
 	// END ERROR INFO
 	/**************************************************/
@@ -278,7 +279,7 @@ public abstract class BaseActivity extends Activity implements CardReaderListene
 					BaseActivity.this.onPlugin();
 				} else {
 					onPlugout();
-					BaseActivity.this.onError(E_API2_INVALID_DEVICE);
+					BaseActivity.this.onError(E_API2_INVALID_KSN);
 				}
 				testAPI = false;
 				deviceDetecting(testAPI);

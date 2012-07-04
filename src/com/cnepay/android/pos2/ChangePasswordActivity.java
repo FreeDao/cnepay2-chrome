@@ -16,6 +16,7 @@ import com.tangye.android.utils.PublicHelper;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -207,7 +208,7 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 		
 		progressDialog = ProgressDialog.show(ChangePasswordActivity.this, // context 
 				"",	// title 
-				"刷卡器替换中...", // message 
+				"正在更新密码...", // message 
 				true, 
 				false);
 		(new Thread() {
@@ -229,9 +230,12 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
 	                		POSEncrypt POS =  POSHelper.getPOSEncrypt(ChangePasswordActivity.this, name);
-	                		if(POS.setPwdChange(oldPwd, newPwd, resp)){
+	                		if(POS.setPwdChange(oldPwd, newPwd, resp)) {
+	                			Editor edit = getSharedPreferences("rem_info", 0).edit();
+	        					edit.remove("passwd");
+	        					edit.commit();
 	                			isOK = true;
-	                		}else{
+	                		} else {
 	                			isOK = false;
 	                			error = "Fatal error with info data"; // should not happen
 	                		}
