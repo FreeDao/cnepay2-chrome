@@ -19,6 +19,7 @@ public class POSEncrypt extends POSNative {
 	public final String SETNUMBER = "sn";
 	public final String KEKENCODED = "kr";
 	public final String RANDOMCODE = "rc";
+	public final String RESETPWD = "rs";
 	
 	private SharedPreferences sp;
 	
@@ -42,7 +43,21 @@ public class POSEncrypt extends POSNative {
 		.put(USERMARK, msg.getField(42).toString()) // 商户号
 		.put(SETNUMBER, "000001") // 批次号
 		.put(KEKENCODED, pAES(ming, getNativeK(passwd, msg.getField(2).toString())))
+		.put(RESETPWD, "")
 		.put(RANDOMCODE, randCode)
+		.commit(); // store permanently
+		ming = null;
+	}
+	
+	public void reset(IsoMessage msg) throws IllegalStateException {
+		byte[] KEK = IsoUtil.hex2byte(msg.getField(46).toString());
+        KEK = DES.decrypt(KEK);
+        if(KEK == null || KEK.length == 0) throw new IllegalStateException("KEK cannot read");
+        String ming = IsoUtil.byte2hex(KEK); // HEXSTRING KEK
+        String c = msg.getField(2).toString();
+		new ready(sp.edit())
+		.put(KEKENCODED, "")
+		.put(RESETPWD, pAES(ming, getSimpleK(c)))
 		.commit(); // store permanently
 		ming = null;
 	}
@@ -58,7 +73,6 @@ public class POSEncrypt extends POSNative {
 	public boolean isInitializedRanCode(){
 		return has(RANDOMCODE);
 	}
-	
 	
 	public String getPOSDecrypt(String key) {
 		if(!has(key)) throw new IllegalStateException("Yet not init POS");
@@ -174,13 +188,23 @@ public class POSEncrypt extends POSNative {
 			return false;
 		}
 		String mi = getPOSDecrypt(KEKENCODED);
-		String ming = dAES(mi, getNativeK(oldPwd, cardNumber));
+		String k = "";
+		if (mi.length() == 0) {
+			mi = getPOSDecrypt(RESETPWD);
+			if(mi.length() == 0) return false;
+			k = getSimpleK(cardNumber);
+		} else {
+			k = getNativeK(oldPwd, cardNumber);
+		}
+		String ming = dAES(mi, k);
 		mi = pAES(ming, getNativeK(newPwd, cardNumber));
 		new ready(sp.edit())
         .put(KEKENCODED, mi)
+        .put(RESETPWD, "")
         .commit();
 		ming = null;
 		mi = null;
+		k = null;
 		return true;
 	}
 }
