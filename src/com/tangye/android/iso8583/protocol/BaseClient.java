@@ -63,9 +63,14 @@ public class BaseClient {
     }
     
     public void close() throws IOException {
-    	// Log.i(TAG, "Try to close the socket");
     	if(socket != null) {
     		try {
+    			try {
+    				socket.shutdownOutput();
+    			} catch(IOException e) {}
+    			try {
+    				socket.shutdownInput();
+    			} catch(IOException e) {}
     			if(in != null) {
     				in.close();
     			}

@@ -2,6 +2,7 @@ package com.tangye.android.iso8583.protocol;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import android.util.Log;
@@ -58,17 +59,25 @@ public abstract class BaseMessageAbstract {
     }
     
     public IsoMessage request(String addr, int port, int ... headerlen) throws UnknownHostException, IOException, Exception {
-        Socket socket = new Socket(addr, port);
-        socket.setSoTimeout(SOCKET_TIMEOUT);
-        client = new BaseClient(socket, res);
-        Log.i(TAG, String.format("Sending Request to %s:%d", addr, port));
-        req.setIsoHeader(TPDU_BCD); // 设置HEADER
-        res.setIsoHeader(TPDU_BCD);
-        if(headerlen.length > 0)
-        	req.write(socket.getOutputStream(), headerlen[0]);
-        else {
-        	req.write(socket.getOutputStream(), 2); // 默认两个字节长度
-            // Log.i(TAG, String.format("Sending data: %s", IsoUtil.byte2hex(req.writeData())));
+        try {
+	    	Socket socket = new Socket();
+	        socket.setSoTimeout(SOCKET_TIMEOUT);
+	        client = new BaseClient(socket, res);
+	        socket.connect(new InetSocketAddress(addr, port));
+	        Log.i(TAG, String.format("Sending Request to %s:%d", addr, port));
+	        req.setIsoHeader(TPDU_BCD); // 设置HEADER
+	        res.setIsoHeader(TPDU_BCD);
+	        if(headerlen.length > 0)
+	        	req.write(socket.getOutputStream(), headerlen[0]);
+	        else {
+	        	req.write(socket.getOutputStream(), 2); // 默认两个字节长度
+	            // Log.i(TAG, String.format("Sending data: %s", IsoUtil.byte2hex(req.writeData())));
+	        }
+        } catch(IOException e) {
+        	if (ignoreAnyError) {
+        		return null;
+        	}
+        	throw e;
         }
         if(client.doRequest()) {
             return client.getResponseMessage();
@@ -84,6 +93,7 @@ public abstract class BaseMessageAbstract {
     }
     
     public void stop() {
+    	Log.i(TAG, "to stop client");
     	if(client != null) {
     		try {
     			client.close();
