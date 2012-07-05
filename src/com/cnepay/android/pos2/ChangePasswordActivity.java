@@ -208,8 +208,9 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 		
 		progressDialog = ProgressDialog.show(ChangePasswordActivity.this, // context 
 				"",	// title 
-				"正在更新密码...", // message 
-				true, 
+
+			"正在更新密码...", // message 
+			true, 
 				false);
 		(new Thread() {
 			public void run() {
