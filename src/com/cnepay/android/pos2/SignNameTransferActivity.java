@@ -109,7 +109,7 @@ public class SignNameTransferActivity extends UIBaseActivity implements View.OnC
 		case R.id.upload_ticket:
 			progressDialog = ProgressDialog.show(SignNameTransferActivity.this, // context 
 					"", // title 
-					"上传中...",  // message 
+					"转账凭证上传中...",  // message 
 					true, //进度是否是不确定的，这只和创建进度条有关 
 					false);
 			String pathSD = getSDPath();

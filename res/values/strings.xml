@@ -7,7 +7,7 @@
     <string name="c00">交易成功</string>
     <string name="c01">查询发卡方</string>
     <string name="c02">超时</string>
-    <string name="c03">无效商户</string>
+    <string name="c03">账户无效</string>
     <string name="c04">终端已注册</string>
     <string name="c05">不予承兑，或交易超时</string>
     <string name="c12">无效交易</string>
@@ -69,7 +69,7 @@
     <string name="cm8">转账金额过小</string>
     <string name="cM9">转账金额过大</string>
     <string name="cX0">用户没有绑定序列号</string>
-    <string name="cX1">X1错误，盗版用户</string>
+    <string name="cX1">序列号无效</string>
     <string name="cX2">序列号输入有误</string>
     <string name="cX3">序列号被占用</string>
     <string name="cX4">一个人只能使用一个序列号</string>
@@ -78,10 +78,10 @@
     <string name="cX7">实名认证通过！</string>
     <string name="cX8">实名认证:未通过审核</string>
     <string name="cX9">账户认证未通过</string>
-    <string name="cK1">K1错误，错误的刷卡器</string>
-    <string name="cK2">K2错误，刷卡器未启用</string>
-    <string name="cK3">K3错误，盗用刷卡器</string>
-    <string name="cK6">k6错误，刷卡器已废弃</string>
+    <string name="cK1">错误的刷卡器</string>
+    <string name="cK2">刷卡器未启用</string>
+    <string name="cK3">刷卡器已被他人账户绑定</string>
+    <string name="cK6">刷卡器已废弃</string>
     <string name="cD0">短信功能未开通</string>
     <string name="cA0">校验错，请重新签到</string>
     <string name="cN0">不匹配的交易</string>
@@ -94,6 +94,7 @@
     <string name="cZ6">无效交易币种</string>
     <string name="cZ7">上期未结，请先结完上批</string>
     <string name="cZ8">不支持该卡种</string>
+    <string name="cP6">终端错误，无此帐号</string>
     
     <string name="charge_mgr">POS收款</string>
 	<string name="transfer_mgr">银行卡转账</string>

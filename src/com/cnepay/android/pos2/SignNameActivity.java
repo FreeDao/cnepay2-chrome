@@ -113,7 +113,7 @@ public class SignNameActivity extends UIBaseActivity implements View.OnClickList
 		case R.id.upload_ticket:
 			progressDialog = ProgressDialog.show(SignNameActivity.this, // context 
 					"", // title 
-					"上传中", // message 
+					"交易凭证上传中", // message 
 					true, //进度是否是不确定的，这只和创建进度条有关 
 					false);
 			String pathSD = getSDPath();

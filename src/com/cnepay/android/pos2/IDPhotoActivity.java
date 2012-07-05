@@ -43,7 +43,8 @@ import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 
-public class IDPhotoActivity extends UIBaseActivity {
+public class IDPhotoActivity extends UIBaseActivity implements
+		View.OnClickListener {
 	private static final String TAG = "IDPhotoActivity";
 	// 上传服务器地址
 	private static final String UPLOAD_URL = "http://203.81.23.4:18080/tompms/merchant/uploadImg";
@@ -63,6 +64,10 @@ public class IDPhotoActivity extends UIBaseActivity {
 	private Handler mHandler;
 	private File vDirPath;
 	private String path;
+	private int vHeight;
+	private int vWidth;
+	private File vFile1;
+	private File vFile2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -132,80 +137,21 @@ public class IDPhotoActivity extends UIBaseActivity {
 		filename_gray_back = path + "/personInfo/cnepay_id_card_gray_back.png";
 
 		String imgPath = path + "/personInfo/front.jpg";
-		final File vFile = new File(imgPath);
+		vFile1 = new File(imgPath);
 		String imgPath2 = path + "/personInfo/back.jpg";
-		final File vFile2 = new File(imgPath2);
-		if (!vFile.exists()) {
-			vDirPath = vFile.getParentFile(); // new File(vFile.getParent());
+		vFile2 = new File(imgPath2);
+		if (!vFile1.exists()) {
+			vDirPath = vFile1.getParentFile(); // new File(vFile.getParent());
 			vDirPath.mkdirs();
 		}
-
 		// 拍摄正面
-		findViewById(R.id.take_id_front).setOnClickListener(
-				new View.OnClickListener() {
-					public void onClick(View v) {
-						// take photo for front of id card
-						Intent intent = new Intent(
-								MediaStore.ACTION_IMAGE_CAPTURE);
-						// MediaStore.EXTRA_OUTPUT在moto手机2.1-2.3版本上无法得到原始照片文件，只得到缩小16倍的缩略图
-						// 最终实现是从SD卡照片库中读取最新的文件作为拍摄结果。
-						// 注意：不同手机照片库的位置可能出现不同。
-						// Uri outputFileUri = Uri.fromFile(file_front);
-						// intent.putExtra(MediaStore.EXTRA_OUTPUT,
-						// outputFileUri);
-						Uri outputFileUri = Uri.fromFile(vFile);
-						intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-						// intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-						startActivityForResult(intent, RET_CODE_FRONT);
-					}
-				});
+		findViewById(R.id.take_id_front).setOnClickListener(this);
 		// 拍摄反面
-		findViewById(R.id.take_id_back).setOnClickListener(
-				new View.OnClickListener() {
-					public void onClick(View v) {
-						// take photo for front of id card
-						Intent intent = new Intent(
-								MediaStore.ACTION_IMAGE_CAPTURE);
-						Uri outputFileUri = Uri.fromFile(vFile2);
-						intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-						startActivityForResult(intent, RET_CODE_BACK);
-					}
-				});
+		findViewById(R.id.take_id_back).setOnClickListener(this);
 		// 上传
-		findViewById(R.id.upload_idphoto).setOnClickListener(
-				new View.OnClickListener() {
-					public void onClick(View v) {
-						progressDialog = ProgressDialog.show(
-								IDPhotoActivity.this, // context
-								"", // title
-								"交易结果正在上传...", // message
-								true, // 进度是否是不确定的，这只和创建进度条有关
-								false);
-
-						(new Thread(TAG) {
-							public void run() {
-								if (prepareFile())
-									uploadFile();
-								if (progressDialog != null) {
-									progressDialog.cancel();
-								}
-							}
-						}).start();
-					}
-				});
-
-		findViewById(R.id.back_idphoto).setOnClickListener(
-				new View.OnClickListener() {
-					public void onClick(View v) {
-						if (progressDialog != null) {
-							Log.i(TAG, "dialog cancel");
-							progressDialog.cancel();
-						}
-						;
-						// FIXME DO NOT UPLOAD
-						finish();
-					}
-				});
+		findViewById(R.id.upload_idphoto).setOnClickListener(this);
+		// 返回
+		findViewById(R.id.back_idphoto).setOnClickListener(this);
 	}
 
 	@Override
@@ -242,7 +188,26 @@ public class IDPhotoActivity extends UIBaseActivity {
 			super.onActivityResult(requestCode, resultCode, data);
 			return;
 		}
-		showPhoto(latest.getAbsolutePath());
+		mHandler.post(new DetectRunnable(latest.getAbsolutePath()));
+	}
+	
+	class DetectRunnable implements Runnable {
+		private String path;
+		
+		public DetectRunnable(String file) {
+			path = file;
+		}
+		
+		@Override
+		public void run() {
+			vHeight = viewer.getMeasuredHeight();
+			vWidth = viewer.getMeasuredWidth();
+			if (vHeight == 0 || vWidth == 0) {
+				mHandler.postDelayed(this, 100);
+				return;
+			}
+			showPhoto(path);
+		}
 	}
 
 	private void makeInfo(String info) {
@@ -313,14 +278,11 @@ public class IDPhotoActivity extends UIBaseActivity {
 			Bitmap graybmp_front = toGrayscale(bitmap_front);
 			bitmap_front.recycle();
 			bitmap_front = null;
-			System.gc();
 			FileOutputStream out_front = new FileOutputStream(file_gray_front);
 			graybmp_front.compress(CompressFormat.PNG, 90, out_front);
 			out_front.close();
 			graybmp_front.recycle();
 			graybmp_front = null;
-			System.gc();
-
 			BitmapFactory.Options options_back = new BitmapFactory.Options();
 			options_back.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(filename_back, options_back);
@@ -341,8 +303,6 @@ public class IDPhotoActivity extends UIBaseActivity {
 			Bitmap graybmp_back = toGrayscale(bitmap_back);
 			bitmap_back.recycle();
 			bitmap_back = null;
-			System.gc(); // ? no need FIXME
-
 			FileOutputStream out_back = new FileOutputStream(file_gray_back);
 			graybmp_back.compress(CompressFormat.PNG, 90, out_back);
 			out_back.close();
@@ -433,6 +393,7 @@ public class IDPhotoActivity extends UIBaseActivity {
 	}
 
 	private void showPhoto(String filename) {
+		Log.i(TAG, "finish width: " + vWidth + " height: " + vHeight);
 		File file = new File(filename);
 		if (!file.exists())
 			return;
@@ -447,15 +408,15 @@ public class IDPhotoActivity extends UIBaseActivity {
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(filename, options);
 		Boolean scaleByHeight = Math
-				.abs(options.outHeight - viewer.getHeight()) >= Math
-				.abs(options.outWidth - viewer.getWidth());
+				.abs(options.outHeight - vHeight) >= Math
+				.abs(options.outWidth - vWidth);
 		if (options.outHeight * options.outWidth * 2 >= 200 * 100 * 2) {
 			// Load, scaling to smallest power of 2 that'll get it <= desired
-			// dimensions
 			double sampleSize = scaleByHeight ? options.outHeight
-					/ viewer.getHeight() : options.outWidth / viewer.getWidth();
+					/ vHeight : options.outWidth / vWidth;
 			options.inSampleSize = (int) Math.pow(2d,
 					Math.floor(Math.log(sampleSize) / Math.log(2d)));
+			//Log.i(TAG, "photo sample size: " + options.inSampleSize);
 		}
 		options.inJustDecodeBounds = false;
 		Bitmap bitmap = BitmapFactory.decodeFile(filename, options);
@@ -478,5 +439,50 @@ public class IDPhotoActivity extends UIBaseActivity {
 		paint.setColorFilter(f);
 		c.drawBitmap(bmpOriginal, 0, 0, paint);
 		return bmpGrayscale;
+	}
+
+	@Override
+	public void onClick(View v) {
+		Intent intent;
+		Uri outputFileUri;
+		switch(v.getId()) {
+		case R.id.take_id_front:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			outputFileUri = Uri.fromFile(vFile1);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+			startActivityForResult(intent, RET_CODE_FRONT);
+			break;
+		case R.id.take_id_back:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			outputFileUri = Uri.fromFile(vFile2);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+			startActivityForResult(intent, RET_CODE_BACK);
+			break;
+		case R.id.back_idphoto:
+			if (progressDialog != null) {
+				Log.i(TAG, "dialog cancel");
+				progressDialog.cancel();
+			}
+			finish();
+			break;
+		case R.id.upload_idphoto:
+			progressDialog = ProgressDialog.show(
+					IDPhotoActivity.this, // context
+					"", // title
+					"证件照片正在上传...", // message
+					true, // 进度是否是不确定的，这只和创建进度条有关
+					false);
+
+			(new Thread(TAG) {
+				public void run() {
+					if (prepareFile())
+						uploadFile();
+					if (progressDialog != null) {
+						progressDialog.cancel();
+					}
+				}
+			}).start();
+			break;
+		}
 	}
 }
