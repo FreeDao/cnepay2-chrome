@@ -5,6 +5,9 @@ import android.content.Context;
 
 public class POSNative {
 	private Context ct;
+	static {
+		System.loadLibrary("POSNative");
+	}
 
 	public POSNative(Context context) {
 		ct = context.getApplicationContext();
@@ -14,17 +17,13 @@ public class POSNative {
 		return ct;
 	}
 	
-	public void releaseNative() {
+	protected void releaseNative() {
 		ct = null;
 	}
+	
+	protected native String getNativeK(String pin, String card);
 
-	static {
-		System.loadLibrary("POSNative");
-	}
-
-	public native String getNativeK(String pin, String card);
-
-	public String getSimpleK(String card) {
+	protected String getSimpleK(String card) {
 		String pin = "32904c";
 		if(card.length() > 7) {
 			pin = card.substring(1, 7);

@@ -306,9 +306,14 @@ public class LoginActivity extends UIBaseActivity
 		                    if(POS.isInitializedExceptRanCode() && !POS.isInitializedRanCode()){
 		                    	POS.setRandomCode(ranCode);
 		                    }
-		                    POS.setSetNumber(setn).close();
-		                    Log.i(TAG, "Log Set Number: " + setn);
+		                    POS.setSetNumber(setn);
+		                    // Log.i(TAG, "Log Set Number: " + setn);
 	        				error = msg; // differ with stop by user
+	        				if (POS.getPOSDecrypt(POS.RESETPWD).length() != 0) {
+	        					// notify user to change password
+	        					error = "请尽快更新您的登录密码";
+	        				}
+	        				POS.close();
 		                    isOK = true;
 	                	} else {
 	                		if(statusCode.equals("Z0")){
@@ -375,6 +380,7 @@ public class LoginActivity extends UIBaseActivity
 				initRememberedHistory();
 				if(checkRemember.isChecked()) {
 					txtPasswd.requestFocus();
+					txtPasswd.setText("");
 				}
 				return;
 			}

@@ -20,17 +20,13 @@ public class ResetPasswdMessage extends BaseMessageAbstract {
 		respTemp.setValue(2, IsoType.LLVARBCD);
 		respTemp.setValue(16, IsoType.NUMERIC, 4);
 		respTemp.setValue(39, IsoType.ALPHA, 2);
-		respTemp.setValue(41, IsoType.ALPHA, 8); // FIXME delete
-		respTemp.setValue(42, IsoType.ALPHA, 15);// FIXME delete
 		respTemp.setValue(46, IsoType.LLLVAR); // 密钥
-		respTemp.setValue(58, IsoType.LLLVAR); // FIXME delete
 		respTemp.setValue(60, IsoType.LLLVARBCD);
-		respTemp.setValue(63, IsoType.LLLVAR); // FIXME delete
 	}
 
 	@Override
 	public boolean isBitmapValid() {
-		int[] in = {2,16,39,41,42,46,58,60,63};
+		int[] in = {2,16,39,46,60};
 		int[] out = {2,16,41,42,58,60,63};
 		return isBitmapValid(in, out);
 	}
