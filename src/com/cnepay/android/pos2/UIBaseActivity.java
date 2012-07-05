@@ -129,9 +129,6 @@ public class UIBaseActivity extends BaseActivity {
 		super.setContentView(view);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title); // title为自己标题栏的布局
 		imgIndicator = (ImageView) getWindow().findViewById(R.id.icon_indicator);
-		if (lastIndicatorResId != 0) {
-			imgIndicator.setImageResource(lastIndicatorResId);
-		}
 		imgIndicator.setClickable(true);
 		viewDetect = getWindow().findViewById(R.id.icon_detecting);
 		txtTitle = (TextView)getWindow().findViewById(R.id.title_name);
@@ -142,6 +139,9 @@ public class UIBaseActivity extends BaseActivity {
 	protected void onResume() {		
 		if (SystemClock.elapsedRealtime() - lastLeaveTime < 10000) {
 			notNotify = true;
+		}
+		if (lastIndicatorResId != 0) {
+			imgIndicator.setImageResource(lastIndicatorResId);
 		}
 		mPlugged = false; // wait for KSN test result
 		
@@ -164,15 +164,47 @@ public class UIBaseActivity extends BaseActivity {
 		lastLeaveTime = SystemClock.elapsedRealtime();
 	}
 	
+	private final Runnable an1 = new Runnable() {
+    	public void run() {
+    		imgIndicator.setVisibility(View.GONE);
+    		Log.i(TAG, "detect gone");
+    	}
+    };
+    
+    private final Runnable an2 = new Runnable() {
+    	public void run() {
+    		viewDetect.setVisibility(View.GONE);
+    		Log.i(TAG, "un detect gone");
+    	}
+    };
+	
 	@Override
 	protected void deviceDetecting(boolean detect) {
 		if (viewDetect != null && !notNotify) {
-			if (detect) {
-				//imgIndicator.setVisibility(View.GONE);
-				viewDetect.setVisibility(View.VISIBLE);
-			} else {
-				//imgIndicator.setVisibility(View.VISIBLE);
-				viewDetect.setVisibility(View.GONE);
+			if (detect && imgIndicator.getVisibility() == View.VISIBLE) {
+				Log.i(TAG, "detect");
+				Animation am = new TranslateAnimation(0, 0, 0, -400);
+			    am.setDuration(500);
+			    imgIndicator.postDelayed(an1, 500);
+			    imgIndicator.startAnimation(am);
+			    
+			    Animation am2 = new TranslateAnimation(0, 0, 400, 0);
+			    am2.setDuration(500);
+			    viewDetect.setVisibility(View.VISIBLE);
+			    viewDetect.startAnimation(am2);
+			    viewDetect.removeCallbacks(an2);
+			} else if(!detect && viewDetect.getVisibility() == View.VISIBLE) {
+				Log.i(TAG, "un detect");
+				Animation am2 = new TranslateAnimation(0, 0, 400, 0);
+			    am2. setDuration(500);
+			    imgIndicator.setVisibility(View.VISIBLE);
+			    imgIndicator.startAnimation(am2);
+			    imgIndicator.removeCallbacks(an1);
+				
+				Animation am = new TranslateAnimation(0, 0, 0, -400);
+			    am.setDuration(500);
+			    viewDetect.postDelayed(an2, 500);
+			    viewDetect.startAnimation(am);
 			}
 		}
 	}
