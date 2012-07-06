@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.os.Environment;
 
 public class PublicHelper {
     
@@ -72,6 +73,15 @@ public class PublicHelper {
     	}
 		return c.toString();
     }
+    
+    public static String getSDPath(){ 
+		boolean sdCardExist = Environment.getExternalStorageState()   
+				.equals(Environment.MEDIA_MOUNTED); 
+		if(sdCardExist) {     
+			return (Environment.getExternalStorageDirectory()).toString(); 
+		}
+		return null; 
+	}
     
     public static boolean isEmptyString(String str){
     	return str == null || str.equals("");

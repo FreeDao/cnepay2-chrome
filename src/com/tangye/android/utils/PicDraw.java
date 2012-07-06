@@ -12,8 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,7 +24,6 @@ public class PicDraw extends View{
 	private Matrix matrix1, matrix2;
 	private Map<String, String> mapValue = new HashMap<String, String>();
 	Context context;
-	private final String TAG = "PicDraw";
 
 	public PicDraw(Context context, String[] allString) {
 		super(context);
@@ -34,11 +31,8 @@ public class PicDraw extends View{
 		this.context = context;
 		paint = new Paint();
 		b1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.unionpay);
-		String path2 = getSDPath();
-		Log.v(TAG, "path2 = " + path2);
-		if(null == path2)
-		{
-			//TODO提示没有SD卡
+		String path2 = PublicHelper.getSDPath();
+		if(null == path2) {
 			Toast.makeText(context, "手机没有sd卡", Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -111,16 +105,6 @@ public class PicDraw extends View{
 		canvas.drawText("I ACKNOWLEDGE SATISFACTORY RECEI", 10, (y = y + 15), paint);
 		canvas.drawText("PT OF RELATIVE GOODS/SERVICE", 10, (y = y + 15), paint);
 		canvas.drawText("商户存根(MERCHANT COPY)", 10, (y = y + 30), paint);
-	}
-	
-	private String getSDPath(){ 
-		boolean sdCardExist = Environment.getExternalStorageState()   
-				.equals(Environment.MEDIA_MOUNTED); 
-		if(sdCardExist)
-		{     
-			return (Environment.getExternalStorageDirectory()).toString(); 
-		}
-		return null; 
 	}
 
 }
