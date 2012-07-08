@@ -1,13 +1,9 @@
 package com.tangye.android.utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-
-import com.cnepay.android.pos2.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -15,30 +11,48 @@ import android.graphics.Paint;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Paint.FontMetrics;
 import android.util.AttributeSet;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-public class VoucherBaseDraw extends View {
+public class VoucherDraw extends View {
 
 	private Paint paint = null;
 	private FontMetrics fm = null;
 	private Item items[] = null;
 	private int mWidth, mHeight;
 	
-	private final static String TAG = "VoucherBaseDraw";
+	private final static String TAG = "VoucherDraw";
+	public final static String INTENT_EXTRA = "EXTRA";
 	
 	public static class Item {
-		Bitmap bitmap = null;
-		String text = null;
-		float fontSize, fontScaleX, x, top, bottom, height;
-		boolean bold;
+		public Bitmap bitmap = null;
+		public String text = null;
+		public float fontSize, fontScaleX;
+		public float x;
+		public float top;
+		public float bottom;
+		public float height;
+		public boolean center, bold;
 		
 		public Item(String content, float size, float scaleX, float left, float mTop, float mBottom, boolean isBold) {
 			text = content;
 			fontSize = size;
 			fontScaleX = scaleX;
 			x = left;
+			top = mTop;
+			bottom = mBottom;
+			bold = isBold;
+			center = false;
+		}
+		
+		public Item(String content, float size, float scaleX, boolean mCenter, float mTop, float mBottom, boolean isBold) {
+			text = content;
+			fontSize = size;
+			fontScaleX = scaleX;
+			x = 0;
+			center = mCenter;
 			top = mTop;
 			bottom = mBottom;
 			bold = isBold;
@@ -50,63 +64,69 @@ public class VoucherBaseDraw extends View {
 			x = left;
 			top = mTop;
 			bottom = mBottom;
+			//center = false;
+		}
+		
+		public Item(Bitmap m, float mHeight, boolean mCenter, float mTop, float mBottom) {
+			bitmap = m;
+			height = mHeight;
+			x = 0;
+			top = mTop;
+			bottom = mBottom;
+			center = mCenter;
 		}
 	}
 
-	public VoucherBaseDraw(Context context) {
+	public VoucherDraw(Context context) {
 		super(context);
 		init();
 	}
 	
-	public VoucherBaseDraw(Context context, AttributeSet attrs) {
+	public VoucherDraw(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
-	public VoucherBaseDraw(Context context, AttributeSet attrs, int defStyle) {
+	public VoucherDraw(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}
 	
-	public boolean setResource(Item source[]) {
+	public void setResource(Item source[]) {
 		if (source == null) {
 			throw new IllegalArgumentException("source should not be null");
 		}
 		items = source;
-		if(mWidth == 0) return false;
+		if(mWidth == 0) { 
+			reset(source);
+			return;
+		}
 		mHeight = configureH();
-		if(mHeight == 0) return false;
+		if(mHeight == 0) {
+			reset(source);
+			return;
+		}
 		
 		Log.i(TAG, "setResource width: " + mWidth + " height: " + mHeight);
 		LayoutParams lp = getLayoutParams();
 		lp.height = mHeight;
 		setLayoutParams(lp);
 		invalidate();
-		return false;
+	}
+	
+	private void reset(final Item source[]) {
+		postDelayed(new Runnable() {
+			public void run() {
+				setResource(source);
+			}
+		}, 200);
 	}
 	
 	private void init() {
 		paint = new Paint();
-		setDrawingCacheEnabled(true);
-		
-		// test
-		
-		this.postDelayed(new Runnable() {
-			public void run() {
-				Item source[] = {
-					new Item("商户名称: 7天酒店北京德胜门店", 30, 0.6f, 20, 20, 0, true),
-					new Item("商户编号: BADFSFD24343DV4", 20, 1, 20, 0, 0, false),
-					new Item("终端编号: 23487510", 20, 1, 20, 0, 0, false),
-					new Item("用户签名: ", 30, 1, 20, 0, 100, false),
-					new Item(
-							BitmapFactory.decodeResource(getContext().getResources(), R.drawable.icon),
-							100, 40, -100, 0),
-					new Item("卡号: 622202*********2125 S", 30, 0.6f, 20, 0, 20, true)
-				};
-				setResource(source);
-			}
-		}, 2000);
-		
+		paint.setColor(Color.BLACK);
+		paint.setAntiAlias(true);
+		// setDrawingCacheEnabled(true);
 	}
 
 	@Override
@@ -119,8 +139,12 @@ public class VoucherBaseDraw extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         Log.i(TAG, "width: " + w + " height: " + h);
-        mWidth = w;
-        mHeight = h;
+        if (w != 0) {
+	        mWidth = w;
+        }
+        if (h != 0) {
+        	mHeight = h;
+        }
     }
 
 	private int configureH() {
@@ -132,7 +156,7 @@ public class VoucherBaseDraw extends View {
 				paint.setTextScaleX(item.fontScaleX);
 				paint.setFakeBoldText(item.bold);
 				fm = paint.getFontMetrics();
-				h += (int) (Math.ceil(fm.descent - fm.top) + 2 + item.bottom + item.top);
+				h += (int) (FloatMath.ceil(fm.descent - fm.top) + 2 + item.bottom + item.top);
 			} else {
 				h += item.bottom + item.top + item.height;
 			}
@@ -143,11 +167,10 @@ public class VoucherBaseDraw extends View {
 	private void makeCanvas(Canvas canvas) {				
 		canvas.save();
 		int h;
+		float l;
 		Paint bg = new Paint();
 		bg.setColor(Color.WHITE);
-		paint.setColor(Color.BLACK);
-		paint.setAntiAlias(true);
-		
+		canvas.drawRect(0, 0, mWidth, mHeight, bg);
 		for(int i = 0; i < items.length; i++) {
 			Item item = items[i];
 			if (item.text != null) {
@@ -155,35 +178,45 @@ public class VoucherBaseDraw extends View {
 				paint.setTextScaleX(item.fontScaleX);
 				paint.setFakeBoldText(item.bold);
 				fm = paint.getFontMetrics();
-				h = (int) (Math.ceil(fm.descent - fm.top) + 2 + item.bottom + item.top);
-				canvas.drawRect(0, 0, mWidth, h, bg);
-				canvas.drawText(item.text, item.x, fm.descent - fm.top, paint);
+				h = (int) (FloatMath.ceil(fm.descent - fm.top) + 2 + item.bottom + item.top);
+				l = item.x;
+				if(item.center) {
+					l += (mWidth - paint.measureText(item.text)) / 2;
+				}
+				canvas.drawText(item.text, l, fm.descent - fm.top, paint);
 				canvas.translate(0, h);
 			} else {
 				h = (int) (item.bottom + item.height + item.top);
-				canvas.drawRect(0, 0, mWidth, h, bg);
 				Bitmap s = item.bitmap;
 				if (s != null) {
 					Matrix m = new Matrix();
 					float scale = item.height / s.getHeight();
 					m.postScale(scale, scale);
-					m.postTranslate(item.x, item.top);
+					l = item.x;
+					if (item.center) {
+						l += (mWidth - scale * s.getWidth()) / 2;
+					}
+					m.postTranslate(l, item.top);
 					canvas.drawBitmap(s, m, null);
 				}
 				canvas.translate(0, h);
 			}
 		}
-		
 		canvas.restore();
 	}
 
-	public OutputStream getBitmapOutputStream(/*CompressFormat*/) {
+	public ByteArrayOutputStream getBitmapOutputStream(int quality) {
 		int fixW = 300;
-		int fixH = Math.round(300f / (float)mWidth * mHeight);
-		Bitmap drawingCache = getDrawingCache();
+		int fixH = Math.round(290.0f / (float)mWidth * mHeight);
+		Bitmap drawingCache = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+		draw(new Canvas(drawingCache));
+		if (drawingCache == null) {
+			Log.i(TAG, "no drawing cache!!!");
+			return null;
+		}
 		drawingCache = Bitmap.createScaledBitmap(drawingCache, fixW, fixH, true);
-		OutputStream os = new ByteArrayOutputStream();
-		drawingCache.compress(CompressFormat.PNG, 0, os);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		drawingCache.compress(CompressFormat.JPEG, 60, os);
 		drawingCache.recycle();
 		return os;
 	}

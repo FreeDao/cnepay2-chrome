@@ -99,8 +99,9 @@ public class Card2CardActivity extends UIBaseActivity implements
 					if (all != null && all.length <= 14) {
 						// TODO transfer successfully
 						makeError("转账成功!");
-	        			Intent i = new Intent(Card2CardActivity.this, CashTransferActivity.class);
-	        			i.putExtra("allstring", all);
+						Intent i = new Intent(Card2CardActivity.this, CashTransferActivity.class);
+	        			String extra = POSHelper.getSessionString();
+	        			i.putExtra(extra, all);
 	        			startActivity(i);
 	        			finish();
 	        		}
@@ -432,8 +433,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 		}
 		final String passwd = password;
 		
-		
-		progressDialog = ProgressDialog.show(this, // context 
+		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
 				"转账中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
@@ -491,9 +491,21 @@ public class Card2CardActivity extends UIBaseActivity implements
 	                		mCalendar.setTimeInMillis(time);
 	                		int TransactionYear = mCalendar.get(Calendar.YEAR);
 	                		String FileName = TransactionYear + resp.getField(13).toString() + resp.getField(12).toString();
-	                		allMessage = new String[] {terminalNo, cardNumber,
-	                				batchNo, voucherNo, authNo, referNo, transactionDate, transactionTime,
-	                				transactionAmount, traceId, FileName, card2};
+	                		allMessage = new String[] {
+	                			terminalNo,
+	                			cardNumber,
+	                			card2,
+	                			authNo,
+	                			referNo,
+	                			batchNo,
+	                			voucherNo,
+	                			transactionDate,
+	                			transactionTime,
+	                			user1,
+	                			transactionAmount,
+	                			traceId,
+	                			FileName
+	                		};
 		                    isOk = true;
 	                	} else {
                     		error = getError(statusCode);

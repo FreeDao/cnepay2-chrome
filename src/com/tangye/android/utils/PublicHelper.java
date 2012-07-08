@@ -4,7 +4,10 @@ import java.lang.reflect.Constructor;
 import java.util.Random;
 
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface.OnCancelListener;
+import android.os.Build.VERSION;
 import android.os.Environment;
 
 public class PublicHelper {
@@ -39,6 +42,37 @@ public class PublicHelper {
 			builder = new Builder(ctx);
 		}
     	return builder;
+    }
+    
+    public static ProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
+    		boolean indeterminate, boolean cancelable, OnCancelListener cancelListener) {
+    	if(VERSION.SDK_INT > 10) {
+	    	ProgressDialog dialog = new ProgressDialog(context, 2);
+	    	dialog.setTitle(title);
+	    	dialog.setMessage(message);
+	    	dialog.setIndeterminate(indeterminate);
+	    	dialog.setCancelable(cancelable);
+	    	dialog.setOnCancelListener(cancelListener);
+	    	dialog.show();
+	    	return dialog;
+    	} else {
+    		return ProgressDialog.show(context, title, message, indeterminate, cancelable, cancelListener);
+    	}
+    }
+    
+    public static ProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
+    		boolean indeterminate, boolean cancelable) {
+    	if(VERSION.SDK_INT > 10) {
+	    	ProgressDialog dialog = new ProgressDialog(context, 2);
+	    	dialog.setTitle(title);
+	    	dialog.setMessage(message);
+	    	dialog.setIndeterminate(indeterminate);
+	    	dialog.setCancelable(cancelable);
+	    	dialog.show();
+	    	return dialog;
+    	} else {
+    		return ProgressDialog.show(context, title, message, indeterminate, cancelable);
+    	}
     }
     
     private static final char validRandomCode[] = {
