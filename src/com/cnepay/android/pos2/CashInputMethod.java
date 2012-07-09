@@ -110,7 +110,19 @@ public class CashInputMethod implements View.OnClickListener {
 			}
 		}
 	}
-
+	
+	public void setFixedCashText(long value){
+		int[] index = new int[50];
+		int len = 0;
+		while(value != 0){
+			index[len++] = (int) (value % 10);
+			value = value / 10;
+		}
+		for(int i = len - 1; i >= 0; i--){
+			setCashText(index[i]);
+		}
+	}
+	
 	private void setCashText(int value) {
 		long newvalue = getCashInCents();
 		if (value >= 0 && value <= 9) {

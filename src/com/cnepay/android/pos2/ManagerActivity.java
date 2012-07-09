@@ -43,6 +43,7 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
             mApps.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
             mApps.add(new App(R.drawable.checkrecord, R.string.records_mgr, null));
             mApps.add(new App(R.drawable.device_manage, R.string.device_mgr, DeviceManageActivity.class));
+            mApps.add(new App(R.drawable.device_manage, R.string.mobile_charge, MobileChargeActivity.class));
             
         }
         
