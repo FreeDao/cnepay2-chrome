@@ -1,82 +1,54 @@
 package com.cnepay.android.pos2;
 
+import com.tangye.android.utils.PublicHelper;
+import com.tangye.android.utils.VoucherDraw;
+import com.tangye.android.utils.VoucherDraw.Item;
 
-import com.tangye.android.iso8583.POSHelper;
-
-import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-public class ConsumeActivity extends UIBaseActivity implements View.OnClickListener{
-	
-	//private static final String TAG = "ConsumeActivity";
-	
-    private String[] all;
-	private Button btnFinish;
-	private TextView merchantNumber, terminalNumber, cardNo, batchNumber,
-					voucherNumber, authNumber, referNumber, dealDate, dealTime, 
-					dealAmount, merchantN, reference;
-	
+public class ConsumeActivity extends ConsumeBaseActivity {
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.consume);
-        hideTitleSubmit();
-        setTitle("消费结果");
-        setActivityPara(true, true);
-
-        btnFinish = (Button)findViewById(R.id.charge_finish);
-        btnFinish.setOnClickListener(this);
-        
-        merchantNumber = (TextView)findViewById(R.id.merchantno_ticket);
-        terminalNumber = (TextView)findViewById(R.id.terminano_ticket);
-        cardNo = (TextView)findViewById(R.id.cardno_ticket);
-        voucherNumber = (TextView)findViewById(R.id.voucherno_ticket);
-        authNumber = (TextView)findViewById(R.id.authno_ticket);
-        referNumber = (TextView)findViewById(R.id.referno_ticket);
-        dealDate = (TextView)findViewById(R.id.transactiondate_ticket);
-        dealTime = (TextView)findViewById(R.id.transactiontime_ticket);
-        dealAmount = (TextView)findViewById(R.id.amountticket);
-        reference = (TextView)findViewById(R.id.reference);
-        batchNumber = (TextView)findViewById(R.id.batchno_ticket);
-        merchantN = (TextView)findViewById(R.id.merchantname_ticket);
-        
-        String extra = POSHelper.getSessionString();
-        if (extra == null) {
-        	finish();
-        }
-        all = (String[]) getIntent().getStringArrayExtra(extra);
-		if(all == null || all.length != 14) {
-			finish();
-		}
-		merchantNumber.setText(all[0]);
-		terminalNumber.setText(all[1]);
-		cardNo.setText(all[2]);
-		batchNumber.setText(all[3]);
-		voucherNumber.setText(all[4]);
-		authNumber.setText(all[5]);
-		referNumber.setText(all[6]);
-		dealDate.setText(all[7]);
-		dealTime.setText(all[8]);
-		dealAmount.setText("RMB￥" + all[9]);
-		merchantN.setText(all[11]);
-		reference.setText(all[13]);
-
+		setTitle("消费成功");
+		setTraceId(m[12]);
+		setFilePath("consumeHistory", m[13]);
 	}
-
+	
 	@Override
-	public void onClick(View v) {
-		switch(v.getId()){
-		case R.id.charge_finish:
-			v.setEnabled(false);
-			Intent intent = new Intent(ConsumeActivity.this, SignNameActivity.class);
-			intent.putExtra("allString", all);
-			startActivity(intent);
-			finish();
-			break;
-		}
+	protected void setSource(VoucherDraw view, String signaturePath) {
+		Item source[] = {
+			new Item(BitmapFactory.decodeResource(getResources(), R.drawable.unionpay), 40, 20, 20, -55),
+			new Item(getString(R.string.app_name) + "手机客户端支付", 35, 0.8f, true, 0, 20, true),
+			new Item("商户名(MERCHANT NAME):", 30, 0.6f, 20, 0, 0, false),
+				new Item(m[0], 30, 0.9f, 40, 0, 0, true),
+			new Item("商户号(MERCHANT NO): " + m[1], 25, 0.6f, 20, 0, 0, false),
+			new Item("终端号(TERMINAL NO): " + m[2], 25, 0.6f, 20, 0, 0, false),
+			new Item("卡号(CARD NO): " + PublicHelper.getMaskedString(m[3], 6, 4, '*') +" S", 30, 0.6f, 20, 0, 0, true),
+			new Item("收单行名: 中国银行", 30, 0.6f, 20, 0, 0, false),
+			new Item("交易类型(TRANS TYPE):", 30, 0.6f, 20, 0, 0, false),
+				new Item("消费/SALE(S)", 30, 0.6f, 40, 0, 0, false),
+			new Item("授权码(AUTH NO): " + m[4], 30, 0.6f, 20, 0, 0, false),
+			new Item("参考号(REFER NO): " + m[5], 30, 0.6f, 20, 0, 0, false),
+			new Item("批次号(BATCH NO): " + m[6], 20, 1, 20, 0, 0, false),
+			new Item("凭证号(VOUCHER NO): " + m[7], 20, 1, 20, 0, 0, false),
+			new Item("交易日期(DATE): " + m[8], 20, 1, 20, 0, 0, false),
+			new Item("交易时间(TIME): " + m[9], 20, 1, 20, 0, 0, false),
+			new Item("操作员号(OPERATOR NO): 01", 20, 1, 20, 0, 0, false),
+			new Item("金额(AMOUNT):", 30, 0.6f, 20, 0, 0, false),
+				new Item("RMB: " + m[10], 30, 0.9f, 40, 0, 0, true),
+			new Item("备注(REFERENCE): " + m[11], 30, 0.6f, 20, 0, 0, false),
+			new Item("持卡人签名(CARDHOLDER SIGNATURE):", 30, 0.6f, 20, 0, 120, false),
+			new Item(BitmapFactory.decodeFile(signaturePath), 120, true, -120, 0),
+			new Item("本人确认以上交易", 25, 0.6f, 20, 0, 0, false),
+			new Item("同意将其计入本卡账户", 25, 0.6f, 20, 0, 0, false),
+			new Item("I ACKNOWLEDGE SATISFACTORY", 25, 0.6f, 20, 0, 0, false),
+			new Item("RECEIPT OF RELATIVE GOODS/SERVICE", 25, 0.6f, 20, 0, 30, false),
+			new Item("商户存根(MERCHANT COPY)", 30, 0.6f, 20, 0, 20, false)
+		};
+		view.setResource(source);
 	}
 
 }

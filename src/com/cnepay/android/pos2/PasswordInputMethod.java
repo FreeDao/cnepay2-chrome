@@ -42,14 +42,6 @@ public class PasswordInputMethod implements View.OnClickListener, OnKeyListener 
 		passwordInput.setLongClickable(false);
 		passwordInput.setKeyListener(null);
 		passwordInput.setOnKeyListener(this);
-		passwordInput.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				v.requestFocus();
-				return true;
-			}
-		});
 		passwordInput.requestFocus();
 
 		if (numButtons.length != NUMOFBUTTON) {

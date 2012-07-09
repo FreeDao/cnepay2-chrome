@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.cnepay.android.pos2"
       android:versionCode="2"
-      android:versionName="1.21">
+      android:versionName="1.22">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
 		<activity android:name=".LoaderActivity"
                   android:label="@string/app_name"
@@ -64,12 +64,7 @@
                   android:theme="@style/title"
                   android:windowSoftInputMode="stateHidden"
                   android:screenOrientation="portrait" />
-        <activity android:name=".SignNameActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".SignNameTransferActivity"
+        <activity android:name=".SignatureActivity"
                   android:label="@string/app_name"
                   android:theme="@style/title"
                   android:windowSoftInputMode="adjustResize|stateHidden"

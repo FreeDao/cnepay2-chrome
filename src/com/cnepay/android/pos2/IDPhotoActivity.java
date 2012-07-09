@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
+import com.tangye.android.utils.PublicHelper;
 
 public class IDPhotoActivity extends UIBaseActivity implements
 		View.OnClickListener {
@@ -466,7 +467,7 @@ public class IDPhotoActivity extends UIBaseActivity implements
 			finish();
 			break;
 		case R.id.upload_idphoto:
-			progressDialog = ProgressDialog.show(
+			progressDialog = PublicHelper.getProgressDialog(
 					IDPhotoActivity.this, // context
 					"", // title
 					"证件照片正在上传...", // message

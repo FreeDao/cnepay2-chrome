@@ -292,7 +292,7 @@ public class CNAPSHttpActivity extends Activity implements
 				return;
 			}
 			final String bankKeyword = edKeyword.getText().toString();
-			progressDialog = ProgressDialog.show(this, // context
+			progressDialog = PublicHelper.getProgressDialog(this, // context
 					"", // title
 					"查找中...", // message
 					true, // 进度是否是不确定的，这只和创建进度条有关
@@ -367,7 +367,7 @@ public class CNAPSHttpActivity extends Activity implements
 			}
 			final String bankKeywordJ = edKeyword.getText().toString();
 			final String numPage = pageInput.getText().toString();
-			progressDialog = ProgressDialog.show(this, // context
+			progressDialog = PublicHelper.getProgressDialog(this, // context
 					"", // title
 					"查找中...", // message
 					true, // 进度是否是不确定的，这只和创建进度条有关

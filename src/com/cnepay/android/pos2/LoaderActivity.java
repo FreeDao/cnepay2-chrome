@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 
 public class LoaderActivity extends Activity implements Runnable {
@@ -26,6 +29,16 @@ public class LoaderActivity extends Activity implements Runnable {
 		mHandler.postDelayed(this, 2500);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splash);
+		findViewById(R.id.loader_splash).setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					mHandler.removeCallbacks(LoaderActivity.this);
+					run();
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override

@@ -285,7 +285,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
 		final CardInfo cardInfo = ci;
 		final String account = cardInfo.getCard(false);
 		
-		progressDialog = ProgressDialog.show(this, // context 
+		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"", // title 
 				"密码重置中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 

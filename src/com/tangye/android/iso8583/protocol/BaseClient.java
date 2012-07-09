@@ -49,7 +49,6 @@ public class BaseClient {
                 try {
                     socket.close();
                 } catch(IOException e) {}
-                socket = null;
             }
         }
     }

@@ -34,6 +34,7 @@ public class CashInputMethod implements View.OnClickListener {
 
 	public void init() {
 		cashInput.setHint("￥0.00");
+		cashInput.setClickable(true);
 		cashInput.setLongClickable(false);
 		cashInput.setKeyListener(null);
 		cashInput.setOnKeyListener(new OnKeyListener() {
@@ -43,14 +44,6 @@ public class CashInputMethod implements View.OnClickListener {
 					setCashText(keyCode - KeyEvent.KEYCODE_0);
 				}
 				return false;
-			}
-		});
-		cashInput.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				v.requestFocus();
-				return true;
 			}
 		});
 		cashInput.requestFocus();

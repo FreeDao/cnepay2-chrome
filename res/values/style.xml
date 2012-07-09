@@ -24,9 +24,9 @@
         <item name="android:windowBackground">@color/transparent_background</item>
     </style>
     <style name="dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:colorForeground">#FFFFFF</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 </resources>

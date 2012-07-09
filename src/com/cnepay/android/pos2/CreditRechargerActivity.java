@@ -16,6 +16,7 @@ import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.ConsumeMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GBKBase64;
+import com.tangye.android.utils.PublicHelper;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -402,13 +403,13 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		try {
 			password = session.getPIN(password, cardInfo.getCard(false));
 		} catch(Exception e) {
-			makeError("Please input 4 to 6 length password");
+			makeError("请输入4到6位银行卡密码！");
 			return false;
 		}
 		final String passwd = password;
 		
 		
-		progressDialog = ProgressDialog.show(this, // context 
+		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
 				"消费中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
@@ -460,9 +461,22 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 	                		mCalendar.setTimeInMillis(time);
 	                		int TransactionYear = mCalendar.get(Calendar.YEAR);
 	                		String FileName = TransactionYear + resp.getField(13).toString() + resp.getField(12).toString();
-	                		allMessage = new String[] { merchantNo, terminalNo, cardNumber,
-	                				batchNo, voucherNo, authNo, referNo, transactionDate, transactionTime,
-	                				transactionAmount, traceId, merchantName, FileName, /*plus description*/descri};
+	                		allMessage = new String[] {
+	                			merchantName,
+	                			merchantNo,
+	                			terminalNo,
+	                			cardNumber,
+	                			authNo,
+	                			referNo,
+	                			batchNo,
+	                			voucherNo,
+	                			transactionDate,
+	                			transactionTime,
+	                			transactionAmount,
+	                			descri,
+	                			traceId,
+	                			FileName
+	                		};
 		                    isOk = true;
 	                	} else {
 	                		/*

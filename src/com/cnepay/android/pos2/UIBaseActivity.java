@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
@@ -289,7 +288,6 @@ public class UIBaseActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 	
-	
 
 	/********** user function **************/
 	public static int CNAPS_REQUEST = 0x1000;
@@ -438,19 +436,9 @@ public class UIBaseActivity extends BaseActivity {
 			setKsnTestListener(ksnTestListeners[0]);
 		}
 	}
-	
-	/**
-	 * 获取SD卡路径
-	 * @return 如果mount了SD卡，返回路径，否则返回null
-	 */
+
 	public String getSDPath(){ 
-		boolean sdCardExist = Environment.getExternalStorageState()   
-				.equals(Environment.MEDIA_MOUNTED); 
-		if(sdCardExist)
-		{     
-			return (Environment.getExternalStorageDirectory()).toString(); 
-		}
-		return null; 
+		return PublicHelper.getSDPath();
 	}
 	/*********** end user function **************/
 }
