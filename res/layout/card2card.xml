@@ -20,7 +20,7 @@
                 android:id="@+id/cash_input_c2c"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#00000000"
+                android:background="@drawable/input2"
                 android:gravity="center_vertical|right"
                 android:paddingRight="5dp"
                 android:lines="1"

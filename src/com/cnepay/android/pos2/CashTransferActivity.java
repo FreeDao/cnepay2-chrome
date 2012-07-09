@@ -23,7 +23,7 @@ public class CashTransferActivity extends ConsumeBaseActivity {
 			new Item(BitmapFactory.decodeResource(getResources(), R.drawable.unionpay), 40, 20, 20, -55),
 			new Item(getString(R.string.app_name) + "手机客户端支付", 35, 0.8f, true, 0, 20, true),
 			new Item("终端号(TERMINAL NO): " + m[0], 30, 0.6f, 20, 0, 0, false),
-			new Item("转出卡号(CARD NO): " + PublicHelper.getMaskedString(m[1], 6, 6, '*') +" S", 30, 0.6f, 20, 0, 0, true),
+			new Item("转出卡号(CARD NO): " + PublicHelper.getMaskedString(m[1], 6, 4, '*') +" S", 30, 0.6f, 20, 0, 0, true),
 			new Item("转入卡号(CARD NO): " + m[2], 30, 0.6f, 20, 0, 0, true),
 			new Item("交易类型(TRANS TYPE):", 30, 0.6f, 20, 0, 0, false),
 				new Item("消费/SALE(S)", 30, 0.6f, 40, 0, 0, false),

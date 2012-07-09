@@ -1,6 +1,5 @@
 package com.cnepay.android.pos2;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,7 +39,14 @@ abstract public class ConsumeBaseActivity extends UIBaseActivity implements View
 	private static final String TAG = "ConsumeBaseActivity";
 	private static final int SIGNATURE_REQ = 1;
 	private static final int  IMAGE_QUALITY = 70;
-	private static final String UPLOAD_URL = "http://203.81.23.4:18080/tompms/transCurrent/uploadVoucher";
+	private static final String UPLOAD_URL;
+	static {
+		if (PublicHelper.isDebug) {
+			UPLOAD_URL = "http://203.81.23.23:58080/tompms/transCurrent/uploadVoucher";
+		} else {
+			UPLOAD_URL = "http://203.81.23.4:18080/tompms/transCurrent/uploadVoucher";
+		}
+	}
 	private static final int TIMEOUTSOCKET = 10000;
     private static final int TIMEOUTCONNECTION = 10000;
     private static final int SUCCESS = 0;

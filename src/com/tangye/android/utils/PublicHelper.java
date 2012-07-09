@@ -11,6 +11,8 @@ import android.os.Build.VERSION;
 import android.os.Environment;
 
 public class PublicHelper {
+	
+	public static boolean isDebug = true; // true for test route, false for real environment
     
     public static String getError(String code, Context ctx) {
         int i = ctx.getResources().getIdentifier("c" + code, "string", ctx.getPackageName());

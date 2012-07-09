@@ -403,7 +403,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		try {
 			password = session.getPIN(password, cardInfo.getCard(false));
 		} catch(Exception e) {
-			makeError("Please input 4 to 6 length password");
+			makeError("请输入4到6位银行卡密码！");
 			return false;
 		}
 		final String passwd = password;

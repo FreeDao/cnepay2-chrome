@@ -107,7 +107,7 @@ public class VoucherDraw extends View {
 			return;
 		}
 		
-		Log.i(TAG, "setResource width: " + mWidth + " height: " + mHeight);
+		//Log.i(TAG, "setResource width: " + mWidth + " height: " + mHeight);
 		LayoutParams lp = getLayoutParams();
 		lp.height = mHeight;
 		setLayoutParams(lp);
@@ -138,7 +138,7 @@ public class VoucherDraw extends View {
 	@Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.i(TAG, "width: " + w + " height: " + h);
+        //Log.i(TAG, "width: " + w + " height: " + h);
         if (w != 0) {
 	        mWidth = w;
         }
@@ -211,7 +211,7 @@ public class VoucherDraw extends View {
 		Bitmap drawingCache = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
 		draw(new Canvas(drawingCache));
 		if (drawingCache == null) {
-			Log.i(TAG, "no drawing cache!!!");
+			Log.e(TAG, "no drawing cache!!!");
 			return null;
 		}
 		drawingCache = Bitmap.createScaledBitmap(drawingCache, fixW, fixH, true);

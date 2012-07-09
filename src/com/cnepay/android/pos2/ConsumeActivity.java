@@ -26,7 +26,7 @@ public class ConsumeActivity extends ConsumeBaseActivity {
 				new Item(m[0], 30, 0.9f, 40, 0, 0, true),
 			new Item("商户号(MERCHANT NO): " + m[1], 25, 0.6f, 20, 0, 0, false),
 			new Item("终端号(TERMINAL NO): " + m[2], 25, 0.6f, 20, 0, 0, false),
-			new Item("卡号(CARD NO): " + PublicHelper.getMaskedString(m[3], 6, 6, '*') +" S", 30, 0.6f, 20, 0, 0, true),
+			new Item("卡号(CARD NO): " + PublicHelper.getMaskedString(m[3], 6, 4, '*') +" S", 30, 0.6f, 20, 0, 0, true),
 			new Item("收单行名: 中国银行", 30, 0.6f, 20, 0, 0, false),
 			new Item("交易类型(TRANS TYPE):", 30, 0.6f, 20, 0, 0, false),
 				new Item("消费/SALE(S)", 30, 0.6f, 40, 0, 0, false),
