@@ -141,4 +141,12 @@ public class PasswordInputMethod implements View.OnClickListener, OnKeyListener 
 		public void onPasswordCancel();
 		public void onSubmit(String password);
 	}
+	
+	public void setNumpadClickable(boolean clickable){
+		for (int i = 0; i < numButtons.length; i++) {
+			numButtons[i].setClickable(clickable);
+		}
+		fnButton.setClickable(clickable);
+		delButton.setClickable(clickable);
+	}
 }

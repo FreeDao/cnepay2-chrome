@@ -114,6 +114,7 @@ public class CashInputMethod implements View.OnClickListener {
 		for(int i = len - 1; i >= 0; i--){
 			setCashText(index[i]);
 		}
+		cashInput.setFocusable(false);
 	}
 	
 	private void setCashText(int value) {
