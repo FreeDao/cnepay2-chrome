@@ -14,7 +14,6 @@ import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.MobileChargeMessage;
 import com.tangye.android.utils.CardInfo;
-import com.tangye.android.utils.GBKBase64;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.ProgressDialog;
@@ -43,15 +42,16 @@ import android.widget.Toast;
 
 public class MobileChargeConsumeActivity extends UIBaseActivity implements OnClickListener
 		,PasswordInputMethodListener{
-	private EditText txtInput, txtPassword, txtDescribe;
+	private EditText txtPassword, txtDescribe;
+	private TextView txtAmount;
 	private Button[] btns;
 	private Button fnButton;
 	private View delButton;
 	private TextView noteSwipe, card;
 	private SwipeDialogController dialog;
 	private PasswordInputMethod passwdIM;
-	private CashInputMethod cashIM;
 	private ViewGroup framePass, layoutMask;
+	private ViewGroup numPad;
 	private ImageView imgCardType, imgCardReader;
 	private MobileChargeMessage s;
 	private Handler mHandler;
@@ -68,20 +68,27 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.recharger);
+		setContentView(R.layout.activity_mobile_charge_comsume);
 		setTitle("手机充值");
 		setActivityPara(true, true);
 		btnSubmit.setOnClickListener(this);
 		
 		initUI();
 		
-		cashIM = new CashInputMethod(btns, fnButton, delButton, txtInput);
-		cashIM.init();
-		cashIM.setFixedCashText(this.getIntent().getExtras().getLong("amount"));
+		long amount = this.getIntent().getExtras().getLong("amount");
+		if(amount <= 0){
+			makeError("交易金额有误");
+			finish();
+		}
+		txtAmount.setText("￥" + (amount/100) + "." + (amount % 100));
 		mobileNumber = this.getIntent().getExtras().getString("mobileNumber");
+		if(PublicHelper.isEmptyString(mobileNumber)){
+			makeError("充值手机号为空");
+			finish();
+		}
+		
 		passwdIM = new PasswordInputMethod(btns, fnButton, delButton, txtPassword, this);
-		passwdIM.init();
-		passwdIM.setNumpadClickable(false);
+		
 		
 		mHandler = new Handler() {
         	@Override
@@ -94,7 +101,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	                     progressDialog = null; // For not fade card number
 	    			 }
 	      
-	        		if(all != null && all.length == 15) {
+	        		if(all != null && all.length <= 13) {
 	        			Intent i = new Intent(MobileChargeConsumeActivity.this, MobileChargeTicketActivity.class);
 	        			String extra = POSHelper.getSessionString();
 	        			i.putExtra(extra, all);
@@ -109,7 +116,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
                     }
         			card.setText("");
         			framePass.setVisibility(View.GONE);
-        			passwdIM.setNumpadClickable(false);
+        			numPad.setVisibility(View.GONE);
         			noteSwipe.setVisibility(View.VISIBLE);
         			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
         	                Animation.RELATIVE_TO_SELF, 0.5f, 
@@ -141,13 +148,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			inputManager.hideSoftInputFromWindow(getCurrentFocus()
 					.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-			if (cashIM.getCashInCents() == 0) {
-				txtInput.requestFocus();
-				makeError("请输入交易金额");
-				return;
-			}
 			hideTitleSubmit();
-			txtInput.clearFocus();
 			dialog.setText("请刷卡...");
 			dialog.show();
 			startSwipe();
@@ -208,19 +209,21 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	}
 
 	private void initNumPad() {
-		txtInput = (EditText) findViewById(R.id.cash_input);
+		txtAmount = (TextView) findViewById(R.id.mobile_charge_consume_amount);
 		btns = new Button[10];
-		ViewGroup vg = (ViewGroup) findViewById(R.id.num_pad);
+		numPad = (ViewGroup) findViewById(R.id.num_pad);
 		for (int i = 0; i < 9; i++) {
-			ViewGroup vgtmp = ((ViewGroup) vg.getChildAt(i / 3));
+			ViewGroup vgtmp = ((ViewGroup) numPad.getChildAt(i / 3));
 			btns[i + 1] = (Button) vgtmp.getChildAt(i % 3);
 		}
-		ViewGroup vg1 = ((ViewGroup) vg.getChildAt(3));
+		ViewGroup vg1 = ((ViewGroup) numPad.getChildAt(3));
 		btns[0] = (Button) vg1.getChildAt(1);
 		TextView t1 = (TextView) vg1.getChildAt(1);
 		Log.e(TAG, t1.getText().toString());
 		fnButton = (Button) vg1.getChildAt(0);
 		delButton = vg1.getChildAt(2);
+		
+		numPad.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -228,7 +231,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		Log.v(TAG, "onPasswordCancel");
 		card.setText("");
 		framePass.setVisibility(View.GONE);
-		passwdIM.setNumpadClickable(false);
+		numPad.setVisibility(View.GONE);
 		noteSwipe.setVisibility(View.VISIBLE);
 		ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
                 Animation.RELATIVE_TO_SELF, 0.5f, 
@@ -258,7 +261,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		dialog.dismiss();
 		card.setText(cn);
 		framePass.setVisibility(View.VISIBLE);
-		passwdIM.setNumpadClickable(true);
+		numPad.setVisibility(View.VISIBLE);
 		noteSwipe.setVisibility(View.GONE);
 		imgCardType.setVisibility(View.VISIBLE);
     	ScaleAnimation sa = new ScaleAnimation(0, 1, 0, 1, 
@@ -266,6 +269,8 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
     	        Animation.RELATIVE_TO_SELF, 0.5f);
     	sa.setDuration(200);
     	imgCardType.startAnimation(sa);
+    	
+    	passwdIM.init();
     	
 	}
 	
@@ -320,7 +325,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		super.onTimeout();
 		makeError("未检测到刷卡动作");
 		dialog.dismiss();
-		txtInput.requestFocus();
 		if(isPlugged()) {
 			showTitleSubmit();
 		}
@@ -338,7 +342,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	public void onError(int err) {
 		Log.i(TAG, "error = " + err);
 		dialog.dismiss();
-		txtInput.requestFocus();
 		// 刷卡时，插拔卡可能会引起decodeError
 		boolean isDecodeError = true;
 		boolean isInterrupt = false;
@@ -406,7 +409,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			makeError("POS机出错！");
 			return false;
 		}
-		final String amount = txtInput.getText().toString().substring(1);
+		final String amount = txtAmount.getText().toString().substring(1);
 		final String descri = txtDescribe.getText().toString();
 		try {
 			password = session.getPIN(password, cardInfo.getCard(false));
@@ -446,7 +449,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	                if(resp != null) {
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
-	                		String merchantNo = resp.getField(42).toString();
 	                		String terminalNo = resp.getField(41).toString();
 	                		String cardNumber = resp.getField(2).toString();
 	                		String batchNo = resp.getField(60).toString().substring(2); // 批次号
@@ -462,15 +464,13 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	                		String transactionTime = getTransactionTime(resp.getField(12).toString());
 	                		String transactionAmount = amount;
 	                		String traceId = resp.getField(59).toString(); // 交易ID
-	                		String merchantName = GBKBase64.decode(resp.getField(55).toString()); // 姓名
 	                		long time = System.currentTimeMillis();
 	                		Calendar mCalendar=Calendar.getInstance();
 	                		mCalendar.setTimeInMillis(time);
 	                		int TransactionYear = mCalendar.get(Calendar.YEAR);
 	                		String FileName = TransactionYear + resp.getField(13).toString() + resp.getField(12).toString();
 	                		allMessage = new String[] {
-	                			merchantName,
-	                			merchantNo,
+	                			mobileNumber,
 	                			terminalNo,
 	                			cardNumber,
 	                			authNo,
@@ -481,7 +481,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	                			transactionTime,
 	                			transactionAmount,
 	                			descri,
-	                			mobileNumber,
 	                			traceId,
 	                			FileName
 	                		};
