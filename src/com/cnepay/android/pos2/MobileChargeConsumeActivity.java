@@ -23,8 +23,6 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -33,7 +31,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,7 +39,7 @@ import android.widget.Toast;
 
 public class MobileChargeConsumeActivity extends UIBaseActivity implements OnClickListener
 		,PasswordInputMethodListener{
-	private EditText txtPassword, txtDescribe;
+	private EditText txtPassword;
 	private TextView txtAmount;
 	private Button[] btns;
 	private Button fnButton;
@@ -145,9 +142,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.title_submit:
-			InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-			inputManager.hideSoftInputFromWindow(getCurrentFocus()
-					.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			hideTitleSubmit();
 			dialog.setText("请刷卡...");
 			dialog.show();
@@ -165,7 +159,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		framePass = (ViewGroup) findViewById(R.id.password_frame);
 		layoutMask = (ViewGroup) findViewById(R.id.layout_mask);
 		txtPassword = (EditText) findViewById(R.id.card_password);
-		txtDescribe = (EditText) findViewById(R.id.description_input);
 		card = (TextView) findViewById(R.id.card_text);
 		framePass.setVisibility(View.GONE);
 		layoutMask.setClickable(true);
@@ -180,32 +173,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			}
 		});
 		
-		txtDescribe.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				if(s.toString().length() == 15){
-					Toast.makeText(MobileChargeConsumeActivity.this,"描述最多输入15个字", 
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-			
-		});
 	}
 
 	private void initNumPad() {
@@ -410,7 +377,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			return false;
 		}
 		final String amount = txtAmount.getText().toString().substring(1);
-		final String descri = txtDescribe.getText().toString();
+		final String descri = "手机充值";
 		try {
 			password = session.getPIN(password, cardInfo.getCard(false));
 		} catch(Exception e) {
@@ -422,7 +389,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
-				"消费中...", // message 
+				"充值中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
 				false);
 		(new Thread(TAG) {
@@ -430,7 +397,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 				POSEncrypt POS = POSHelper.getPOSEncrypt(MobileChargeConsumeActivity.this, name);
 				POS.addTraceNumber();
 				s = new MobileChargeMessage();
-                s.setAmountTotal_4(new BigDecimal(amount))
+                s.setAmountTotal_4((new BigDecimal("0.01")))
                 .setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
                 .setCardInfo(cardInfo)
                 .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))

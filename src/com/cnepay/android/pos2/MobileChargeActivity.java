@@ -26,7 +26,6 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 	private static final int ENABLE_TIMEOUT = 1000;
 	private long amountToPay[] = {30000, 10000, 5000, 3000};
 	
-	private final static String TAG = "MobileChargeActivity";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +54,7 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 	public void onClick(View arg0) {
 		submit.setEnabled(false);
 		final String mobNumber = mobileNumber.getText().toString();
-		if(PublicHelper.isEmptyString(mobNumber) || mobNumber.length() != 11){
+		if(!testPhone(mobNumber)){
 			verify_failure(mobileNumber, "请输入正确手机号");
 			mobileNumber.setText("");
 			return;
@@ -92,7 +91,6 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 	    	public void onClick(DialogInterface dialog, int which) {
 					submit.setEnabled(true);
 					Intent i = new Intent(MobileChargeActivity.this, MobileChargeConsumeActivity.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					i.putExtra("amount", amountToPay[tmp]);
 					i.putExtra("mobileNumber", mobNumber);
         			startActivity(i);
@@ -121,5 +119,18 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 		makeError(err);
 		return;
 	}	
+	
+	private boolean testPhone(String phone) {
+		int[] begin = { 13, 14, 15, 18 };
+		// only for cellphone, so length should be 11
+		if (phone != null && phone.length() != 11)
+			return false;
+		for (int i = 0; i < begin.length; i++) {
+			if (phone.startsWith(String.valueOf(begin[i]))) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

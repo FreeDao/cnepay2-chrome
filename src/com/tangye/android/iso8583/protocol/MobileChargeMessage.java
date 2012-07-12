@@ -14,7 +14,7 @@ public class MobileChargeMessage extends BaseMessageAbstract{
 	protected void onCreateRequestIsoMessage(IsoMessage requestMsg) {
 		requestMsg.setType(0x0200);
         requestMsg.setBinary(true);
-        requestMsg.setValue(3, "0x000000", IsoType.NUMERIC, 6);
+        requestMsg.setValue(3, "000000", IsoType.NUMERIC, 6);
 		setIsPinNeed_22(true); // default need Pin input
 		requestMsg.setValue(25, "00", IsoType.NUMERIC, 2); // 服务点条件码
 		setMaxPinLength_26(10); // Pin Max length default 10, 可选
@@ -22,7 +22,7 @@ public class MobileChargeMessage extends BaseMessageAbstract{
 		setSecurityControl_53("2000000000000000"); // 空全控制码默认为ANSI9.8+DES		
 		TraceType_60_1 = "90"; // 话费充值转账
 	}
-
+	
 	@Override
 	protected void onCreateResponseIsoTemplate(IsoTemplate respTemp) {
 		respTemp.setType(0x0210);
@@ -55,7 +55,7 @@ public class MobileChargeMessage extends BaseMessageAbstract{
 	@Override
 	public boolean isBitmapValid() {
 		int[] in = {2,3,4,11,12,13,14,15,25,32,37,38,39,41,42,44,49,53,55,57,59,60,63,64};
-		int[] out = {3,4,11,22,25,26,35,41,42,49,53,57,58,60,64};
+		int[] out = {3,4,11,22,25,26,35,41,42,49,52,53,57,58,60,64};
 		return isBitmapValid(in, out);
 	}
 	
@@ -110,7 +110,7 @@ public class MobileChargeMessage extends BaseMessageAbstract{
     }
     
     public MobileChargeMessage setMobileNumber_57(String moblieNumber){
-    	req.setValue(57, moblieNumber, IsoType.LLLVARBCD);
+    	req.setValue(57, moblieNumber, IsoType.LLLVAR);
     	return this;
     }
         

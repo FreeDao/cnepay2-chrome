@@ -48,7 +48,14 @@ public class IDPhotoActivity extends UIBaseActivity implements
 		View.OnClickListener {
 	private static final String TAG = "IDPhotoActivity";
 	// 上传服务器地址
-	private static final String UPLOAD_URL = "http://203.81.23.4:18080/tompms/merchant/uploadImg";
+	private static final String UPLOAD_URL;
+	static {
+		if (PublicHelper.isDebug) {
+			UPLOAD_URL = "http://203.81.23.23:58080/tompms/merchant/uploadImg";
+		} else {
+			UPLOAD_URL = "http://203.81.23.4:18080/tompms/merchant/uploadImg";
+		}
+	}
 	private static final int UPLOAD_SUCCESS = 0;
 	private static final int UPLOAD_FAILURE = 1;
 	private static final int TIMEOUTSOCKET = 10000;
