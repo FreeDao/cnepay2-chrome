@@ -75,11 +75,11 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 		StringBuilder info = new StringBuilder();
     	info.append("手机号码： " + mobNumber);
     	final int tmp = Integer.parseInt(amount.getTag().toString());
-    	info.append("\n充值金额：￥" + amountToPay[tmp]/100.0);
+    	info.append("\n充值金额：￥" + amountToPay[tmp]/100);
 
 		AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(MobileChargeActivity.this);
 	    builder.setTitle("手机充值")
-	    .setIcon(android.R.drawable.ic_dialog_alert)
+	    .setIcon(android.R.drawable.ic_dialog_info)
 	    .setMessage(info.toString() + "\n\n是否继续充值？")
 	    .setCancelable(false)
 	    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -89,12 +89,11 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 	    })
 	    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int which) {
-					submit.setEnabled(true);
 					Intent i = new Intent(MobileChargeActivity.this, MobileChargeConsumeActivity.class);
 					i.putExtra("amount", amountToPay[tmp]);
 					i.putExtra("mobileNumber", mobNumber);
         			startActivity(i);
-					finish(); // should not happen
+					finish();
 	    	}
 	    });
 	    builder.show();		

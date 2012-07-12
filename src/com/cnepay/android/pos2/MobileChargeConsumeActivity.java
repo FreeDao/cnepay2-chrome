@@ -77,7 +77,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			makeError("交易金额有误");
 			finish();
 		}
-		txtAmount.setText("￥" + (amount/100) + "." + (amount % 100));
+		txtAmount.setText(String.format("￥%d.%02d",  amount / 100, amount % 100));
 		mobileNumber = this.getIntent().getExtras().getString("mobileNumber");
 		if(PublicHelper.isEmptyString(mobileNumber)){
 			makeError("充值手机号为空");
@@ -85,22 +85,23 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		}
 		
 		passwdIM = new PasswordInputMethod(btns, fnButton, delButton, txtPassword, this);
-		
-		
+
 		mHandler = new Handler() {
         	@Override
         	public void handleMessage(Message msg) {
         		switch(msg.what) {
         		case SUCCESS:
         			String[] all = (String[]) msg.obj;
-	    			 if(progressDialog != null && all != null) {
-	                     progressDialog.dismiss();
-	                     progressDialog = null; // For not fade card number
-	    			 }
-	      
-	        		if(all != null && all.length <= 13) {
+	    			if(progressDialog != null && all != null && all.length <= 13) {
+	    				progressDialog.dismiss();
+	    				progressDialog = null; // For not fade card number
 	        			Intent i = new Intent(MobileChargeConsumeActivity.this, MobileChargeTicketActivity.class);
 	        			String extra = POSHelper.getSessionString();
+	        			if (extra == null) {
+	        				makeError("POS过期");
+	        				finish();
+	        				return;
+	        			}
 	        			i.putExtra(extra, all);
 	        			startActivity(i);
 	        			finish();
@@ -109,7 +110,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
         		case FAILURE:
         			String e = (String) msg.obj;
         			if(progressDialog != null) {
-                         progressDialog.dismiss();
+                         progressDialog.cancel();
                     }
         			card.setText("");
         			framePass.setVisibility(View.GONE);
@@ -154,6 +155,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		initNumPad();
 		setTitleSubmitText("确认刷卡");
 		noteSwipe = (TextView) findViewById(R.id.notation_swipe);
+		noteSwipe.setText("正在检测刷卡器...");
 		imgCardType = (ImageView)findViewById(R.id.card_type);
         imgCardReader = (ImageView)findViewById(R.id.card_indicator);
 		framePass = (ViewGroup) findViewById(R.id.password_frame);
@@ -386,7 +388,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		}
 		final String passwd = password;
 		
-		
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
 				"充值中...", // message 
@@ -397,8 +398,13 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 				POSEncrypt POS = POSHelper.getPOSEncrypt(MobileChargeConsumeActivity.this, name);
 				POS.addTraceNumber();
 				s = new MobileChargeMessage();
-                s.setAmountTotal_4((new BigDecimal("0.01")))
-                .setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
+				if (PublicHelper.isDebug) {
+					Log.w(TAG, "debug mode, amount = ￥0.01");
+					s.setAmountTotal_4(new BigDecimal("0.01"));
+				} else {
+					s.setAmountTotal_4(new BigDecimal(amount));
+				}
+                s.setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
                 .setCardInfo(cardInfo)
                 .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
                 .setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))

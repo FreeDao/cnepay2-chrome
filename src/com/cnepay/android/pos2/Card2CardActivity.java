@@ -91,16 +91,19 @@ public class Card2CardActivity extends UIBaseActivity implements
 				switch (msg.what) {
 				case SUCCESS:
 					String[] all = (String[]) msg.obj;
-					if (progressDialog != null && all != null) {
+					if (progressDialog != null && all != null && all.length <= 14) {
 						// register successfully
 						progressDialog.dismiss();
 						progressDialog = null; // For not fade card number
-					}
-					if (all != null && all.length <= 14) {
 						// TODO transfer successfully
 						makeError("转账成功!");
 						Intent i = new Intent(Card2CardActivity.this, CashTransferActivity.class);
 	        			String extra = POSHelper.getSessionString();
+	        			if (extra == null) {
+	        				makeError("POS过期");
+	        				finish();
+	        				return;
+	        			}
 	        			i.putExtra(extra, all);
 	        			startActivity(i);
 	        			finish();
@@ -109,7 +112,7 @@ public class Card2CardActivity extends UIBaseActivity implements
         		case FAILURE:
         			String e = (String) msg.obj;
         			if(progressDialog != null) {
-                        progressDialog.dismiss();
+                        progressDialog.cancel();
                     }
         			card.setText("");
         			framePass.setVisibility(View.GONE);

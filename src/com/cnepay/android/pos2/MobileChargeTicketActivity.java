@@ -22,7 +22,7 @@ public class MobileChargeTicketActivity extends ConsumeBaseActivity{
 		Item source[] = {
 			new Item(BitmapFactory.decodeResource(getResources(), R.drawable.unionpay), 40, 20, 20, -55),
 			new Item(getString(R.string.app_name) + "手机客户端支付", 35, 0.6f, true, 0, 20, true),
-			new Item("充值手机号(MOBILE NO):" + m[0], 30, 0.6f, 20, 0, 0, true),
+			new Item("充值手机号(PHONE NO): " + m[0], 30, 0.6f, 20, 0, 0, true),
 			new Item("终端号(TERMINAL NO): " + m[1], 30, 0.6f, 20, 0, 0, false),
 			new Item("卡号(CARD NO): " + PublicHelper.getMaskedString(m[2], 6, 4, '*') +" S", 30, 0.6f, 20, 0, 0, true),
 			new Item("收单行名: 中国银行", 30, 0.6f, 20, 0, 0, false),
@@ -36,7 +36,7 @@ public class MobileChargeTicketActivity extends ConsumeBaseActivity{
 			new Item("交易时间(TIME): " + m[8], 20, 1, 20, 0, 0, false),
 			new Item("操作员号(OPERATOR NO): 01", 20, 1, 20, 0, 0, false),
 			new Item("金额(AMOUNT):", 30, 0.6f, 20, 0, 0, false),
-				new Item("RMB:" + m[9], 30, 0.9f, 40, 0, 0, true),
+				new Item("RMB: " + m[9], 30, 0.9f, 40, 0, 0, true),
 			new Item("备注(REFERENCE): " + m[10], 30, 0.6f, 20, 0, 0, false),
 			new Item("持卡人签名(CARDHOLDER SIGNATURE):", 30, 0.6f, 20, 0, 120, false),
 			new Item(BitmapFactory.decodeFile(signaturePath), 120, true, -120, 0),

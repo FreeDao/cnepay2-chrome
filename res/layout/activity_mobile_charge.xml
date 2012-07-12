@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:padding="10dp"
             android:orientation="vertical" >
 
             <TextView
@@ -29,13 +29,16 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="#0099ff" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/input"
                 android:clickable="true"
                 android:focusable="true"
@@ -113,7 +116,8 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="#0099ff" />
 
             <RadioGroup
@@ -125,12 +129,21 @@
                 android:orientation="vertical" >
 
                 <RadioButton
-                    android:id="@+id/mobile_charge_300"
+                    android:id="@+id/mobile_charge_30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:tag="3"
+                    android:text="30元  （价格：30.00元）"
+                    android:textColor="#0099ff"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/mobile_charge_50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="2"
                     android:checked="true"
-                    android:tag="0"
-                    android:text="300元（价格：300.00元）"
+                    android:text="50元  （价格：50.00元）"
                     android:textColor="#0099ff"
                     android:textStyle="bold" />
 
@@ -144,20 +157,11 @@
                     android:textStyle="bold" />
 
                 <RadioButton
-                    android:id="@+id/mobile_charge_50"
+                    android:id="@+id/mobile_charge_300"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tag="2"
-                    android:text="50元  （价格：50.00元）"
-                    android:textColor="#0099ff"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/mobile_charge_30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="3"
-                    android:text="30元  （价格：30.00元）"
+                    android:tag="0"
+                    android:text="300元（价格：300.00元）"
                     android:textColor="#0099ff"
                     android:textStyle="bold" />
             </RadioGroup>
@@ -180,7 +184,7 @@
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="1"
-            android:text="充值"
+            android:text="确定充值"
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:textStyle="bold" />
