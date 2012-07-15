@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/num_pad"
+android:layout_width="fill_parent"  
+android:layout_height="wrap_content"
+android:background="#A0000000"  
+android:stretchColumns="*"
+android:shrinkColumns="*"
+>  
+            <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_height="80dp">  
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                 />
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+            </TableRow>
+            <TableRow>  
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+            </TableRow>
+            <TableRow>  
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+            </TableRow>
+            <TableRow>  
+                <Button
+                android:layout_width="40dp"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <Button
+                android:layout_width="40dp"
+                android:layout_height="fill_parent"
+                style="@style/pswdstyle"
+                />
+                <ImageButton
+                android:layout_width="40dp"
+                style="@style/pswdstyle"
+                android:layout_height="fill_parent" 
+                android:src="@drawable/keyboard_delete"/>
+            </TableRow>
+</TableLayout>  

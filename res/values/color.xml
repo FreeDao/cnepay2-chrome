@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="transparent">#00ffffff</color>
+    <color name="transparent_background">#55000000</color>
+    <!-- below unused -->
+    <color name="light_background">#DD4DCDF7</color>
+    <color name="dark_background">#00C4DF</color>
+    <color name="pass_background">#55000000</color>
+</resources>

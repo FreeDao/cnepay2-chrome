@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10px" >
+
+            <EditText
+                android:id="@+id/cash_input_c2c"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/input2"
+                android:gravity="center_vertical|right"
+                android:paddingRight="5dp"
+                android:lines="1"
+                android:textSize="40sp" />
+            
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:gravity="center_vertical"
+                android:text="汇款收取1%的手续费，手续费最低收取1元，60元封顶"
+                android:textColor="#555555"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/notation_swipe_c2c"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#AAAAAA"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+
+            <include layout="@layout/carddetectbox" />
+        </LinearLayout>
+
+        <include layout="@layout/numpad" />
+    </LinearLayout>
+
+    <include layout="@layout/passframe" />
+
+</FrameLayout>

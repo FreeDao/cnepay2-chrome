@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="left|center"
+    android:orientation="horizontal" >
+
+    <FrameLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp" >
+
+        <ImageView
+            android:id="@+id/icon_indicator"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/title_btn"
+            android:padding="6dp"
+            android:src="@drawable/signup_reader" />
+
+        <LinearLayout
+            android:id="@+id/icon_detecting"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/title_btn"
+            android:gravity="center"
+            android:padding="6dp"
+            android:visibility="gone" >
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/title_name"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="2dp"
+        android:paddingRight="20dp"
+        android:shadowColor="#BB000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="@string/app_name"
+        android:textColor="#0099ff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" />
+
+    <View
+        android:id="@+id/title_seprater"
+        android:layout_width="1px"
+        android:layout_height="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#442a2a2a"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/title_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/title_btn"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="15dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/confirm" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:shadowColor="#88000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="完成"
+            android:textColor="#0099ff"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

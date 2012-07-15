@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="custTitleBg">
+        <item name="android:background">@drawable/titlebar</item>
+    </style>
+    <style name="title" parent="android:Theme.Light">
+        <item name="android:windowTitleSize">50dp</item>
+        <item name="android:windowTitleBackgroundStyle">@style/custTitleBg</item>
+    </style>
+    
+    <!-- below unused -->
+    <style name="pswdstyle">  
+        <item name="android:background">@drawable/pswd</item>  
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Theme" parent="android:Theme">
+    </style>
+    <style name="Theme.Transparent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#FFFFFF</item>
+        <item name="android:windowBackground">@color/transparent_background</item>
+    </style>
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+</resources>

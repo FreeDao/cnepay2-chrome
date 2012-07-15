@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:padding="20dp" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/account_reg"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="银行卡号"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/reg_account_number"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:hint="初始化刷卡器..."
+                    android:lines="1"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/reg_sericalNum"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="序列号码"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/reg_serial"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="请输入注册序列号"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/reg_name"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="用户姓名"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/reg_username"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="您的真实姓名"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/reg_personid"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="身份证号"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/reg_idnumber"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="请输入真实身份证号"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/phonenumber_reg"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="手机号码"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/reg_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="手机号作为登录账户"
+                    android:inputType="phone"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/password_reg"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="登录密码"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/first_pwd_reg"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="6位数字或字母"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:maxLength="6"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/repassword_reg"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="再次输入"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/second_pwd_reg"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="再次输入密码"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:maxLength="6"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/input"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/show_bankname_reg"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="银行名称"
+                    android:textColor="#0099ff"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/reg_bankname"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center|left"
+                    android:hint="选择开户银行"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/reg_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:background="@drawable/button"
+            android:shadowColor="#333333"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:text="提交注册信息"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
