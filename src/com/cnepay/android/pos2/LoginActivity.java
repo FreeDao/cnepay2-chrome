@@ -192,7 +192,7 @@ public class LoginActivity extends UIBaseActivity
             builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                	Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                	Intent intent = new Intent(LoginActivity.this, VerifySerialNumberActivity.class);
         			startActivity(intent);
                 }
             });

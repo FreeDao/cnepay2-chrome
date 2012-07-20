@@ -65,11 +65,13 @@ public class RegisterActivity extends UIBaseActivity implements
 				stopSwipe();
 			}
 		});
-
+		
+		String[] all = this.getIntent().getExtras().getStringArray("register");
 		card = (TextView) this.findViewById(R.id.reg_account_number);
 		card.setOnClickListener(this);
 
 		txtSerial = (EditText) findViewById(R.id.reg_serial);
+		txtSerial.setText(all[1]);
 		txtPname = (EditText) findViewById(R.id.reg_username);
 		txtPid = (EditText) findViewById(R.id.reg_idnumber);
 		txtPhone = (EditText) findViewById(R.id.reg_phone);

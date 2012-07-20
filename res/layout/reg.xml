@@ -54,9 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/input"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false" >
 
                 <TextView
                     android:id="@+id/reg_sericalNum"
@@ -79,6 +79,8 @@
                     android:hint="请输入注册序列号"
                     android:lines="1"
                     android:singleLine="true"
+                    android:clickable="false"
+                	android:focusable="false"
                     android:textSize="16sp" />
             </LinearLayout>
 
