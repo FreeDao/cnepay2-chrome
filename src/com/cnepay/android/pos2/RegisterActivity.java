@@ -56,6 +56,20 @@ public class RegisterActivity extends UIBaseActivity implements
 		setTitle("账户注册");
 		setOnCNAPSResultListener(this); // 增加选择开户银行功能
 		btnSubmit.setOnClickListener(this);
+		final String[] all = getIntent().getExtras().getStringArray("register");
+		setActivityPara(false, false, new KsnTestListener() {
+			@Override
+			public boolean test(String ksn) {
+				if(PublicHelper.isEmptyString(ksn)){
+					errText("读取刷卡器错误");
+				}
+				if(!ksn.equals(all[0])){
+					return false;
+				}
+				return true;
+			}
+		});
+		
 		int[] attrs = new int[] { R.layout.swipe_dialog, R.style.dialog,
 				R.id.dialog_anim, R.id.dialog_note };
 		dialog = new SwipeDialogController(this, attrs);
@@ -66,7 +80,6 @@ public class RegisterActivity extends UIBaseActivity implements
 			}
 		});
 		
-		String[] all = this.getIntent().getExtras().getStringArray("register");
 		card = (TextView) this.findViewById(R.id.reg_account_number);
 		card.setOnClickListener(this);
 
