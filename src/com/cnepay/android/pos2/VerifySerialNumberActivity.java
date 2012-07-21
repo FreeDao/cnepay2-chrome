@@ -76,7 +76,6 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
                         errText((String)msg.obj);
                         showTitleSubmit();
                         serialNumber.setEnabled(true);
-            			//finish();
                     }
                     break;
                 }
@@ -105,8 +104,6 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
             s.stop();
             s = null;
         }
-        showTitleSubmit();
-        serialNumber.setEnabled(true);
 	}
 
 	/************ private function *************/

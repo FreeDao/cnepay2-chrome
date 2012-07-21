@@ -153,7 +153,6 @@ public class VerifyKSNActivity extends UIBaseActivity implements
             s.stop();
             s = null;
         }
-        showTitleSubmit();
 	}
 
 	/************ private function *************/
