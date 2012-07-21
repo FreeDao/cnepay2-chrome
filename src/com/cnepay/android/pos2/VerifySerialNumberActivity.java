@@ -12,6 +12,8 @@ import com.tangye.android.utils.GernateSNumber;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +26,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class VerifySerialNumberActivity extends UIBaseActivity implements
-		View.OnClickListener{
+		View.OnClickListener, OnCancelListener{
 	
 	private EditText serialNumber;
 	private String myKSN;
@@ -35,6 +37,7 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
 	private final GernateSNumber gn = new GernateSNumber();
+	private SerialNumberVerifyMessage s;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,8 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
                     if(progressDialog != null) {
                         progressDialog.cancel();
                         errText((String)msg.obj);
+                        showTitleSubmit();
+                        serialNumber.setEnabled(true);
             			//finish();
                     }
                     break;
@@ -93,6 +98,16 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		submit();
 	}
 	
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		progressDialog = null;
+        if(s != null) {
+            s.stop();
+            s = null;
+        }
+        showTitleSubmit();
+        serialNumber.setEnabled(true);
+	}
 
 	/************ private function *************/
 
@@ -130,20 +145,21 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		serialNumber.setEnabled(false);
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
-				"校验中...", // message 
+				"激活中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
-				false);
+				true,
+				this);
 		(new Thread() {
 			public void run() {
-	            SerialNumberVerifyMessage ss = new SerialNumberVerifyMessage();
-            	ss.setKSN_54(serialNum)
+	            s = new SerialNumberVerifyMessage();
+            	s.setKSN_54(serialNum)
             	.setSource_16(getSource());
 	            boolean isOK = false;
 	            String error = "";
 	            String[] verifyOk = new String[2];
 	            try {
-	            	if(!ss.isBitmapValid()) throw new RuntimeException("BitmapError");
-	               	IsoMessage res = ss.request();
+	            	if(!s.isBitmapValid()) throw new RuntimeException("BitmapError");
+	               	IsoMessage res = s.request();
 	               	if(res == null) {
 	               		isOK = false;
 	               		error = "未知错误";
@@ -184,6 +200,8 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		}).start();
 		
 	}
+
+	
 	
 	/************* end private function **************/
 

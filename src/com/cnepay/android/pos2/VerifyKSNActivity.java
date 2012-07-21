@@ -7,6 +7,8 @@ import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.protocol.KSNVerifyMessage;
 import com.tangye.android.utils.PublicHelper;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,15 +19,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 public class VerifyKSNActivity extends UIBaseActivity implements
-		View.OnClickListener{
+		View.OnClickListener, OnCancelListener{
 	
 	private TextView hintPlugin;
 	private String myKSN;
 	private Handler mHandler;
 	private ProgressDialog progressDialog;
+	private KSNVerifyMessage s;
 
-	private static final String TAG = "VerifySerialNumberActivity";
+	private static final String TAG = "VerifyKSNActivity";
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
 	
@@ -73,7 +78,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                         progressDialog.cancel();
                         errText((String)msg.obj);
                         showTitleSubmit();
-            			finish();
+            			//finish();
                     }
                     break;
                 }
@@ -142,6 +147,14 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		hintPlugin.setHint("请插入刷卡器");
 	}
 	
+	public void onCancel(DialogInterface dialog) {
+		progressDialog = null;
+        if(s != null) {
+            s.stop();
+            s = null;
+        }
+        showTitleSubmit();
+	}
 
 	/************ private function *************/
 
@@ -154,13 +167,14 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	private void submit() {
 		hideTitleSubmit();
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
-				"",	// title 
-				"刷卡器激活中...", // message 
+				"", // title 
+				"激活中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
-				false);
+				true,
+				this);
 		(new Thread() {
 			public void run() {
-			    KSNVerifyMessage s = new KSNVerifyMessage();
+			    s = new KSNVerifyMessage();
 	            s.setKSN_58(myKSN);
 	            
 	            boolean isOK = false;
@@ -208,6 +222,8 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		}).start();
 		
 	}
+
+	
 	
 	/************* end private function **************/
 
