@@ -36,6 +36,7 @@ public class UIBaseActivity extends BaseActivity {
 	private OnCNAPSResultListener cnapsListener = null;
 
 	protected ImageView imgIndicator = null;
+	protected ImageView imgUnionpay = null;
 	protected View viewDetect = null;
 	protected TextView txtTitle = null;
 	protected ViewGroup btnSubmit = null;
@@ -132,6 +133,7 @@ public class UIBaseActivity extends BaseActivity {
 		viewDetect = getWindow().findViewById(R.id.icon_detecting);
 		txtTitle = (TextView)getWindow().findViewById(R.id.title_name);
 		btnSubmit = (ViewGroup)getWindow().findViewById(R.id.title_submit);
+		imgUnionpay = (ImageView) getWindow().findViewById(R.id.icon_unionpay);
 	}
 
 	@Override
@@ -316,7 +318,7 @@ public class UIBaseActivity extends BaseActivity {
 	 */
 	public void showTitleSubmit() {
 		if (btnSubmit != null && btnSubmit.getVisibility() != View.VISIBLE) {
-			TranslateAnimation ta = new TranslateAnimation(200.0f, 0.0f, 0.0f, 0.0f);
+			TranslateAnimation ta = new TranslateAnimation(200, 0, 0, 0);
 			ta.setDuration(200);
 			ta.setAnimationListener(new AnimationListener() {
 
@@ -337,6 +339,14 @@ public class UIBaseActivity extends BaseActivity {
 			});
 			btnSubmit.setVisibility(View.VISIBLE);
 			btnSubmit.startAnimation(ta);
+			TranslateAnimation aa = new TranslateAnimation(0, 200, 0, 0);
+			aa.setDuration(200);
+			imgUnionpay.startAnimation(aa);
+			imgUnionpay.postDelayed(new Runnable() {
+				public void run() {
+					imgUnionpay.setVisibility(View.GONE);
+				}
+			}, 200);
 		}
 	}
 
@@ -345,7 +355,7 @@ public class UIBaseActivity extends BaseActivity {
 	 */
 	public void hideTitleSubmit() {
 		if (btnSubmit != null && btnSubmit.getVisibility() == View.VISIBLE) {
-			TranslateAnimation ta = new TranslateAnimation(0.0f, 200.0f, 0.0f, 0.0f);
+			TranslateAnimation ta = new TranslateAnimation(0, 200, 0, 0);
 			ta.setDuration(200);
 			ta.setAnimationListener(new AnimationListener() {
 
@@ -366,6 +376,10 @@ public class UIBaseActivity extends BaseActivity {
 			getWindow().findViewById(R.id.title_seprater).setVisibility(View.GONE);
 			btnSubmit.setEnabled(false);
 			btnSubmit.startAnimation(ta);
+			TranslateAnimation aa = new TranslateAnimation(200, 0, 0, 0);
+			aa.setDuration(200);
+			imgUnionpay.startAnimation(aa);
+			imgUnionpay.setVisibility(View.VISIBLE);
 		}
 	}
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <bitmap
+            android:antialias="true"
+            android:dither="true"
+            android:filter="true"
+            android:gravity="fill_vertical"
+            android:src="@drawable/titlebg0"
+            android:tileMode="disabled" />
+    </item>
+    <item android:drawable="@drawable/titlebg1" />
+
+</layer-list>

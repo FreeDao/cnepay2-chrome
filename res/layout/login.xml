@@ -74,6 +74,7 @@
                     android:layout_weight="1"
                     android:gravity="left|center_vertical"
                     android:text="记住"
+                    android:button="@drawable/checkbox"
                     android:textColor="#555555"
                     android:textSize="15sp" />
 
@@ -109,15 +110,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/button"
-                    android:shadowColor="#333333"
-                    android:shadowDx="2"
-                    android:shadowDy="2"
-                    android:shadowRadius="1"
-                    android:text="登录"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    style="@style/button"
+                    android:text="登录" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
