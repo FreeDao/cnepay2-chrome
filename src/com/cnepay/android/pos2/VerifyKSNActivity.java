@@ -38,8 +38,8 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_verify_ksn);
-		setTitle("刷卡器激活");
-		setTitleSubmitText("激活");
+		setTitle("刷卡器验证");
+		setTitleSubmitText("验证");
 		hideTitleSubmit();
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false, new KsnTestListener() {
@@ -55,6 +55,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		});
 
 		hintPlugin = (TextView)findViewById(R.id.verify_ksn_hint);
+		hintPlugin.setText("正在识别刷卡器。。。");
 
 		
 		mHandler = new Handler() {
@@ -77,8 +78,14 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                     if(progressDialog != null) {
                         progressDialog.cancel();
                         errText((String)msg.obj);
-                        showTitleSubmit();
-            			//finish();
+                        
+            			if(isPlugged()){
+            				showTitleSubmit();
+            				hintPlugin.setText("请点击【验证】，验证刷卡器");
+            			}else{
+            				hideTitleSubmit();
+            				hintPlugin.setText("请插入刷卡器");
+            			}
                     }
                     break;
                 }
@@ -138,13 +145,13 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	public void onPlugin() {
 		super.onPlugin(); // UIBASE action
 		this.showTitleSubmit();
-		hintPlugin.setText("请点击【激活】，激活刷卡器");
+		hintPlugin.setText("请点击【验证】，验证刷卡器");
 	}
 
 	@Override
 	public void onPlugout() {
 		super.onPlugout(); // UIBASE action
-		hintPlugin.setHint("请插入刷卡器");
+		hintPlugin.setText("请插入刷卡器");
 	}
 	
 	public void onCancel(DialogInterface dialog) {
@@ -167,7 +174,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		hideTitleSubmit();
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"", // title 
-				"激活中...", // message 
+				"验证中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
 				true,
 				this);
