@@ -60,7 +60,7 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_balance_enquiry);
-		setTitle("手机充值");
+		setTitle("余额查询");
 		setActivityPara(true, true);
 		btnSubmit.setOnClickListener(this);
 		
