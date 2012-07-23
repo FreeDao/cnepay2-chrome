@@ -2,9 +2,9 @@ package com.cnepay.android.pos2;
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.Calendar;
 
 import com.cnepay.android.pos2.PasswordInputMethod.PasswordInputMethodListener;
 import com.tangye.android.dialog.SwipeDialogController;
@@ -74,26 +74,16 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
         		case SUCCESS:
         			String all = (String) msg.obj;
 	    			if(progressDialog != null && all != null) {
-	    				progressDialog.dismiss();
+	    				progressDialog.cancel();
 	    				progressDialog = null; // For not fade card number	
 	        		}
-	    			txtAmount.setText(all);
-	    			framePass.setVisibility(View.GONE);
-        			numPad.setVisibility(View.GONE);
-        			noteSwipe.setVisibility(View.VISIBLE);
-        			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
-        	                Animation.RELATIVE_TO_SELF, 0.5f, 
-        	                Animation.RELATIVE_TO_SELF, 0.5f);
-        	        sa.setDuration(200);
-        	        imgCardType.startAnimation(sa);
-        	        imgCardType.postDelayed(new Runnable() {
-        	            public void run() {
-        	            	imgCardType.setVisibility(View.GONE);
-        	            }
-        	        }, 200);
-	    			if(isPlugged()) {
-        				showTitleSubmit();
-        			}
+	    			if(all.length() == 20){
+	    				String tmp = all.substring(8, 20);
+	    				BigDecimal t= new BigDecimal(tmp);
+	    				txtAmount.setText(String.format("余额:￥%d.%02d",  t.longValue() / 100, t.longValue() % 100));
+	    			}else{
+	    				makeError("error");
+	    			}
 	    			
 		        	break;
         		case FAILURE:
@@ -102,27 +92,27 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
                          progressDialog.cancel();
                     }
         			card.setText("");
-        			framePass.setVisibility(View.GONE);
-        			numPad.setVisibility(View.GONE);
-        			noteSwipe.setVisibility(View.VISIBLE);
-        			ScaleAnimation sas = new ScaleAnimation(1, 0, 1, 0, 
-        	                Animation.RELATIVE_TO_SELF, 0.5f, 
-        	                Animation.RELATIVE_TO_SELF, 0.5f);
-        			sas.setDuration(200);
-        	        imgCardType.startAnimation(sas);
-        	        imgCardType.postDelayed(new Runnable() {
-        	            public void run() {
-        	            	imgCardType.setVisibility(View.GONE);
-        	            }
-        	        }, 200);
-        			if(isPlugged()) {
-        				showTitleSubmit();
-        			}
         			if (e != null) {
         				makeError(e);
         			}
         			break;
         		}
+        		framePass.setVisibility(View.GONE);
+    			numPad.setVisibility(View.GONE);
+    			noteSwipe.setVisibility(View.VISIBLE);
+    			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
+    	                Animation.RELATIVE_TO_SELF, 0.5f, 
+    	                Animation.RELATIVE_TO_SELF, 0.5f);
+    	        sa.setDuration(200);
+    	        imgCardType.startAnimation(sa);
+    	        imgCardType.postDelayed(new Runnable() {
+    	            public void run() {
+    	            	imgCardType.setVisibility(View.GONE);
+    	            }
+    	        }, 200);
+        		if(isPlugged()) {
+    				showTitleSubmit();
+    			}
         	}
 		};
 		
@@ -132,6 +122,7 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.title_submit:
+			txtAmount.setText("");
 			hideTitleSubmit();
 			dialog.setText("请刷卡...");
 			dialog.show();
@@ -394,6 +385,7 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
 	                		error = resp.getField(54).toString();
+	                		
 		                    isOk = true;
 	                	} else {
 	                		error = getError(statusCode);

@@ -37,13 +37,14 @@ public class BalanceEnquiryMessage extends BaseMessageAbstract {
 		respTemp.setValue(49, IsoType.ALPHA, 3);
 		respTemp.setValue(53, IsoType.NUMERIC, 16); // 2000000000000000
 		respTemp.setValue(54, IsoType.LLLVAR); // 附加金额
+		respTemp.setValue(58, IsoType.LLLVAR);
 		respTemp.setValue(60, IsoType.LLLVARBCD);
 		respTemp.setValue(64, IsoType.ALPHA, 8); // MAC
 	}
 
 	@Override
 	public boolean isBitmapValid() {
-		int[] in = {2,3,11,12,13,14,25,32,37,39,41,42,44,49,53,54,60,64};
+		int[] in = {2,3,11,12,13,14,25,32,37,39,41,42,44,49,53,54,58,60,64};
 		int[] out = {3,11,22,25,26,35,41,42,49,52,53,58,60,64};
 		return isBitmapValid(in, out);
 	}
