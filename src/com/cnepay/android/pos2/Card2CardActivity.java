@@ -61,6 +61,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 	private final static int SUCCESS = 0;
 	private final static int FAILURE = 1;
 	private final static String TAG = "Card2CardActivity";
+	private final static long MAX_AMOUNT = 5000000;		//以分为单位
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -186,6 +187,11 @@ public class Card2CardActivity extends UIBaseActivity implements
 			if (cashIM.getCashInCents() == 0) {
 				txtInput.requestFocus();
 				makeError("请输入交易金额");
+				return;
+			}
+			if(cashIM.getCashInCents() > MAX_AMOUNT){
+				txtInput.requestFocus();
+				makeError("转账最大金额为50000元");
 				return;
 			}
 			hideTitleSubmit();
@@ -422,6 +428,8 @@ public class Card2CardActivity extends UIBaseActivity implements
 			makeError("POS机出错！");
 			return false;
 		}
+		
+		
 		final CardInfo cardInfo = ci;
 		final String name = session.getSessionAccount();
 		if (name == null || name.length() == 0) {

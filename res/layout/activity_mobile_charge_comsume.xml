@@ -33,6 +33,13 @@
                 android:textColor="#AAAAAA"
                 android:textSize="20sp"
                 android:textStyle="italic" />
+            <TextView
+                android:id="@+id/mobile_charge_consume_phone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#AAAAAA"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
             <include layout="@layout/carddetectbox" />
         </LinearLayout>

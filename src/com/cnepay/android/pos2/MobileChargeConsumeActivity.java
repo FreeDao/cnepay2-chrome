@@ -41,6 +41,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		,PasswordInputMethodListener{
 	private EditText txtPassword;
 	private TextView txtAmount;
+	private TextView txtPhoneNumber;
 	private Button[] btns;
 	private Button fnButton;
 	private View delButton;
@@ -83,6 +84,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			makeError("充值手机号为空");
 			finish();
 		}
+		txtPhoneNumber.setText("充值手机号：" +  mobileNumber);
 		
 		passwdIM = new PasswordInputMethod(btns, fnButton, delButton, txtPassword, this);
 
@@ -156,6 +158,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		setTitleSubmitText("确认刷卡");
 		noteSwipe = (TextView) findViewById(R.id.notation_swipe);
 		noteSwipe.setText("正在检测刷卡器...");
+		txtPhoneNumber = (TextView) findViewById(R.id.mobile_charge_consume_phone);
 		imgCardType = (ImageView)findViewById(R.id.card_type);
         imgCardReader = (ImageView)findViewById(R.id.card_indicator);
 		framePass = (ViewGroup) findViewById(R.id.password_frame);
@@ -398,12 +401,9 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 				POSEncrypt POS = POSHelper.getPOSEncrypt(MobileChargeConsumeActivity.this, name);
 				POS.addTraceNumber();
 				s = new MobileChargeMessage();
-				if (PublicHelper.isDebug) {
-					Log.w(TAG, "debug mode, amount = ￥0.01");
-					s.setAmountTotal_4(new BigDecimal("0.01"));
-				} else {
-					s.setAmountTotal_4(new BigDecimal(amount));
-				}
+				
+				s.setAmountTotal_4(new BigDecimal(amount));
+				
                 s.setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
                 .setCardInfo(cardInfo)
                 .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))

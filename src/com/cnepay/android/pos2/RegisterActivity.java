@@ -339,6 +339,11 @@ public class RegisterActivity extends UIBaseActivity implements
 				.toUpperCase();
 		final String password = txtPwd.getText().toString();
 		final String repassword = txtRePwd.getText().toString();
+		if(!PublicHelper.isChineseStr(pname)){
+			verify_failure(txtPname, "请输入中文姓名");
+			return;
+		}
+		
 		if (!testSerial(serialNum)) {
 			verify_failure(txtSerial, "序列号必须是16位数字字母");
 			return;
