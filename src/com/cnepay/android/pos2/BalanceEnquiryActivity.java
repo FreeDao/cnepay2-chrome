@@ -1,10 +1,10 @@
 package com.cnepay.android.pos2;
 
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.Calendar;
 
 import com.cnepay.android.pos2.PasswordInputMethod.PasswordInputMethodListener;
 import com.tangye.android.dialog.SwipeDialogController;
@@ -12,20 +12,18 @@ import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
-import com.tangye.android.iso8583.protocol.MobileChargeMessage;
+import com.tangye.android.iso8583.protocol.BalanceEnquiryMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -37,11 +35,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MobileChargeConsumeActivity extends UIBaseActivity implements OnClickListener
-		,PasswordInputMethodListener{
+public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickListener
+		,PasswordInputMethodListener, OnCancelListener{
 	private EditText txtPassword;
 	private TextView txtAmount;
-	private TextView txtPhoneNumber;
 	private Button[] btns;
 	private Button fnButton;
 	private View delButton;
@@ -51,41 +48,23 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	private ViewGroup framePass, layoutMask;
 	private ViewGroup numPad;
 	private ImageView imgCardType, imgCardReader;
-	private MobileChargeMessage s;
+	private BalanceEnquiryMessage s;
 	private Handler mHandler;
-	private boolean isProcessing;
 	private ProgressDialog progressDialog;
 	
-	private final String TAG = "MobileChargeConsumeActivity";
+	private final String TAG = "BalanceEnquiryActivity";
 	private final static int SUCCESS = 0;
 	private final static int FAILURE = 1;
-	
-	private String mobileNumber = "";
-	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_mobile_charge_comsume);
-		setTitle("手机充值");
+		setContentView(R.layout.activity_balance_enquiry);
+		setTitle("余额查询");
 		setActivityPara(true, true);
 		btnSubmit.setOnClickListener(this);
 		
-		initUI();
-		
-		long amount = this.getIntent().getExtras().getLong("amount");
-		if(amount <= 0){
-			makeError("交易金额有误");
-			finish();
-		}
-		txtAmount.setText(String.format("￥%d.%02d",  amount / 100, amount % 100));
-		mobileNumber = this.getIntent().getExtras().getString("mobileNumber");
-		if(PublicHelper.isEmptyString(mobileNumber)){
-			makeError("充值手机号为空");
-			finish();
-		}
-		txtPhoneNumber.setText("充值手机号：" +  mobileNumber);
-		
+		initUI();		
 		passwdIM = new PasswordInputMethod(btns, fnButton, delButton, txtPassword, this);
 
 		mHandler = new Handler() {
@@ -93,21 +72,19 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
         	public void handleMessage(Message msg) {
         		switch(msg.what) {
         		case SUCCESS:
-        			String[] all = (String[]) msg.obj;
-	    			if(progressDialog != null && all != null && all.length <= 13) {
-	    				progressDialog.dismiss();
-	    				progressDialog = null; // For not fade card number
-	        			Intent i = new Intent(MobileChargeConsumeActivity.this, MobileChargeTicketActivity.class);
-	        			String extra = POSHelper.getSessionString();
-	        			if (extra == null) {
-	        				makeError("POS过期");
-	        				finish();
-	        				return;
-	        			}
-	        			i.putExtra(extra, all);
-	        			startActivity(i);
-	        			finish();
+        			String all = (String) msg.obj;
+	    			if(progressDialog != null && all != null) {
+	    				progressDialog.cancel();
+	    				progressDialog = null; // For not fade card number	
 	        		}
+	    			if(all.length() == 20){
+	    				String tmp = all.substring(8, 20);
+	    				BigDecimal t= new BigDecimal(tmp);
+	    				txtAmount.setText(String.format("余额:￥%d.%02d",  t.longValue() / 100, t.longValue() % 100));
+	    			}else{
+	    				makeError("error");
+	    			}
+	    			
 		        	break;
         		case FAILURE:
         			String e = (String) msg.obj;
@@ -115,27 +92,27 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
                          progressDialog.cancel();
                     }
         			card.setText("");
-        			framePass.setVisibility(View.GONE);
-        			numPad.setVisibility(View.GONE);
-        			noteSwipe.setVisibility(View.VISIBLE);
-        			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
-        	                Animation.RELATIVE_TO_SELF, 0.5f, 
-        	                Animation.RELATIVE_TO_SELF, 0.5f);
-        	        sa.setDuration(200);
-        	        imgCardType.startAnimation(sa);
-        	        imgCardType.postDelayed(new Runnable() {
-        	            public void run() {
-        	            	imgCardType.setVisibility(View.GONE);
-        	            }
-        	        }, 200);
-        			if(isPlugged()) {
-        				showTitleSubmit();
-        			}
         			if (e != null) {
         				makeError(e);
         			}
         			break;
         		}
+        		framePass.setVisibility(View.GONE);
+    			numPad.setVisibility(View.GONE);
+    			noteSwipe.setVisibility(View.VISIBLE);
+    			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
+    	                Animation.RELATIVE_TO_SELF, 0.5f, 
+    	                Animation.RELATIVE_TO_SELF, 0.5f);
+    	        sa.setDuration(200);
+    	        imgCardType.startAnimation(sa);
+    	        imgCardType.postDelayed(new Runnable() {
+    	            public void run() {
+    	            	imgCardType.setVisibility(View.GONE);
+    	            }
+    	        }, 200);
+        		if(isPlugged()) {
+    				showTitleSubmit();
+    			}
         	}
 		};
 		
@@ -145,6 +122,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.title_submit:
+			txtAmount.setText("");
 			hideTitleSubmit();
 			dialog.setText("请刷卡...");
 			dialog.show();
@@ -156,9 +134,8 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	private void initUI() {
 		initNumPad();
 		setTitleSubmitText("确认刷卡");
-		noteSwipe = (TextView) findViewById(R.id.notation_swipe);
+		noteSwipe = (TextView) findViewById(R.id.balance_enquiry_notation);
 		noteSwipe.setText("正在检测刷卡器...");
-		txtPhoneNumber = (TextView) findViewById(R.id.mobile_charge_consume_phone);
 		imgCardType = (ImageView)findViewById(R.id.card_type);
         imgCardReader = (ImageView)findViewById(R.id.card_indicator);
 		framePass = (ViewGroup) findViewById(R.id.password_frame);
@@ -181,7 +158,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	}
 
 	private void initNumPad() {
-		txtAmount = (TextView) findViewById(R.id.mobile_charge_consume_amount);
+		txtAmount = (TextView) findViewById(R.id.balance_enquiry_amount);
 		btns = new Button[10];
 		numPad = (ViewGroup) findViewById(R.id.num_pad);
 		for (int i = 0; i < 9; i++) {
@@ -223,9 +200,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	@Override
 	public void onSubmit(String password) {
 		Log.v(TAG, "onSubmit");
-		if(!doRequest(password)) {
-			isProcessing = false;
-		}
+		doRequest(password);
 	}
 	
 	@Override
@@ -359,17 +334,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 		}
 	}
 	
-	@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && isProcessing) {
-        	makeError("不能中止交易");
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-	
 	private boolean doRequest(String password) {
-	    isProcessing = true;
 	    POSSession session = POSHelper.getPOSSession();
 		if (ci == null || session == null) {
 			makeError("POS机出错！");
@@ -381,8 +346,6 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			makeError("POS机出错！");
 			return false;
 		}
-		final String amount = txtAmount.getText().toString().substring(1);
-		final String descri = "手机充值";
 		try {
 			password = session.getPIN(password, cardInfo.getCard(false));
 		} catch(Exception e) {
@@ -390,80 +353,46 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 			return false;
 		}
 		final String passwd = password;
+		hideTitleSubmit();
 		
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
-				"充值中...", // message 
+				"查询中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
-				false);
+				true,
+				this);
 		(new Thread(TAG) {
 			public void run() {
-				POSEncrypt POS = POSHelper.getPOSEncrypt(MobileChargeConsumeActivity.this, name);
+				POSEncrypt POS = POSHelper.getPOSEncrypt(BalanceEnquiryActivity.this, name);
 				POS.addTraceNumber();
-				s = new MobileChargeMessage();
-				
-				s.setAmountTotal_4(new BigDecimal(amount));
-				
+				s = new BalanceEnquiryMessage();
                 s.setCardTracerNumber_11(POS.getPOSDecrypt(POS.TRACENUMBER))
+                .setIsPinNeed_22(true)
+                .setMaxPinLength_26(10) // TODO hard-code here
                 .setCardInfo(cardInfo)
                 .setTerminalMark_41(POS.getPOSDecrypt(POS.TERMINAL))
                 .setUserMark_42(POS.getPOSDecrypt(POS.USERMARK))
-                .setMobileNumber_57(mobileNumber)
                 .setUserPin_52(passwd)
                 .setSetNumber_60(POS.getPOSDecrypt(POS.SETNUMBER))
                 .setUseMac_64();
 				POS.close();
 				boolean isOk = false;
 	            String error = "";
-	            String[] allMessage = null;
 	            try {
 	                if(!s.isBitmapValid()) throw new RuntimeException("BitmapError");
 	                IsoMessage resp = s.request();
 	                if(resp != null) {
 	                	String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
-	                		String terminalNo = resp.getField(41).toString();
-	                		String cardNumber = resp.getField(2).toString();
-	                		String batchNo = resp.getField(60).toString().substring(2); // 批次号
-	                		String voucherNo = resp.getField(11).toString(); // 流水号
-	                		String authNo = null; // 授权码
-	                		if(resp.getField(38) == null || resp.getField(38).toString().length() == 0) {
-	                			authNo = "000000";
-	                		} else {
-	                			authNo = resp.getField(38).toString();
-	                		}
-	                		String referNo = resp.getField(37).toString(); // 参考号
-	                		String transactionDate = getTransactionDate(resp.getField(13).toString());
-	                		String transactionTime = getTransactionTime(resp.getField(12).toString());
-	                		String transactionAmount = amount;
-	                		String traceId = resp.getField(59).toString(); // 交易ID
-	                		long time = System.currentTimeMillis();
-	                		Calendar mCalendar=Calendar.getInstance();
-	                		mCalendar.setTimeInMillis(time);
-	                		int TransactionYear = mCalendar.get(Calendar.YEAR);
-	                		String FileName = TransactionYear + resp.getField(13).toString() + resp.getField(12).toString();
-	                		allMessage = new String[] {
-	                			mobileNumber,
-	                			terminalNo,
-	                			cardNumber,
-	                			authNo,
-	                			referNo,
-	                			batchNo,
-	                			voucherNo,
-	                			transactionDate,
-	                			transactionTime,
-	                			transactionAmount,
-	                			descri,
-	                			traceId,
-	                			FileName
-	                		};
+	                		error = resp.getField(54).toString();
+	                		
 		                    isOk = true;
 	                	} else {
 	                		error = getError(statusCode);
 	                	}
 	                } else {
 	                	// Manually stop client from user's aspect
-	                	allMessage = null;
+	                	error = null;
 	                    isOk = false;
 	                }
 	            } catch (SocketTimeoutException e) {
@@ -485,30 +414,22 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	            if(!isOk) {
 	                mHandler.obtainMessage(FAILURE, error).sendToTarget();
 	            } else {	            	 
-	                mHandler.obtainMessage(SUCCESS, allMessage).sendToTarget();
+	                mHandler.obtainMessage(SUCCESS, error).sendToTarget();
 	            }
-	            isProcessing = false;
 			}
 		}).start();
 		return true;
 	}
 	
-	private String getTransactionDate(String code) {
-		long time = System.currentTimeMillis();
-		Calendar mCalendar=Calendar.getInstance();
-		mCalendar.setTimeInMillis(time);
-		int TransactionYear = mCalendar.get(Calendar.YEAR);
-		StringBuffer mouthDay = new StringBuffer(code);
-		String transactionDate = TransactionYear + "/" + mouthDay.insert(2, "/");
-		return transactionDate;
-	}
-	
-	private String getTransactionTime(String code) {
-		StringBuffer sb2 = new StringBuffer(code);
-		sb2.insert(2, ":");
-		sb2.insert(5, ":");
-		String transactionTime = sb2.toString();
-		return transactionTime;
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		// TODO Auto-generated method stub
+		progressDialog = null;
+        if(s != null) {
+            s.stop();
+            s = null;
+        }
 	}
 
 }
+
