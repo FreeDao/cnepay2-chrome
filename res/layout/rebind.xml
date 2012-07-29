@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg"
-    android:orientation="vertical"
-    android:baselineAligned="false" >
+    android:baselineAligned="false"
+    android:orientation="vertical" >
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -14,141 +14,122 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical" >
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:padding="20dp" >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/input"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/rebind_account_number"
+                    style="@style/input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="初始化刷卡器..."
+                    android:lines="1"
+                    android:paddingLeft="85dp"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/account_rebind"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center|right"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="1px"
+                    android:gravity="right|center_vertical"
                     android:paddingRight="10dp"
                     android:text="银行卡号"
                     android:textColor="#0099ff"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+            </FrameLayout>
 
-                <TextView
-                    android:id="@+id/rebind_account_number"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:gravity="center|left"
-                    android:hint="初始化刷卡器..."
-                    android:lines="1"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/input"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/rebind_idnumber"
+                    style="@style/input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入真实身份证号"
+                    android:lines="1"
+                    android:paddingLeft="85dp"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/rebind_personid"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center|right"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="1px"
+                    android:gravity="right|center_vertical"
                     android:paddingRight="10dp"
                     android:text="身份证号"
                     android:textColor="#0099ff"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
                 <EditText
-                    android:id="@+id/rebind_idnumber"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="#00000000"
-                    android:gravity="center|left"
-                    android:hint="请输入真实身份证号"
+                    android:id="@+id/rebind_phone"
+                    style="@style/input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="登录账户为手机号"
                     android:lines="1"
-                    android:singleLine="true"
+                    android:paddingLeft="85dp"
                     android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/input"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
 
                 <TextView
                     android:id="@+id/phonenumber_rebind"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center|right"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="1px"
+                    android:gravity="right|center_vertical"
                     android:paddingRight="10dp"
                     android:text="手机号码"
                     android:textColor="#0099ff"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
                 <EditText
-                    android:id="@+id/rebind_phone"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="#00000000"
-                    android:gravity="center|left"
-                    android:hint="手机号作为登录账户"
-                    android:inputType="phone"
+                    android:id="@+id/rebind_pwd"
+                    style="@style/input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="6位数字或字母"
                     android:lines="1"
-                    android:singleLine="true"
+                    android:paddingLeft="85dp"
                     android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/input"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
 
                 <TextView
                     android:id="@+id/password_rebind"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center|right"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="1px"
+                    android:gravity="right|center_vertical"
                     android:paddingRight="10dp"
                     android:text="登录密码"
                     android:textColor="#0099ff"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/rebind_pwd"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="#00000000"
-                    android:gravity="center|left"
-                    android:hint="6位数字或字母"
-                    android:inputType="textPassword"
-                    android:lines="1"
-                    android:singleLine="true"
-                    android:textSize="16sp" />
-            </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -160,19 +141,11 @@
 
         <Button
             android:id="@+id/rebind_submit"
+            style="@style/button"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
-            android:layout_margin="4dp"
-            android:background="@drawable/button"
-            android:shadowColor="#333333"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="1"
-            android:text="绑定用户信息"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="绑定用户信息" />
     </LinearLayout>
 
 </LinearLayout>
