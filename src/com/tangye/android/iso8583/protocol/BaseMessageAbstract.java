@@ -33,7 +33,7 @@ public abstract class BaseMessageAbstract {
     protected IsoTemplate res;
     protected int SOCKET_TIMEOUT = 1000 * 30;
     protected BaseClient client;
-    protected boolean ignoreAnyError = false;
+    protected volatile boolean ignoreAnyError = false;
     
     public BaseMessageAbstract() {
         req = new IsoMessage();
@@ -103,13 +103,13 @@ public abstract class BaseMessageAbstract {
     
     public void stop() {
     	Log.i(TAG, "to stop client");
+    	ignoreAnyError = true;
     	if(client != null) {
     		try {
     			client.close();
     		} catch(IOException e) {}
     		client = null;
     	}
-    	ignoreAnyError = true;
     }
 
     protected static String extAlpha(String value, int length) {

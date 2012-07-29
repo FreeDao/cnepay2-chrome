@@ -316,8 +316,10 @@ public class UIBaseActivity extends BaseActivity {
 	/**
 	 * 显示actionbar的button
 	 */
+	private boolean showTitle = false;
 	public void showTitleSubmit() {
-		if (btnSubmit != null && btnSubmit.getVisibility() != View.VISIBLE) {
+		if (!showTitle) {
+			showTitle = true;
 			TranslateAnimation ta = new TranslateAnimation(200, 0, 0, 0);
 			ta.setDuration(200);
 			ta.setAnimationListener(new AnimationListener() {
@@ -354,7 +356,8 @@ public class UIBaseActivity extends BaseActivity {
 	 * 隐藏actionbar的button
 	 */
 	public void hideTitleSubmit() {
-		if (btnSubmit != null && btnSubmit.getVisibility() == View.VISIBLE) {
+		if (showTitle) {
+			showTitle = false;
 			TranslateAnimation ta = new TranslateAnimation(0, 200, 0, 0);
 			ta.setDuration(200);
 			ta.setAnimationListener(new AnimationListener() {

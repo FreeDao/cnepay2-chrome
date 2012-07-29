@@ -78,13 +78,14 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
-
+
                 <EditText
                     android:id="@+id/rebind_phone"
                     style="@style/input"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="登录账户为手机号"
+                    android:inputType="phone"
                     android:lines="1"
                     android:paddingLeft="85dp"
                     android:textSize="16sp" />
@@ -106,13 +107,14 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
-
+
                 <EditText
                     android:id="@+id/rebind_pwd"
                     style="@style/input"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="6位数字或字母"
+                    android:inputType="textPassword"
                     android:lines="1"
                     android:paddingLeft="85dp"
                     android:textSize="16sp" />

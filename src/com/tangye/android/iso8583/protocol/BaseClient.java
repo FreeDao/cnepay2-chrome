@@ -37,11 +37,9 @@ public class BaseClient {
             in = null;
             return result;
         } catch(IOException e) {
-        	e.printStackTrace();
         	exception = e;
             return result;
         } catch (ParseException e) {
-			e.printStackTrace();
 			exception = e;
 			return result;
 		} finally {

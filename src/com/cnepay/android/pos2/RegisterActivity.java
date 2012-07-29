@@ -59,6 +59,10 @@ public class RegisterActivity extends UIBaseActivity implements
 		setOnCNAPSResultListener(this); // 增加选择开户银行功能
 		btnSubmit.setOnClickListener(this);
 		all = getIntent().getExtras().getStringArray("register");
+		if (all == null) {
+			finish();
+			return;
+		}
 		setActivityPara(false, false, new KsnTestListener() {
 			@Override
 			public boolean test(String ksn) {

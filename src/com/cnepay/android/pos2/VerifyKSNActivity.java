@@ -19,8 +19,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class VerifyKSNActivity extends UIBaseActivity implements
 		View.OnClickListener, OnCancelListener{
 	
@@ -40,7 +38,6 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		setContentView(R.layout.activity_verify_ksn);
 		setTitle("刷卡器验证");
 		setTitleSubmitText("验证");
-		hideTitleSubmit();
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false, new KsnTestListener() {
 			@Override
@@ -55,8 +52,6 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		});
 
 		hintPlugin = (TextView)findViewById(R.id.verify_ksn_hint);
-		hintPlugin.setText("正在识别刷卡器。。。");
-
 		
 		mHandler = new Handler() {
             @Override
@@ -65,7 +60,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                 case SUCCESS:
                 	String all = (String)msg.obj;
                     if(progressDialog != null && all != null) {
-                        progressDialog.cancel();
+                        progressDialog.dismiss();
                         progressDialog = null; // For not fade card number
                         errText("刷卡器激活成功");
                         Intent intent = new Intent(VerifyKSNActivity.this, VerifySerialNumberActivity.class);
@@ -78,17 +73,16 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                     if(progressDialog != null) {
                         progressDialog.cancel();
                         errText((String)msg.obj);
-                        
-            			if(isPlugged()){
-            				showTitleSubmit();
-            				hintPlugin.setText("请点击【验证】，验证刷卡器");
-            			}else{
-            				hideTitleSubmit();
-            				hintPlugin.setText("请插入刷卡器");
-            			}
                     }
                     break;
                 }
+                if(isPlugged()) {
+    				showTitleSubmit();
+    				hintPlugin.setText("请点击【验证】，验证刷卡器");
+    			} else {
+    				hideTitleSubmit();
+    				hintPlugin.setText("请插入刷卡器");
+    			}
             }
         };
 	}
@@ -182,17 +176,15 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 			public void run() {
 			    s = new KSNVerifyMessage();
 	            s.setKSN_58(myKSN);
-	            
 	            boolean isOK = false;
 	            String error = "";
 	            try {
-	            	
 	                if(!s.isBitmapValid()) throw new RuntimeException("BitmapError");
 	                IsoMessage resp = s.request();
 	                if(resp == null) {
-	                	isOK = false;
-	                	error = "未知错误";
-	                }else{ 
+	                	isOK = true;
+	                	error = null;
+	                } else { 
 		                String statusCode = resp.getField(39).toString();
 	                	if (statusCode.equals("00")) {
 	                		isOK = true;
@@ -202,7 +194,6 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	                		isOK = false;
 	                	}
 	                }
-	                
 	            } catch (SocketTimeoutException e) {
                     error = "连接超时，请确保网络稳定性";
                     e.printStackTrace();
@@ -226,12 +217,8 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                 }
 			}
 		}).start();
-		
 	}
-
-	
 	
 	/************* end private function **************/
-
 
 }
