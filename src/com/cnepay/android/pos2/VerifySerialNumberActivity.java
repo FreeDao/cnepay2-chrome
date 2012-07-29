@@ -12,29 +12,37 @@ import com.tangye.android.utils.GernateSNumber;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class VerifySerialNumberActivity extends UIBaseActivity implements
-		View.OnClickListener{
+		View.OnClickListener, OnCancelListener{
 	
 	private EditText serialNumber;
 	private String myKSN;
 	private Handler mHandler;
+	private TextView serialHint;
 	private ProgressDialog progressDialog;
 
 	private static final String TAG = "VerifySerialNumberActivity";
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
 	private final GernateSNumber gn = new GernateSNumber();
+	private SerialNumberVerifyMessage s;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,14 +50,50 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		setContentView(R.layout.activity_verify_serial_number);
 		setTitle("序列号激活");
 		setTitleSubmitText("激活");
-		this.showTitleSubmit();
+		this.hideTitleSubmit();
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false);
-		myKSN = this.getIntent().getExtras().getString("ksn");
+		//myKSN = this.getIntent().getExtras().getString("ksn");
+		myKSN = "39920611000001";
 		
 		serialNumber = (EditText)findViewById(R.id.serial_number);
-		serialNumber.setHint("请输入序列号,点击【激活】");
+		serialNumber.setHint("请输入序列号");
+		serialHint = (TextView)findViewById(R.id.verify_serial_number_hint);
+		serialHint.setText("请输入序列号，然后点击【激活】");
+		
+		serialNumber.addTextChangedListener(new TextWatcher(){
 
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				int len = s.toString().length();
+				if(len < 19){
+					hideTitleSubmit();
+					if(len != 0 && len % 5 == 0){
+						String end = s.toString().substring(len - 1, len);
+						if(!end.equals(" ")){
+							serialNumber.setText(s.toString().subSequence(0, len - 1) + " " + end);
+						}
+						Editable ea = serialNumber.getText();
+						Selection.setSelection(ea, ea.length());
+					}
+				}else if(len == 19){
+					showTitleSubmit();
+				}
+			}});
 		
 		mHandler = new Handler() {
             @Override
@@ -71,7 +115,14 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
                     if(progressDialog != null) {
                         progressDialog.cancel();
                         errText((String)msg.obj);
-            			//finish();
+                        if(serialNumber.getText().toString() != null 
+                        		&& serialNumber.getText().toString().length() == 19){
+                        	showTitleSubmit();
+                        }else{
+                        	hideTitleSubmit();
+                        }
+                        serialNumber.setEnabled(true);
+                        
                     }
                     break;
                 }
@@ -93,6 +144,14 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		submit();
 	}
 	
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		progressDialog = null;
+        if(s != null) {
+            s.stop();
+            s = null;
+        }
+	}
 
 	/************ private function *************/
 
@@ -114,9 +173,12 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(getCurrentFocus()
 				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-		
-		final String serialNum = serialNumber.getText().toString()
-				.toUpperCase();
+		String[] num = serialNumber.getText().toString().split(" ");
+		String tmp = "";
+		for(int i = 0; i < num.length; i++){
+			tmp += num[i]; 
+		}
+		final String serialNum = tmp.toUpperCase();
 		if (!testSerial(serialNum)) {
 			errText("序列号必须是16位数字字母");
 			return;
@@ -130,20 +192,21 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		serialNumber.setEnabled(false);
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
-				"校验中...", // message 
+				"激活中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
-				false);
+				true,
+				this);
 		(new Thread() {
 			public void run() {
-	            SerialNumberVerifyMessage ss = new SerialNumberVerifyMessage();
-            	ss.setKSN_54(serialNum)
+	            s = new SerialNumberVerifyMessage();
+            	s.setKSN_54(serialNum)
             	.setSource_16(getSource());
 	            boolean isOK = false;
 	            String error = "";
 	            String[] verifyOk = new String[2];
 	            try {
-	            	if(!ss.isBitmapValid()) throw new RuntimeException("BitmapError");
-	               	IsoMessage res = ss.request();
+	            	if(!s.isBitmapValid()) throw new RuntimeException("BitmapError");
+	               	IsoMessage res = s.request();
 	               	if(res == null) {
 	               		isOK = false;
 	               		error = "未知错误";
@@ -184,6 +247,8 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		}).start();
 		
 	}
+
+	
 	
 	/************* end private function **************/
 

@@ -36,7 +36,7 @@ public class RegisterActivity extends UIBaseActivity implements
 
 	private SwipeDialogController dialog;
 	private TextView card, bank;
-	private EditText txtSerial, txtPname, txtPid, txtPhone, txtPwd, txtRePwd;
+	private EditText txtPname, txtPid, txtPhone, txtPwd, txtRePwd;
 	private String bankid;
 	private Button btnCreate;
 	private SignUpMessage s;
@@ -48,6 +48,8 @@ public class RegisterActivity extends UIBaseActivity implements
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
 	private final GernateSNumber gn = new GernateSNumber();
+	
+	private String[] all;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class RegisterActivity extends UIBaseActivity implements
 		setTitle("账户注册");
 		setOnCNAPSResultListener(this); // 增加选择开户银行功能
 		btnSubmit.setOnClickListener(this);
-		final String[] all = getIntent().getExtras().getStringArray("register");
+		all = getIntent().getExtras().getStringArray("register");
 		setActivityPara(false, false, new KsnTestListener() {
 			@Override
 			public boolean test(String ksn) {
@@ -83,8 +85,6 @@ public class RegisterActivity extends UIBaseActivity implements
 		card = (TextView) this.findViewById(R.id.reg_account_number);
 		card.setOnClickListener(this);
 
-		txtSerial = (EditText) findViewById(R.id.reg_serial);
-		txtSerial.setText(all[1]);
 		txtPname = (EditText) findViewById(R.id.reg_username);
 		txtPid = (EditText) findViewById(R.id.reg_idnumber);
 		txtPhone = (EditText) findViewById(R.id.reg_phone);
@@ -350,16 +350,20 @@ public class RegisterActivity extends UIBaseActivity implements
 		final String phone = txtPhone.getText().toString();
 		final String bname = bank.getText().toString();
 		final String bid = bankid;
-		final String serialNum = txtSerial.getText().toString()
-				.toUpperCase();
+		final String serialNum = all[1];
 		final String password = txtPwd.getText().toString();
 		final String repassword = txtRePwd.getText().toString();
+		if(!PublicHelper.isChineseStr(pname)){
+			verify_failure(txtPname, "请输入中文姓名");
+			return;
+		}
+		
 		if (!testSerial(serialNum)) {
-			verify_failure(txtSerial, "序列号必须是16位数字字母");
+			errText("序列号必须是16位数字字母");
 			return;
 		}
 		if (!gn.Verify(serialNum)) {
-			verify_failure(txtSerial, "序列号输入不正确，请仔细核对");
+			errText("序列号输入不正确，请仔细核对");
 			return;
 		}
 		if (pname.length() > 10) {

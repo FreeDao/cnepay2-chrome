@@ -7,6 +7,8 @@ import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.protocol.KSNVerifyMessage;
 import com.tangye.android.utils.PublicHelper;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,15 +19,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 public class VerifyKSNActivity extends UIBaseActivity implements
-		View.OnClickListener{
+		View.OnClickListener, OnCancelListener{
 	
 	private TextView hintPlugin;
 	private String myKSN;
 	private Handler mHandler;
 	private ProgressDialog progressDialog;
+	private KSNVerifyMessage s;
 
-	private static final String TAG = "VerifySerialNumberActivity";
+	private static final String TAG = "VerifyKSNActivity";
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
 	
@@ -33,8 +38,8 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_verify_ksn);
-		setTitle("刷卡器激活");
-		setTitleSubmitText("激活");
+		setTitle("刷卡器验证");
+		setTitleSubmitText("验证");
 		hideTitleSubmit();
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false, new KsnTestListener() {
@@ -50,6 +55,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		});
 
 		hintPlugin = (TextView)findViewById(R.id.verify_ksn_hint);
+		hintPlugin.setText("正在识别刷卡器。。。");
 
 		
 		mHandler = new Handler() {
@@ -72,8 +78,14 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                     if(progressDialog != null) {
                         progressDialog.cancel();
                         errText((String)msg.obj);
-                        showTitleSubmit();
-            			finish();
+                        
+            			if(isPlugged()){
+            				showTitleSubmit();
+            				hintPlugin.setText("请点击【验证】，验证刷卡器");
+            			}else{
+            				hideTitleSubmit();
+            				hintPlugin.setText("请插入刷卡器");
+            			}
                     }
                     break;
                 }
@@ -133,15 +145,22 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	public void onPlugin() {
 		super.onPlugin(); // UIBASE action
 		this.showTitleSubmit();
-		hintPlugin.setText("请点击【激活】，激活刷卡器");
+		hintPlugin.setText("请点击【验证】，验证刷卡器");
 	}
 
 	@Override
 	public void onPlugout() {
 		super.onPlugout(); // UIBASE action
-		hintPlugin.setHint("请插入刷卡器");
+		hintPlugin.setText("请插入刷卡器");
 	}
 	
+	public void onCancel(DialogInterface dialog) {
+		progressDialog = null;
+        if(s != null) {
+            s.stop();
+            s = null;
+        }
+	}
 
 	/************ private function *************/
 
@@ -154,13 +173,14 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	private void submit() {
 		hideTitleSubmit();
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
-				"",	// title 
-				"刷卡器激活中...", // message 
+				"", // title 
+				"验证中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
-				false);
+				true,
+				this);
 		(new Thread() {
 			public void run() {
-			    KSNVerifyMessage s = new KSNVerifyMessage();
+			    s = new KSNVerifyMessage();
 	            s.setKSN_58(myKSN);
 	            
 	            boolean isOK = false;
@@ -208,6 +228,8 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 		}).start();
 		
 	}
+
+	
 	
 	/************* end private function **************/
 

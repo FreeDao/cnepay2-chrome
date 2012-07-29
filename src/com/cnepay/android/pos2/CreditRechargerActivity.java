@@ -355,7 +355,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 					int count) {
 				// TODO Auto-generated method stub
 				if(s.toString().length() == 15){
-					Toast.makeText(CreditRechargerActivity.this,"描述最多输入10个字", 
+					Toast.makeText(CreditRechargerActivity.this,"描述最多输入15个字", 
 							Toast.LENGTH_SHORT).show();
 				}
 			}

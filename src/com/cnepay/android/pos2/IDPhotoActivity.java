@@ -51,7 +51,7 @@ public class IDPhotoActivity extends UIBaseActivity implements
 	private static final String UPLOAD_URL;
 	static {
 		if (PublicHelper.isDebug) {
-			UPLOAD_URL = "http://203.81.23.23:58080/tompms/merchant/uploadImg";
+			UPLOAD_URL = "http://203.81.23.4:18080/tompms/merchant/uploadImg";
 		} else {
 			UPLOAD_URL = "http://203.81.23.4:18080/tompms/merchant/uploadImg";
 		}
