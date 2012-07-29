@@ -32,7 +32,9 @@ import android.widget.Toast;
 public class VerifySerialNumberActivity extends UIBaseActivity implements
 		View.OnClickListener, OnCancelListener{
 	
-	private EditText serialNumber;
+	private EditText[] serialNumber;
+	private final int LEN = 4;
+	private final int TEXT_LEN = 4;
 	private String myKSN;
 	private Handler mHandler;
 	private TextView serialHint;
@@ -56,12 +58,17 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		//myKSN = this.getIntent().getExtras().getString("ksn");
 		myKSN = "39920611000001";
 		
-		serialNumber = (EditText)findViewById(R.id.serial_number);
-		serialNumber.setHint("请输入序列号");
-		serialHint = (TextView)findViewById(R.id.verify_serial_number_hint);
-		serialHint.setText("请输入序列号，然后点击【激活】");
+		serialNumber = new EditText[LEN];
 		
-		serialNumber.addTextChangedListener(new TextWatcher(){
+		serialNumber[0] = (EditText)findViewById(R.id.serial_number1);
+		serialNumber[1] = (EditText)findViewById(R.id.serial_number2);
+		serialNumber[2] = (EditText)findViewById(R.id.serial_number3);
+		serialNumber[3] = (EditText)findViewById(R.id.serial_number4);
+		for(int i = 1; i < LEN; i++ ){
+			serialNumber[i].setEnabled(false);
+		}
+		
+		serialNumber[0].addTextChangedListener(new TextWatcher(){
 
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -79,21 +86,91 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				int len = s.toString().length();
-				if(len < 19){
-					hideTitleSubmit();
-					if(len != 0 && len % 5 == 0){
-						String end = s.toString().substring(len - 1, len);
-						if(!end.equals(" ")){
-							serialNumber.setText(s.toString().subSequence(0, len - 1) + " " + end);
-						}
-						Editable ea = serialNumber.getText();
-						Selection.setSelection(ea, ea.length());
-					}
-				}else if(len == 19){
+				// TODO Auto-generated method stub
+				if(s.toString().length() == TEXT_LEN){
+					serialNumber[1].setEnabled(true);
+					serialNumber[1].requestFocus();
+				}
+				
+			}});
+		
+		serialNumber[1].addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				if(s.toString().length() == TEXT_LEN){
+					serialNumber[2].setEnabled(true);
+					serialNumber[2].requestFocus();
+				}
+				
+			}});
+		
+		serialNumber[2].addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				if(s.toString().length() == TEXT_LEN){
+					serialNumber[3].setEnabled(true);
+					serialNumber[3].requestFocus();
+				}
+				
+			}});
+		
+		serialNumber[3].addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				if(s.toString().length() == TEXT_LEN){
 					showTitleSubmit();
 				}
+				
 			}});
+		
+		serialHint = (TextView)findViewById(R.id.verify_serial_number_hint);
+		serialHint.setText("请输入序列号，然后点击【激活】");
 		
 		mHandler = new Handler() {
             @Override
@@ -114,15 +191,23 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
                 case FAILURE:
                     if(progressDialog != null) {
                         progressDialog.cancel();
-                        errText((String)msg.obj);
-                        if(serialNumber.getText().toString() != null 
-                        		&& serialNumber.getText().toString().length() == 19){
-                        	showTitleSubmit();
-                        }else{
-                        	hideTitleSubmit();
-                        }
-                        serialNumber.setEnabled(true);
-                        
+                    }
+                    String err = (String)msg.obj;
+                    if(err != null){
+                    	errText(err);
+                    }else{
+                    	errText("未知错误");
+                    }
+                    boolean s = true;
+                    for(int i = 0; i < LEN; i++){
+                    	serialNumber[i].setEnabled(true);
+                    	if(serialNumber[i].getText().toString().equals("")){
+                    		hideTitleSubmit();
+                    		s = false;
+                    	}
+                    }
+                    if(s){
+                    	showTitleSubmit();
                     }
                     break;
                 }
@@ -173,10 +258,9 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(getCurrentFocus()
 				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-		String[] num = serialNumber.getText().toString().split(" ");
 		String tmp = "";
-		for(int i = 0; i < num.length; i++){
-			tmp += num[i]; 
+		for(int i = 0; i < LEN; i++){
+			tmp += serialNumber[i].getText().toString(); 
 		}
 		final String serialNum = tmp.toUpperCase();
 		if (!testSerial(serialNum)) {
@@ -189,7 +273,9 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		}
 		
 		hideTitleSubmit();
-		serialNumber.setEnabled(false);
+		for(int i = 0; i < LEN; i++){
+			serialNumber[i].setEnabled(false);
+		}
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
 				"激活中...", // message 
@@ -247,7 +333,6 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		}).start();
 		
 	}
-
 	
 	
 	/************* end private function **************/

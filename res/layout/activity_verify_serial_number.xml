@@ -4,11 +4,11 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg"
     android:orientation="vertical" >
-	<TextView
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:text="序列号"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -17,25 +17,69 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_margin="10dp"
-        android:background="#0099ff" />
-    <EditText
-        android:id="@+id/serial_number"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:background="#0099ff" />
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:inputType="text"
-        android:maxLength="19"
-        />
-    
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
+
+
+        <EditText
+            android:id="@+id/serial_number1"
+            android:tag="1"
+            style="@style/input"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLength="4" />
+
+        <EditText
+            android:id="@+id/serial_number2"
+            android:tag="2"
+            style="@style/input"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLength="4" />
+
+        <EditText
+            android:id="@+id/serial_number3"
+            android:tag="3"
+            style="@style/input"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLength="4" />
+
+        <EditText
+            android:id="@+id/serial_number4"
+            android:tag="4"
+            style="@style/input"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLength="4" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:text="操作提示"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -44,7 +88,8 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
         android:background="#0099ff" />
 
     <LinearLayout
@@ -59,22 +104,19 @@
 
         <TextView
             android:id="@+id/verify_serial_number_hint"
-            android:layout_gravity="center"
-           	android:gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textColor="#ff0000"
-        	android:textSize="18sp"
-        	android:textStyle="bold"
-             />
-        
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:text="友情提示"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -83,15 +125,14 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
         android:background="#0099ff" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true" >
@@ -100,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1、本步激活序列号；
-2、每个序列号与一个支付账号唯一绑定，请勿使用已经废弃或者绑定的序列号。如有任何问题请与发行行联系。"
-             />
+2、每个序列号与一个支付账号唯一绑定，请勿使用已经废弃或者绑定的序列号。如有任何问题请与发行行联系。" />
     </LinearLayout>
+
 </LinearLayout>
