@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/bg"
-    android:antialias="true"
-    android:dither="true"
-    android:filter="true"
-    android:gravity="top"
-    android:tileMode="repeat" />
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <bitmap
+            android:antialias="true"
+            android:dither="true"
+            android:filter="true"
+            android:src="@drawable/fullbg"
+            android:tileMode="repeat" />
+    </item>
+    <item android:bottom="100dp">
+        <bitmap
+            android:antialias="true"
+            android:dither="true"
+            android:filter="true"
+            android:gravity="bottom"
+            android:src="@drawable/wordprint"
+            android:tileMode="disabled" />
+    </item>
+    <item>
+        <bitmap
+            android:antialias="true"
+            android:dither="true"
+            android:filter="true"
+            android:gravity="top"
+            android:src="@drawable/bg_shadow"
+            android:tileMode="disabled" />
+    </item>
+
+</layer-list>
