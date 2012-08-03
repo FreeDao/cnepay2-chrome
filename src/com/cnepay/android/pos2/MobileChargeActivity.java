@@ -24,7 +24,7 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
 	private RadioGroup chargeAmount;
 	
 	private static final int ENABLE_TIMEOUT = 1000;
-	private long amountToPay[] = {30000, 10000, 5000, 3000};
+	private long amountToPay[] = {30000, 10000, 5000};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -129,15 +129,6 @@
                 android:orientation="vertical" >
 
                 <RadioButton
-                    android:id="@+id/mobile_charge_30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="3"
-                    android:text="30元  （价格：30.00元）"
-                    android:textColor="#0099ff"
-                    android:textStyle="bold" />
-
-                <RadioButton
                     android:id="@+id/mobile_charge_50"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

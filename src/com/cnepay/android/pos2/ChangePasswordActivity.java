@@ -109,29 +109,27 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 			final String oldPwdStr = oldPwd.getText().toString();
 			final String newPwdStr = newPwd.getText().toString();
 			String newPwdRepeatStr = newPwdRepeat.getText().toString();
-			if (oldPwdStr.length() == 0 || oldPwdStr == null
-					|| oldPwdStr.length() != 6) {
-				verify_failure(oldPwd, "请输入六位密码");
+			if ( oldPwdStr == null || oldPwdStr.length() != 6) {
+				verify_failure(oldPwd, "请输入六位原密码");
 				return;
 			} else if (oldPwdStr.length() == 6) {
 				if (!testPwd(oldPwdStr)) {
-					verify_failure(oldPwd, "密码必须由字母和数字组成");
+					verify_failure(oldPwd, "原密码必须由字母和数字组成");
 					oldPwd.setText("");
 					return;
 				}
 			}
-			if (newPwdStr.length() == 0 || newPwdStr == null
-					|| newPwdStr.length() != 6) {
-				makeError("请输入6位密码");
+			if (newPwdStr == null || newPwdStr.length() != 6) {
+				verify_failure(newPwd, "请输入六位新密码");
 				return;
 			} else if (newPwdStr.length() == 6) {
 				if (!testPwd(oldPwdStr)) {
-					verify_failure(newPwd, "密码必须由字母和数字组成");
+					verify_failure(newPwd, "新密码必须由字母和数字组成");
 					newPwd.setText("");
 					return;
 				}
 			}
-			if (!newPwdStr.equals(newPwdRepeatStr)) {
+			if (newPwdRepeatStr == null || !newPwdStr.equals(newPwdRepeatStr)) {
 				verify_failure(newPwdRepeat, "两次输入密码不一致");
 				newPwdRepeat.setText("");
 				return;

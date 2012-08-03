@@ -257,6 +257,7 @@ abstract public class ConsumeBaseActivity extends UIBaseActivity implements View
 			file = signFile;
 		}
 		final File upfile = file;
+		Log.v(TAG, "upfile = " + upfile);
 		new Thread(TAG) {
 			public void run() {
 				String err = "";

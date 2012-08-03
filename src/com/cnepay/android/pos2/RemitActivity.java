@@ -212,7 +212,11 @@ public class RemitActivity extends UIBaseActivity implements
 			return;
 		}
 		if (c1.length() < 12 || c1.length() > 19) {
-			verify_failure(txtCard, "卡号格式或者长度有误");
+			verify_failure(txtCard, "卡号长度有误");
+			return;
+		}
+		if(!testCard(c1)){
+			verify_failure(txtCard, "银行卡号仅含有数字");
 			return;
 		}
 		if (!c1.equals(c2)) {
@@ -252,6 +256,18 @@ public class RemitActivity extends UIBaseActivity implements
 				btnNext.setEnabled(true);
 			}
 		}, ENABLE_TIMEOUT);
+	}
+	
+	private boolean testCard(String card){
+		if(card == null){
+			return false;
+		}
+		if(card.matches("\\d*")){
+			return true;
+		}else{
+			return false;
+		}
+			
 	}
 	/************* end private function **************/
 
