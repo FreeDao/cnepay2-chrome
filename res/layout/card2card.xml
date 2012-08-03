@@ -32,7 +32,7 @@
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:gravity="center_vertical"
-                android:text="汇款收取1%的手续费，手续费最低收取1元，60元封顶"
+                android:text="汇款收取1%的手续费，手续费最低收取1元，60元封顶，请使用注册卡号转账。"
                 android:textColor="#555555"
                 android:textSize="18sp" />
 

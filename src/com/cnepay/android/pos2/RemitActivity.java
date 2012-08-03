@@ -246,8 +246,7 @@ public class RemitActivity extends UIBaseActivity implements
         	public void onClick(DialogInterface dialog, int which) {
         		Intent i = new Intent(RemitActivity.this, Card2CardActivity.class);
         		i.putExtra("info", new String[] {remit, c1, bname, bankid, user});
-        		startActivity(i);
-        		finish(); // TODO need ?
+        		startCallbackActivity(i);
         	}
         });
         builder.create().show();
