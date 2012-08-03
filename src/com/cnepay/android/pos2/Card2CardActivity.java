@@ -106,7 +106,8 @@ public class Card2CardActivity extends UIBaseActivity implements
 	        				return;
 	        			}
 	        			i.putExtra(extra, all);
-	        			startActivity(i);
+	        			//startActivity(i);
+	        			startResponseActivity(i);
 	        			finish();
 	        		}
 		        	break;
@@ -207,6 +208,23 @@ public class Card2CardActivity extends UIBaseActivity implements
 	@Override
 	public void onComplete(String cn) {
 		dialog.dismiss();
+		
+		/**
+		 * only registered card
+		 */
+		POSSession session = POSHelper.getPOSSession();
+		if (ci != null && session != null) {
+			if(!session.getCardNumber().equals(ci.getCard(false))) {
+				makeError("只能使用注册卡号转账！");
+				cashIM.init();
+				if(isPlugged()) {
+					showTitleSubmit();
+				}
+				return;
+			}
+		}
+		//////////////////////////////
+		
 		card.setText(cn);
 		imgCardType.setVisibility(View.VISIBLE);
     	ScaleAnimation sa = new ScaleAnimation(0, 1, 0, 1, 
