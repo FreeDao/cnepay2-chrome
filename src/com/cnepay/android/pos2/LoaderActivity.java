@@ -44,7 +44,7 @@ public class LoaderActivity extends Activity implements Runnable {
 	@Override
 	public void run() {
 		Log.v(TAG, "start loading");
-		startActivity(new Intent(this, LoginActivity.class));
+		startActivity(new Intent(this, SplashActivity.class));
 		finish();
 	}
 	
