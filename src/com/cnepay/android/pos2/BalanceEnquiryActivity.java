@@ -84,7 +84,7 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
 	    			}else{
 	    				makeError("error");
 	    			}
-	    			
+	    			imgCardType.setVisibility(View.VISIBLE);
 		        	break;
         		case FAILURE:
         			String e = (String) msg.obj;
@@ -95,21 +95,21 @@ public class BalanceEnquiryActivity extends UIBaseActivity implements OnClickLis
         			if (e != null) {
         				makeError(e);
         			}
+        			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
+        	                Animation.RELATIVE_TO_SELF, 0.5f, 
+        	                Animation.RELATIVE_TO_SELF, 0.5f);
+        	        sa.setDuration(200);
+        	        imgCardType.startAnimation(sa);
+        	        imgCardType.postDelayed(new Runnable() {
+        	            public void run() {
+        	            	imgCardType.setVisibility(View.GONE);
+        	            }
+        	        }, 200);
         			break;
         		}
         		framePass.setVisibility(View.GONE);
     			numPad.setVisibility(View.GONE);
     			noteSwipe.setVisibility(View.VISIBLE);
-    			ScaleAnimation sa = new ScaleAnimation(1, 0, 1, 0, 
-    	                Animation.RELATIVE_TO_SELF, 0.5f, 
-    	                Animation.RELATIVE_TO_SELF, 0.5f);
-    	        sa.setDuration(200);
-    	        imgCardType.startAnimation(sa);
-    	        imgCardType.postDelayed(new Runnable() {
-    	            public void run() {
-    	            	imgCardType.setVisibility(View.GONE);
-    	            }
-    	        }, 200);
         		if(isPlugged()) {
     				showTitleSubmit();
     			}

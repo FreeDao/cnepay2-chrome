@@ -1,7 +1,5 @@
 package com.cnepay.android.pos2;
 
-import com.cnepay.android.pos2.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,7 +42,13 @@ public class LoaderActivity extends Activity implements Runnable {
 	@Override
 	public void run() {
 		Log.v(TAG, "start loading");
-		startActivity(new Intent(this, SplashActivity.class));
+		if(UpdateService.needUpgrade()) {
+			Intent intent = new Intent(this, UpdateActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+		} else {
+			startActivity(new Intent(this, HomeActivity.class));
+		}
 		finish();
 	}
 	

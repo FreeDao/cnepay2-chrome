@@ -65,14 +65,15 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
-
+
                 <EditText
                     android:id="@+id/remit_card"
                     style="@style/input"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="请输入收款人银行卡号"
-                    android:inputType="numberDecimal"
+                    android:inputType="numberDecimal|phone"
+                    android:digits="0123456789"
                     android:lines="1"
                     android:paddingLeft="85dp"
                     android:textSize="16sp" />
@@ -93,14 +94,15 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
-
+
                 <EditText
                     android:id="@+id/remit_recard"
                     style="@style/input"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="再次确认卡号"
-                    android:inputType="numberDecimal"
+                    android:inputType="numberDecimal|phone"
+                    android:digits="0123456789"
                     android:lines="1"
                     android:paddingLeft="85dp"
                     android:textSize="16sp" />
@@ -120,8 +122,7 @@
 
             <FrameLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
+                android:layout_height="wrap_content" >
                 <TextView
                     android:id="@+id/remit_bank"
                     style="@style/input"

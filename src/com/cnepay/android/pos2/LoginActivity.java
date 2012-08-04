@@ -99,7 +99,7 @@ public class LoginActivity extends UIBaseActivity
                         } else {
                         	Toast.makeText(LoginActivity.this, info, Toast.LENGTH_SHORT).show();
                         }
-	        			startActivity(intent);
+	        			startResponseActivity(intent);
 	        			String nam = txtPhone.getText().toString();
 	        			String pas = txtPasswd.getText().toString();
 	        			if (checkRemember.isChecked()) {

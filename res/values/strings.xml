@@ -29,6 +29,7 @@
     <string name="c63">终端未向银行签到</string>
     <string name="c65">超出取款次数限制</string>
     <string name="c66">转账失败，请联系收单行或银联</string>
+    <string name="c68">交易超时</string>
     <string name="c75">密码错误次数超限</string>
     <string name="c77">请向网络中心签到</string>
     <string name="c78">没找到原交易</string>
@@ -45,6 +46,8 @@
     <string name="c99">数据格式错误</string>
     <string name="cC1">余额不足</string>
     <string name="cC3">卡号错误</string>
+    <string name="cC6">转出卡号只能是商户注册卡号</string>
+    <string name="cFF">交易失败</string>
     <string name="cL1">电话号码账户域身份证不匹配</string>
     <string name="cL2">只能注销自己的账户</string>
     <string name="cR0">域信息不完整或手机号已被绑定</string>

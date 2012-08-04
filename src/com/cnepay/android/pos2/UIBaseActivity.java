@@ -42,6 +42,7 @@ public class UIBaseActivity extends BaseActivity {
 	protected ViewGroup btnSubmit = null;
 	
 	private final String TAG = "UIBaseActivity";
+		
 	@Override
 	public void setTitle(CharSequence title) {
 		txtTitle.setText(title);
@@ -286,13 +287,23 @@ public class UIBaseActivity extends BaseActivity {
                     }
                 }
             }
+        } else if (requestCode == PENDING_INTENT) {
+        	if (resultCode == RESULT_OK) {
+                if(data != null) {
+                	try {
+                    	startActivity(data);
+                	} catch(Exception ignore) {}
+                    finish();
+                    return;
+                }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-	
 
 	/********** user function **************/
 	public static int CNAPS_REQUEST = 0x1000;
+	public static int PENDING_INTENT = CNAPS_REQUEST + 1;
 	
 	/**
 	 * 若需要选择开户银行信息，则使用该方法
@@ -456,6 +467,14 @@ public class UIBaseActivity extends BaseActivity {
 
 	public String getSDPath(){ 
 		return PublicHelper.getSDPath();
+	}
+	
+	public void startCallbackActivity(Intent intent) {
+		startActivityForResult(intent, PENDING_INTENT);
+	}
+	
+	public void startResponseActivity(Intent intent) {
+		setResult(RESULT_OK, intent);
 	}
 	/*********** end user function **************/
 }
