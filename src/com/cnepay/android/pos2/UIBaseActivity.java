@@ -58,7 +58,7 @@ public class UIBaseActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		mToast = new Toast(this);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		Log.v(TAG, "start service");
+		//Log.v(TAG, "start service");
 		startService(new Intent(this, UpdateService.class));
 		// setContentView(R.layout.main);
 	}
@@ -220,15 +220,17 @@ public class UIBaseActivity extends BaseActivity {
     }
     
     private void showAboutDialog() {
-    	AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
+    	/*AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
         builder.setTitle("关于" + getString(R.string.app_name))
         .setIcon(android.R.drawable.ic_dialog_info)
         .setMessage("版本号: " + getVersion())
         .setPositiveButton(android.R.string.ok, null)
-        .show();
+        .show();*/
+    	Intent i = new Intent(this, AboutActivity.class);
+    	startActivity(i);
     }
     
-    private String getVersion() {
+    public String getVersion() {
         try {
             PackageManager packageManager = getPackageManager();
             PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0); 
@@ -240,6 +242,7 @@ public class UIBaseActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        if(this instanceof AboutActivity) return false;
         menu.add(0, ABOUT_MENU_ID, 0, "关于")
         .setShortcut('2', 'a')
         .setIcon(android.R.drawable.ic_menu_info_details);

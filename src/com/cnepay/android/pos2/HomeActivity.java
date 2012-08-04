@@ -1,12 +1,8 @@
 package com.cnepay.android.pos2;
 
 import com.tangye.android.iso8583.POSHelper;
-import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -70,18 +66,8 @@ public class HomeActivity extends UIBaseActivity
 			startCallbackActivity(intent);
 			break;
 		case R.id.splash_register:
-			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
-            builder.setMessage("请认真填写银行卡号、序列号、手机号码，一经注册成功，实名认证通过将不得更改");
-            builder.setTitle("提示");
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                	Intent intent = new Intent(HomeActivity.this, VerifySerialNumberActivity.class);
-        			startActivity(intent);
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, null);
-            builder.show();
+			intent = new Intent(HomeActivity.this, VerifySerialNumberActivity.class);
+        	startActivity(intent);
 			break;
 		case R.id.splash_rebind:
 			intent = new Intent(this, ReBindActivity.class);
