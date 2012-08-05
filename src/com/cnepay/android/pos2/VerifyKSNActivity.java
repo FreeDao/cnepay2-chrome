@@ -144,10 +144,11 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	@Override
 	public void onPlugin() {
 		super.onPlugin(); // UIBASE action
-		if(hasVerify && !isProccessing){
+		if(hasVerify && !isProccessing) {
 			hintPlugin.setText("正在验证刷卡器");
+			clearPluginToast();
 			submit();
-		}else{
+		} else {
 			this.showTitleSubmit();
 			hintPlugin.setText("请点击【验证】，验证刷卡器");
 		}

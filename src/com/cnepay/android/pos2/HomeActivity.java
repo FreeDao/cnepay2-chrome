@@ -66,7 +66,7 @@ public class HomeActivity extends UIBaseActivity
 			startCallbackActivity(intent);
 			break;
 		case R.id.splash_register:
-			intent = new Intent(HomeActivity.this, VerifySerialNumberActivity.class);
+			intent = new Intent(HomeActivity.this, VerifyKSNActivity.class);
         	startActivity(intent);
 			break;
 		case R.id.splash_rebind:

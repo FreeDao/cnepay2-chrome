@@ -479,5 +479,11 @@ public class UIBaseActivity extends BaseActivity {
 	public void startResponseActivity(Intent intent) {
 		setResult(RESULT_OK, intent);
 	}
+	
+	public void clearPluginToast() {
+		if (mToast != null) {
+			mToast.cancel();
+		}
+	}
 	/*********** end user function **************/
 }

@@ -60,7 +60,6 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			
 			if (s.length() == TEXT_LEN) {
 				if (!testSerial(s.toString(), 4)) {
 					serialNumber[index].selectAll();
@@ -98,33 +97,28 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		setTitleSubmitText("激活");
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false);
-		//myKSN = this.getIntent().getExtras().getString("ksn");
-		myKSN = "39920611000002";
+		myKSN = this.getIntent().getExtras().getString("ksn");
+		//myKSN = "39920611000002";
 		
 		
 		InputFilter mFilter = new InputFilter() {
 			@Override
 			public CharSequence filter(CharSequence source, int start, int end,
 					Spanned dest, int dstart, int dend) {
-				for (int i = start; i < end; i++) {
-					if (Character.isLowerCase(source.charAt(i))) {
-						char[] v = new char[end - start];
-						TextUtils.getChars(source, start, end, v, 0);
-						String s = new String(v).toUpperCase();
-						if (!testSerial(s, s.length())) {
-							return dest.subSequence(dstart, dend);
-						}
-						if (source instanceof Spanned) {
-							SpannableString sp = new SpannableString(s);
-							TextUtils.copySpansFrom((Spanned) source, start,
-									end, null, sp, 0);
-							return sp;
-						} else {
-							return s;
-						}
-					}
+				char[] v = new char[end - start];
+				TextUtils.getChars(source, start, end, v, 0);
+				String s = new String(v).toUpperCase();
+				if (!testSerial(s, s.length())) {
+					return dest.subSequence(dstart, dend);
 				}
-				return null;
+				if (source instanceof Spanned) {
+					SpannableString sp = new SpannableString(s);
+					TextUtils.copySpansFrom((Spanned) source, start,
+							end, null, sp, 0);
+					return sp;
+				} else {
+					return s;
+				}
 			}
 		};
 		
@@ -246,7 +240,6 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(getCurrentFocus()
 				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-		
 		final String serialNum = getSerialNumber().toUpperCase();
 		if (!testSerial(serialNum, 16)) {
 			errText("序列号必须是16位数字字母");
