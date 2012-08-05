@@ -1,9 +1,10 @@
 package com.tangye.android.utils;
 
-import java.lang.reflect.Constructor;
 import java.util.Random;
 
-import android.app.AlertDialog.Builder;
+import com.cnepay.android.pos2.R;
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
@@ -33,17 +34,14 @@ public class PublicHelper {
         return "0.00";
     }
     
-    public static Builder getAlertDialogBuilder(Context ctx) {
-    	Builder builder;
-    	try {
-    		Class<?> b;
-			b = Class.forName("android.app.AlertDialog$Builder");
-			Constructor<?> c = b.getConstructor(Context.class, int.class);
-			builder = (Builder) c.newInstance(ctx, 2);
-		} catch (Exception e) {
-			builder = new Builder(ctx);
-		}
-    	return builder;
+    public static AlertDialogBuilderWrapper getAlertDialogBuilder(Context ctx) {
+		/*
+		Class<?> b;
+		b = Class.forName("android.app.AlertDialog$Builder");
+		Constructor<?> c = b.getConstructor(Context.class, int.class);
+		builder = (Builder) c.newInstance(ctx, 2);
+		*/
+    	return new AlertDialogBuilderWrapper(ctx, R.style.MyAlertDialog);
     }
     
     public static ProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
@@ -148,5 +146,10 @@ public class PublicHelper {
             return true; 
         } 
         return false; 
-    } 
+    }
+    
+    public static int dp2px(Context context, float dpValue) {
+    	final float scale = context.getResources().getDisplayMetrics().density;
+    	return (int) (dpValue * scale + 0.5f);
+	}
 }

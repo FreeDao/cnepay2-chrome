@@ -1,11 +1,10 @@
-
 package com.cnepay.android.pos2;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -220,14 +219,15 @@ public class UIBaseActivity extends BaseActivity {
     }
     
     private void showAboutDialog() {
-    	/*AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
+    	View v = View.inflate(this, R.layout.activity_about, null);
+    	AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
         builder.setTitle("关于" + getString(R.string.app_name))
         .setIcon(android.R.drawable.ic_dialog_info)
-        .setMessage("版本号: " + getVersion())
+        .setView(v)
         .setPositiveButton(android.R.string.ok, null)
-        .show();*/
-    	Intent i = new Intent(this, AboutActivity.class);
-    	startActivity(i);
+        .show();
+        TextView tv = (TextView) v.findViewById(R.id.about_version);
+        tv.setText("我刷版本：V" + getVersion());
     }
     
     public String getVersion() {

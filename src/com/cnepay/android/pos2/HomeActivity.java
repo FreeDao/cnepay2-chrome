@@ -74,7 +74,7 @@ public class HomeActivity extends UIBaseActivity
 			startActivity(intent);
 			break;
 		case R.id.splash_about:
-			intent = new Intent(this, AboutActivity.class);
+			intent = new Intent(this, AboutUsActivity.class);
 			startActivity(intent);
 			break;
 		}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
@@ -12,7 +13,6 @@ import com.tangye.android.iso8583.protocol.ResetPasswdMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -79,7 +79,7 @@ public class ResetPasswdActivity extends UIBaseActivity implements
                         progressDialog.dismiss();
                         progressDialog = null; // For not fade card number
                         // TODO alert dialog
-                        AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(ResetPasswdActivity.this);
+                        AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(ResetPasswdActivity.this);
         		        builder.setTitle("密码重置成功")
         		        .setIcon(android.R.drawable.ic_dialog_info)
         		        .setMessage("您的新密码为您的身份证后6位，请尽快登录账户并修改您的密码，以保障您的账户安全。")

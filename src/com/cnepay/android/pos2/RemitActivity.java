@@ -1,9 +1,9 @@
 package com.cnepay.android.pos2;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -89,7 +89,7 @@ public class RemitActivity extends UIBaseActivity implements
 			break;
 		case R.id.remit_bank:
 			if (bankid != null && bankid.length() > 0) {
-				AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(RemitActivity.this);
+				AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(RemitActivity.this);
 		        builder.setTitle("开户银行信息")
 		        .setIcon(android.R.drawable.ic_dialog_info)
 		        .setMessage(bank.getText().toString() + "\n联行号：" + bankid + "\n\n是否修改？")
@@ -246,7 +246,7 @@ public class RemitActivity extends UIBaseActivity implements
 			return;
 		}
 		
-		AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(RemitActivity.this);
+		AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(RemitActivity.this);
         builder.setTitle("提示")
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setMessage("确保以上信息无误，则可继续完成汇款操作\n\n是否继续转账？")

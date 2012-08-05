@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:src="@drawable/logo2" />
+
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天津中汇富科技有限公司"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="&#160;&#160;&#160;&#160;独立第三方支付平台，以“企业支付管理专家”为定位旨在深入B2C和B2B领域，为行业客户快速准确定制支付解决方案创新研发电子支付服务产品。推动行业电子商务的发展。目前中汇支付已服务于航空票务、电子商务、教育、外贸等行业客户数千家。"
+                android:textColor="#777777" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="&#160;&#160;&#160;&#160;“我刷”为天津中汇富科技有限公司自主研发的手机支付产品的推广品牌。刷卡器采用金融加密芯片对交易信息进行加密处理，交易后台通过CSTC中国软件评测中心的检测认证，确保交易安全。"
+                android:textColor="#777777" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="&#160;&#160;&#160;&#160;“我刷”支付客户端目前支持Android2.0以上版本的操作系统，苹果iOS操作系统正在积极适配中。"
+                android:textColor="#777777" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right"
+                android:text="客服电话：4006780434"
+                android:textColor="#777777" />
+        
+    </LinearLayout>
+
+</LinearLayout>

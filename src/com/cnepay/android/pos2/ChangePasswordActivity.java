@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
@@ -13,7 +14,6 @@ import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.SetPasswordMessage;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences.Editor;
@@ -61,7 +61,7 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 					if(progressDialog != null){
 						progressDialog.dismiss();
 					}
-					AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
+					AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
 				    builder.setTitle("修改密码")
 				    .setIcon(android.R.drawable.ic_dialog_info)
 				    .setMessage("密码修改成功")
@@ -135,7 +135,7 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 				return;
 			}
 			
-			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
+			AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(ChangePasswordActivity.this);
 		    builder.setTitle("修改密码")
 		    .setIcon(android.R.drawable.ic_dialog_alert)
 		    .setMessage("确定修改密码？")

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
@@ -11,7 +12,6 @@ import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.KSNRaplaceMessage;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -74,7 +74,7 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 		mHandler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
-				AlertDialog.Builder builder;
+				AlertDialogBuilderWrapper builder;
 				switch(msg.what) {
 				case SUCCESS:
 					if(progressDialog != null){
@@ -236,7 +236,7 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 	@Override
 	public void onClick(View v) {
 		hideTitleSubmit();
-		AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
+		AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(DeviceManageActivity.this);
 	    builder.setTitle("刷卡器替换")
 	    .setIcon(android.R.drawable.ic_dialog_alert)
 	    .setMessage("是否替换刷卡器？" + "\n原刷卡器将不能二次绑定")

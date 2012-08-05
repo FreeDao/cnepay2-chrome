@@ -1,5 +1,6 @@
 package com.cnepay.android.pos2;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.Activity;
@@ -47,7 +48,7 @@ public class UpdateActivity extends Activity implements OnCancelListener{
             }
         }
         
-		AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
+        AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
         builder.setTitle("更新提示")
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setMessage("检测到程序更新，必须更新后才能继续使用\n\n版本：" + ver)

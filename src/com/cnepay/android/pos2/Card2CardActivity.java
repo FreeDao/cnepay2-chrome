@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 import com.cnepay.android.pos2.PasswordInputMethod.PasswordInputMethodListener;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
@@ -17,7 +18,6 @@ import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.HandlingFee;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -244,7 +244,7 @@ public class Card2CardActivity extends UIBaseActivity implements
     	info.append("\n收款卡号：\n" + card2);
     	info.append("\n收款银行：" + bankname2);
     	
-    	AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
+    	AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
         builder.setTitle("信息预览")
         .setIcon(android.R.drawable.ic_dialog_info)
         .setMessage(info.toString() + "\n\n是否继续转账？")

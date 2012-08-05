@@ -1,8 +1,8 @@
 package com.cnepay.android.pos2;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,7 +77,7 @@ public class MobileChargeActivity extends UIBaseActivity implements OnClickListe
     	final int tmp = Integer.parseInt(amount.getTag().toString());
     	info.append("\n充值金额：￥" + amountToPay[tmp]/100);
 
-		AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(MobileChargeActivity.this);
+    	AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(MobileChargeActivity.this);
 	    builder.setTitle("手机充值")
 	    .setIcon(android.R.drawable.ic_dialog_info)
 	    .setMessage(info.toString() + "\n\n是否继续充值？")

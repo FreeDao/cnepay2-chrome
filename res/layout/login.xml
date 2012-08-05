@@ -15,21 +15,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/log_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logo" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
             android:padding="10dp" >
 
@@ -37,44 +23,49 @@
                 android:layout_width="fill_parent"
                 android:layout_height="90dp"
                 android:layout_gravity="center"
-                android:background="@drawable/login"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 android:paddingBottom="2dp" >
 
                 <EditText
                     android:id="@+id/log_id"
+                    style="@style/input"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="#00000000"
-                    android:hint="手机号"
-                    android:inputType="phone" />
+                    android:digits="0123456789"
+                    android:drawableRight="@drawable/pen"
+                    android:hint="登录账号"
+                    android:inputType="phone"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp" />
 
                 <EditText
                     android:id="@+id/log_password"
+                    style="@style/input"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="#00000000"
-                    android:hint="密码"
-                    android:inputType="textPassword" />
+                    android:drawableRight="@drawable/lock"
+                    android:hint="登录密码"
+                    android:inputType="textPassword"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp" >
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
                 <CheckBox
                     android:id="@+id/log_remember"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="left|center_vertical"
-                    android:text="记住"
                     android:button="@drawable/checkbox"
+                    android:gravity="left|center_vertical"
+                    android:text="记住登录手机"
                     android:textColor="#555555"
                     android:textSize="15sp" />
 
@@ -82,21 +73,46 @@
                     android:id="@+id/log_resetpd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:background="@drawable/link_btn"
                     android:gravity="right|center_vertical"
                     android:text="忘记密码"
-                    android:background="@drawable/title_btn"
+                    android:textSize="12sp"
+                    style="@style/link" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/log_remember_pswd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@drawable/checkbox"
+                    android:gravity="left|center_vertical"
+                    android:text="记住密码"
                     android:textColor="#555555"
                     android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/log_rebind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right|center_vertical"
                     android:text="无法登录"
-                    android:background="@drawable/title_btn"
-                    android:textColor="#555555"
-                    android:textSize="15sp" />
+                    android:textSize="12sp"
+                    style="@style/link" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
             </LinearLayout>
 
             <LinearLayout
@@ -107,10 +123,10 @@
 
                 <Button
                     android:id="@+id/login"
+                    style="@style/button"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    style="@style/button"
                     android:text="登录" />
             </LinearLayout>
         </LinearLayout>

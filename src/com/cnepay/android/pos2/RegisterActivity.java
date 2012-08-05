@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
@@ -15,7 +16,6 @@ import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.GernateSNumber;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -147,7 +147,7 @@ public class RegisterActivity extends UIBaseActivity implements
 			break;
 		case R.id.reg_bankname:
 			if (bankid != null && bankid.length() > 0) {
-				AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(RegisterActivity.this);
+				AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(RegisterActivity.this);
 		        builder.setTitle("开户银行信息")
 		        .setIcon(android.R.drawable.ic_dialog_info)
 		        .setMessage(bank.getText().toString() + "\n联行号：" + bankid + "\n\n是否修改？")

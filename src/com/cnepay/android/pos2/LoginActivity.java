@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
@@ -12,12 +13,10 @@ import com.tangye.android.iso8583.protocol.SignInMessage;
 import com.tangye.android.utils.AES;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class LoginActivity extends UIBaseActivity
 	private ProgressDialog progressDialog;
 	private Button btnLogin;
 	private EditText txtPhone, txtPasswd;
-	private CheckBox checkRemember;
+	private CheckBox checkRemember, checkRemePswd;
 	private SignInMessage s;
 	private Handler mHandler;
 	
@@ -69,19 +68,17 @@ public class LoginActivity extends UIBaseActivity
         }
 		
 		setContentView(R.layout.login);
-		setTitleSubmitText("注册");
+		setTitle("我要登录");
 		
 		btnLogin = (Button) findViewById(R.id.login);
 		btnLogin.setOnClickListener(this);
 		txtPhone = (EditText) findViewById(R.id.log_id);
 		txtPasswd = (EditText) findViewById(R.id.log_password);
 		checkRemember = (CheckBox) findViewById(R.id.log_remember);
+		checkRemePswd = (CheckBox) findViewById(R.id.log_remember_pswd);
 		findViewById(R.id.log_resetpd).setOnClickListener(this);
 		findViewById(R.id.log_rebind).setOnClickListener(this);
 		initRememberedHistory();
-		
-		showTitleSubmit();
-		btnSubmit.setOnClickListener(this);
 		
 		mHandler = new Handler() {
             @Override
@@ -102,12 +99,20 @@ public class LoginActivity extends UIBaseActivity
 	        			startResponseActivity(intent);
 	        			String nam = txtPhone.getText().toString();
 	        			String pas = txtPasswd.getText().toString();
-	        			if (checkRemember.isChecked()) {
+	        			if (checkRemember.isChecked() || checkRemePswd.isChecked()) {
 	        				if (nam.length() > 0) {
 	        					Editor edit = getSharedPreferences("rem_info", 0).edit();
-	        					edit.putString("name", nam);
-	        					String pwd = AES.encryptTrack(pas + "0000000000", nam);
-	        					edit.putString("passwd", pwd);
+	        					if (checkRemember.isChecked()) {
+	        						edit.putString("name", nam);
+	        					} else {
+	        						edit.remove("name");
+	        					}
+	        					if (checkRemePswd.isChecked()) {
+		        					String pwd = AES.encryptTrack(pas + "0000000000", nam);
+		        					edit.putString("passwd", pwd);
+	        					} else {
+	        						edit.remove("passwd");
+	        					}
 	        					edit.commit();
 	        				}
 	        			} else {
@@ -124,7 +129,7 @@ public class LoginActivity extends UIBaseActivity
                         if (info != null) {
                         	if (info.equals("error")) {
                         		final EditText inputServer = new EditText(LoginActivity.this);
-    	        		        AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(LoginActivity.this);
+                        		AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(LoginActivity.this);
     	        		        builder.setTitle("序列号已被使用")
     	        		        .setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
     	        		        .setNegativeButton(android.R.string.cancel, null)
@@ -178,26 +183,6 @@ public class LoginActivity extends UIBaseActivity
 		case R.id.log_resetpd:
 			intent = new Intent(LoginActivity.this, ResetPasswdActivity.class);
 			startActivityForResult(intent, RESET);
-			break;
-		case R.id.title_submit:
-			v.setEnabled(false);
-			v.postDelayed(new Runnable() {
-				public void run() {
-					v.setEnabled(true);
-				}
-			}, ENABLE_TIMEOUT);
-			AlertDialog.Builder builder = PublicHelper.getAlertDialogBuilder(this);
-            builder.setMessage("请认真填写银行卡号、序列号、手机号码，一经注册成功，实名认证通过将不得更改");
-            builder.setTitle("提示");
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                	Intent intent = new Intent(LoginActivity.this, VerifyKSNActivity.class);
-        			startActivity(intent);
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, null);
-            builder.show();
 			break;
 		case R.id.login:
 			if(progressDialog == null) {
@@ -363,13 +348,19 @@ public class LoginActivity extends UIBaseActivity
 		if(n1.length() > 0) {
 			checkRemember.setChecked(true);
 			txtPhone.setText(n1);
-			String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
-			if (p1 != null && p1.length() >= 6) {
-				txtPasswd.setText(p1.substring(0, 6));
-			}
 		} else {
 			checkRemember.setChecked(false);
 			txtPasswd.setText("");
+		}
+		String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
+		if (p1 != null && p1.length() >= 6) {
+			txtPasswd.setText(p1.substring(0, 6));
+			checkRemePswd.setChecked(true);
+		} else {
+			checkRemePswd.setChecked(false);
+		}
+		if (n1.length() > 0 && p1.length() == 0) {
+			txtPasswd.requestFocus();
 		}
 	}
 	
@@ -378,7 +369,7 @@ public class LoginActivity extends UIBaseActivity
 		if(requestCode == RESET) {
 			if(resultCode == RESULT_OK) {
 				initRememberedHistory();
-				if(checkRemember.isChecked()) {
+				if(checkRemePswd.isChecked()) {
 					txtPasswd.requestFocus();
 					txtPasswd.setText("");
 				}
