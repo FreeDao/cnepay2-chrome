@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Selection;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -59,7 +60,7 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			ensureSerial();
+			
 			if (s.length() == TEXT_LEN) {
 				if (!testSerial(s.toString(), 4)) {
 					serialNumber[index].selectAll();
@@ -68,11 +69,15 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 				}
 				if (index < LEN - 1) {
 					serialNumber[index + 1].setEnabled(true);
+					Editable ea = serialNumber[index + 1].getText();
+					Selection.setSelection(ea, ea.length());
 					serialNumber[index + 1].requestFocus();
 				}
 			} else if (s.length() > TEXT_LEN) {
 				serialNumber[index].setText(s.subSequence(0,  4));
+				serialNumber[index].setSelection(4);
 			}
+			ensureSerial();
 		}
 
 		@Override
@@ -94,7 +99,7 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false);
 		//myKSN = this.getIntent().getExtras().getString("ksn");
-		myKSN = "39920611000001";
+		myKSN = "39920611000002";
 		
 		
 		InputFilter mFilter = new InputFilter() {
@@ -223,10 +228,17 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 	
 	private void ensureSerial() {
 		String s = getSerialNumber();
+		if(s.length() != 16){
+			serialHint.setText("请输入十六位序列号");
+			hideTitleSubmit();
+			return;
+		}
 		if (gn.Verify(s)) {
+			serialHint.setText("请点击【激活】，激活序列号");
 			showTitleSubmit();
 		} else {
 			hideTitleSubmit();
+			serialHint.setText("十六位序列号有误，请检查");
 		}
 	}
 	
@@ -245,6 +257,7 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 			return;
 		}
 		hideTitleSubmit();
+		serialHint.setText("正在验证序列号...");
 		for(int i = 0; i < LEN; i++){
 			serialNumber[i].setEnabled(false);
 		}

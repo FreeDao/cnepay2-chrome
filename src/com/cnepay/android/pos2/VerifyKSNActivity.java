@@ -31,6 +31,9 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	private static final String TAG = "VerifyKSNActivity";
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
+    
+    private boolean hasVerify = false;
+    private boolean isProccessing =  false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,14 +47,16 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 			public boolean test(String ksn) {
 				if(PublicHelper.isEmptyString(ksn)){
 					errText("读取刷卡器错误");
+					hideTitleSubmit();
+					return false;
 				}
 				myKSN = ksn;
-				showTitleSubmit();
 				return true;
 			}
 		});
 
 		hintPlugin = (TextView)findViewById(R.id.verify_ksn_hint);
+		hintPlugin.setText("正在读取刷卡器...");
 		
 		mHandler = new Handler() {
             @Override
@@ -76,6 +81,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
                     }
                     break;
                 }
+                isProccessing = false;
                 if(isPlugged()) {
     				showTitleSubmit();
     				hintPlugin.setText("请点击【验证】，验证刷卡器");
@@ -138,13 +144,19 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	@Override
 	public void onPlugin() {
 		super.onPlugin(); // UIBASE action
-		this.showTitleSubmit();
-		hintPlugin.setText("请点击【验证】，验证刷卡器");
+		if(hasVerify && !isProccessing){
+			hintPlugin.setText("正在验证刷卡器");
+			submit();
+		}else{
+			this.showTitleSubmit();
+			hintPlugin.setText("请点击【验证】，验证刷卡器");
+		}
 	}
 
 	@Override
 	public void onPlugout() {
 		super.onPlugout(); // UIBASE action
+		hideTitleSubmit();
 		hintPlugin.setText("请插入刷卡器");
 	}
 	
@@ -166,6 +178,8 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 
 	private void submit() {
 		hideTitleSubmit();
+		isProccessing = true;
+		hasVerify = true;
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"", // title 
 				"验证中...", // message 
