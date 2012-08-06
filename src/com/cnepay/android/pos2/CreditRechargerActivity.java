@@ -173,7 +173,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 			}
 			hideTitleSubmit();
 			txtInput.clearFocus();
-			dialog.setText("请刷卡...");
+			//dialog.setText("请刷卡...");
 			dialog.show();
 			startSwipe();
 			// noteSwipe.setText("");
@@ -198,12 +198,12 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 
 	@Override
 	public void onDecoding() {
-		dialog.setText("正在解码...");
+		//dialog.setText("正在解码...");
 	}
 	
 	@Override
 	public void onSwipe() {
-		dialog.setText("接受刷卡数据...");
+		//dialog.setText("接受刷卡数据...");
 	}
 
 	@Override
@@ -326,7 +326,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 		framePass.setVisibility(View.GONE);
 		layoutMask.setClickable(true);
 		int[] attrs = new int[] { R.layout.swipe_dialog, R.style.dialog,
-				R.id.dialog_anim, R.id.dialog_note };
+				R.id.dialog_anim, R.id.dialog_note, R.id.swipe_note_title };
 		dialog = new SwipeDialogController(this, attrs);
 		dialog.setOnCancelListener(new OnCancelListener() {
 			@Override

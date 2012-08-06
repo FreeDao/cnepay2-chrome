@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.DialogInterface.OnCancelListener;
@@ -17,11 +18,13 @@ public class SwipeDialogController implements OnDismissListener {
 	private int dialogStyle;
 	private int dialogAnim;
 	private int dialogNote;
+	private int dialogNoteTitle;
 	
 	private Context mContext;
 	private AnimationDrawable anim;
 	private TextView note;
 	private ImageView img;
+	private ImageView noteTitle;
 	private String txt;
 	private OnCancelListener listener;
 	private boolean adjust = false;
@@ -32,7 +35,7 @@ public class SwipeDialogController implements OnDismissListener {
 	 * @param attr R.layout, R.style, R.id.animation, R.id.notice
 	 */
 	public SwipeDialogController(Context context, int[] attr) {
-		if (attr.length != 4) {
+		if (attr.length != 5) {
 			throw new IllegalArgumentException(
 					"attr shuold be 4, including layout, style, animation, notice");
 		}
@@ -41,6 +44,7 @@ public class SwipeDialogController implements OnDismissListener {
 		dialogStyle = attr[1];
 		dialogAnim = attr[2];
 		dialogNote = attr[3];
+		dialogNoteTitle = attr[4];
 	}
 	
 	public void show() {
@@ -52,6 +56,7 @@ public class SwipeDialogController implements OnDismissListener {
 		img = (ImageView) dlg.findViewById(dialogAnim);
 		note = (TextView) dlg.findViewById(dialogNote);
 		note.setVisibility(View.INVISIBLE);
+		noteTitle = (ImageView)dlg.findViewById(dialogNoteTitle);
 		adjust = false;
 		if (txt != null) {
 			note.setText(txt);
@@ -65,7 +70,7 @@ public class SwipeDialogController implements OnDismissListener {
 				adjust();
 				anim.start();
 			}
-		}, 500);
+		}, 200);
 		dlg.show();
 	}
 	
@@ -106,15 +111,18 @@ public class SwipeDialogController implements OnDismissListener {
 	}
 	
 	private void adjust() {
-		int screenH = img.getMeasuredHeight();
-		int screenW = img.getMeasuredWidth();
-		if (screenH != 0 && !adjust) {
-			//FIXME hardcode 540px of the picture
-			int actualH = (int) (screenW / 540.0f * screenH);
-			int fontH = note.getHeight();
-			//android.util.Log.v("DIALOG", "s=" + img.getMeasuredWidth() + " f=" + fontH);
-			int top = (int) (actualH * 0.23f - (fontH - screenH + actualH) / 2);
-			note.setPadding(0, top, 0, 0);
+		final float scale = mContext.getResources().getDisplayMetrics().density;
+		int titleH = noteTitle.getHeight();
+		final int fiveDp = (int)(5 * scale + 0.5f);
+		int marginLeft = fiveDp;
+		FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)noteTitle.getLayoutParams();
+		if(lp != null){
+			marginLeft = lp.leftMargin;
+		}
+		
+		if (titleH != 0 && !adjust) {
+			int top = marginLeft + titleH + fiveDp;
+			note.setPadding(fiveDp, top, fiveDp, (fiveDp * 2));
 			note.requestLayout();
 			adjust = true;
 		}

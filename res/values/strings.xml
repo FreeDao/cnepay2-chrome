@@ -110,4 +110,10 @@
 	<string name="balance_enquiry">余额查询</string>
 	
 	
+	<string name="swipe_dialog_note">1、请在30秒内完成刷卡动作。\n
+	    2、支持所有带银联标记的借记卡和信用卡支付。\n
+	    3、检查刷卡器是否牢固。使银行卡卡面与刷卡器平行，磁条朝下，快速刷过。\n
+	    4、如果刷卡不成功，请尝试不同的刷卡速度或者等待一段时间再刷。</string>
+	
+	
 </resources>
