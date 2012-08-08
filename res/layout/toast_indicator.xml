@@ -4,12 +4,13 @@
     android:layout_height="fill_parent"
     android:background="@drawable/toast_bg"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp"
+    android:gravity="center" >
 
     <ImageView
         android:id="@+id/toast_indi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/indicator_off" />
+        android:src="@null" />
 
 </LinearLayout>

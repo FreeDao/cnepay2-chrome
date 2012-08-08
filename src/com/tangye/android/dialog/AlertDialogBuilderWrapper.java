@@ -592,7 +592,7 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 			}
 			
 			if (titletemp != null) {
-				int m = PublicHelper.dp2px(mContext, 16);
+				int m = PublicHelper.dp2px(mContext, 8);
 				int n = PublicHelper.dp2px(mContext, 12);
 				titletemp.setPadding(m, n, m, n);
 				lp = (LinearLayout.LayoutParams) titletemp.getLayoutParams();
@@ -631,7 +631,8 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 			}
 			
 			if (msg != null) {
-				msg.setPadding(0, 0, 0, 0);
+				int n = PublicHelper.dp2px(mContext, 8);
+				msg.setPadding(n, 0, n, 0);
 				msg.setTextColor(0xff000000);
 			}
 			
@@ -655,7 +656,7 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 								Button btn = (Button)v;
 								allbtn.add(btn);
 								btn.setMinimumHeight(PublicHelper.dp2px(mContext, 54));
-								btn.setTextSize(PublicHelper.dp2px(mContext, 13));
+								btn.setTextSize(PublicHelper.dp2px(mContext, 12));
 								btn.setTextColor(0xff279ce7);
 							}
 						}
