@@ -242,7 +242,7 @@ public class UIBaseActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        if(this instanceof AboutActivity) return false;
+        //if(this instanceof AboutActivity) return false;
         menu.add(0, ABOUT_MENU_ID, 0, "关于")
         .setShortcut('2', 'a')
         .setIcon(android.R.drawable.ic_menu_info_details);

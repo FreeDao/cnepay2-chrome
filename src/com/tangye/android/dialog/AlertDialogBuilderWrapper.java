@@ -133,6 +133,8 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
     public AlertDialogBuilderWrapper setIcon(int iconId) {
     	switch(iconId) {
     	case android.R.drawable.ic_dialog_info:
+    		iconId = R.drawable.info;
+    		break;
     	case android.R.drawable.ic_dialog_alert:
     		iconId = R.drawable.alert;
     		break;
