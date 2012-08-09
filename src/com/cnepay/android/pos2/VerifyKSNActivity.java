@@ -39,7 +39,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_verify_ksn);
-		setTitle("激活刷卡器");
+		setTitle("刷卡器激活");
 		setTitleSubmitText("验证");
 		btnSubmit.setOnClickListener(this);
 		setActivityPara(false, false, new KsnTestListener() {
