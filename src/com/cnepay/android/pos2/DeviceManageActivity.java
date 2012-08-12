@@ -5,6 +5,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import com.tangye.android.dialog.AlertDialogBuilderWrapper;
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
@@ -12,7 +13,6 @@ import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.KSNRaplaceMessage;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,14 +32,13 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 	private String currentKsn = null;
 	private Handler mHandler;
 	private boolean isProcessing;
+	private CustomProgressDialog progressDialog;
 	
 	private final static int SUCCESS = 0;
 	private final static int FAILURE = 1;
 	
-	
 	private final String TAG = "DeviceManageActivity";
 	
-	private ProgressDialog progressDialog;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device_manage);

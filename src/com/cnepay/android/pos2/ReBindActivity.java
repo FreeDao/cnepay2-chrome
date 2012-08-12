@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
@@ -14,7 +15,6 @@ import com.tangye.android.iso8583.protocol.ReBindMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
@@ -38,7 +38,7 @@ public class ReBindActivity extends UIBaseActivity implements
 	private Button btnBind;
 	private ReBindMessage s;
 	private Handler mHandler;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 
 	private static final String TAG = "ReBindActivity";
 	private static final int ENABLE_TIMEOUT = 1000;

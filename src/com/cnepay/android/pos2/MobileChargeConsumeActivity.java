@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import java.util.Calendar;
 
 import com.cnepay.android.pos2.PasswordInputMethod.PasswordInputMethodListener;
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.dialog.SwipeDialogController;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
@@ -16,7 +17,6 @@ import com.tangye.android.iso8583.protocol.MobileChargeMessage;
 import com.tangye.android.utils.CardInfo;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
@@ -54,7 +54,7 @@ public class MobileChargeConsumeActivity extends UIBaseActivity implements OnCli
 	private MobileChargeMessage s;
 	private Handler mHandler;
 	private boolean isProcessing;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 	
 	private final String TAG = "MobileChargeConsumeActivity";
 	private final static int SUCCESS = 0;

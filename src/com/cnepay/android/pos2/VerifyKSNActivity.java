@@ -3,10 +3,12 @@ package com.cnepay.android.pos2;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.protocol.KSNVerifyMessage;
 import com.tangye.android.utils.PublicHelper;
-import android.app.ProgressDialog;
+
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -25,7 +27,7 @@ public class VerifyKSNActivity extends UIBaseActivity implements
 	private TextView hintPlugin;
 	private String myKSN;
 	private Handler mHandler;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 	private KSNVerifyMessage s;
 
 	private static final String TAG = "VerifyKSNActivity";

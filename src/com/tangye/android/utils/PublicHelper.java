@@ -4,11 +4,10 @@ import java.util.Random;
 
 import com.cnepay.android.pos2.R;
 import com.tangye.android.dialog.AlertDialogBuilderWrapper;
+import com.tangye.android.dialog.CustomProgressDialog;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
-import android.os.Build.VERSION;
 import android.os.Environment;
 
 public class PublicHelper {
@@ -44,35 +43,21 @@ public class PublicHelper {
     	return new AlertDialogBuilderWrapper(ctx, R.style.MyAlertDialog);
     }
     
-    public static ProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
+    public static CustomProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
     		boolean indeterminate, boolean cancelable, OnCancelListener cancelListener) {
-    	if(VERSION.SDK_INT > 10) {
-	    	ProgressDialog dialog = new ProgressDialog(context, 2);
-	    	dialog.setTitle(title);
-	    	dialog.setMessage(message);
-	    	dialog.setIndeterminate(indeterminate);
-	    	dialog.setCancelable(cancelable);
-	    	dialog.setOnCancelListener(cancelListener);
-	    	dialog.show();
-	    	return dialog;
-    	} else {
-    		return ProgressDialog.show(context, title, message, indeterminate, cancelable, cancelListener);
-    	}
+    	CustomProgressDialog dialog = new CustomProgressDialog(context, R.style.MyProgressDialog);
+    	dialog.setTitle(title);
+    	dialog.setMessage(message);
+    	dialog.setIndeterminate(indeterminate);
+    	dialog.setCancelable(cancelable);
+    	dialog.setOnCancelListener(cancelListener);
+    	dialog.show();
+		return dialog;
     }
     
-    public static ProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
+    public static CustomProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
     		boolean indeterminate, boolean cancelable) {
-    	if(VERSION.SDK_INT > 10) {
-	    	ProgressDialog dialog = new ProgressDialog(context, 2);
-	    	dialog.setTitle(title);
-	    	dialog.setMessage(message);
-	    	dialog.setIndeterminate(indeterminate);
-	    	dialog.setCancelable(cancelable);
-	    	dialog.show();
-	    	return dialog;
-    	} else {
-    		return ProgressDialog.show(context, title, message, indeterminate, cancelable);
-    	}
+    	return getProgressDialog(context, title, message, indeterminate, cancelable, null);
     }
     
     private static final char validRandomCode[] = {

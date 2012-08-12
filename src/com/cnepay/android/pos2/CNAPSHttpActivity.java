@@ -23,10 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.tangye.android.dialog.AlertDialogBuilderWrapper;
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.utils.PublicHelper;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -47,7 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CNAPSHttpActivity extends Activity implements
-		View.OnClickListener, ProgressDialog.OnCancelListener,
+		View.OnClickListener, DialogInterface.OnCancelListener,
 		OnItemSelectedListener {
 	/** Called when the activity is first created. */
 	private static final String TAG = "CNAPSChooserActivity";
@@ -63,7 +63,7 @@ public class CNAPSHttpActivity extends Activity implements
 	EditText edKeyword;
 	Button buttonFind;
 	Handler fHandler;
-	ProgressDialog progressDialog;
+	CustomProgressDialog progressDialog;
 	Map<String, String> bankNames;
 	TextView totalResult;
 	TextView bankName;

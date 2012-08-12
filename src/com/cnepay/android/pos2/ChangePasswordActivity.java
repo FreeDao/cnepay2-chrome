@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.tangye.android.dialog.AlertDialogBuilderWrapper;
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
@@ -14,7 +15,6 @@ import com.tangye.android.iso8583.POSSession;
 import com.tangye.android.iso8583.protocol.SetPasswordMessage;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class ChangePasswordActivity extends UIBaseActivity implements OnClickLis
 	private static final int ENABLE_TIMEOUT = 1000;
 	private final static int SUCCESS = 0;
 	private final static int FAILURE = 1;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 	
 	private final String TAG = "ChangePasswordActivity";
 	

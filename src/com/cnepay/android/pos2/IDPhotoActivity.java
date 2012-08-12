@@ -18,7 +18,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -39,6 +38,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.iso8583.POSSession;
@@ -67,7 +67,7 @@ public class IDPhotoActivity extends UIBaseActivity implements
 	private String filename_back;
 	private String filename_gray_front;
 	private String filename_gray_back;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 	private ImageView viewer;
 	private Handler mHandler;
 	private File vDirPath;

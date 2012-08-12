@@ -6,12 +6,12 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.protocol.SerialNumberVerifyMessage;
 import com.tangye.android.utils.GernateSNumber;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -42,7 +42,7 @@ public class VerifySerialNumberActivity extends UIBaseActivity implements
 	private String myKSN;
 	private Handler mHandler;
 	private TextView serialHint;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 
 	private static final String TAG = "VerifySerialNumberActivity";
 	private static final int SUCCESS = 0;

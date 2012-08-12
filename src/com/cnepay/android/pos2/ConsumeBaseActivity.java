@@ -20,11 +20,11 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.utils.PublicHelper;
 import com.tangye.android.utils.VoucherDraw;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,7 +64,7 @@ abstract public class ConsumeBaseActivity extends UIBaseActivity implements View
 	private Button btnFinish, btnSign;
 	private VoucherDraw view;
 	private Handler mHandler;
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 
 	public void setContentView(int view) {
 		throw new RuntimeException("should not call in child activity");

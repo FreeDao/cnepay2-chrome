@@ -5,6 +5,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import com.tangye.android.dialog.AlertDialogBuilderWrapper;
+import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.IsoMessage;
 import com.tangye.android.iso8583.POSEncrypt;
 import com.tangye.android.iso8583.POSHelper;
@@ -13,7 +14,6 @@ import com.tangye.android.iso8583.protocol.SignInMessage;
 import com.tangye.android.utils.AES;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -34,7 +34,7 @@ import android.widget.Toast;
 public class LoginActivity extends UIBaseActivity 
 				implements View.OnClickListener, OnCancelListener {
 
-	private ProgressDialog progressDialog;
+	private CustomProgressDialog progressDialog;
 	private Button btnLogin;
 	private EditText txtPhone, txtPasswd;
 	private CheckBox checkRemember, checkRemePswd;
