@@ -5,70 +5,70 @@
     android:background="@drawable/main_bg"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/photp_viewer"
+    <FrameLayout
+        android:id="@+id/photo_viewer"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:src="@drawable/focus" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        
-        android:layout_margin="10dp"
-        android:gravity="bottom|center_horizontal" >
-
-        <Button
-            android:id="@+id/take_id_front"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#ffffff"
-            android:text="拍摄身份证正面" />
-
-        <Button
-            android:id="@+id/take_id_back"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#ffffff"
-            android:text="拍摄身份证背面" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/idphotobg1"
+        android:scaleType="centerCrop" >
+
+        <ImageView
+            android:id="@+id/photo_img_viewer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop" />
+        
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:background="@drawable/idphoto_text_bg"
+            android:text="身份证正面" />
+        
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/photo_viewer2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/idphotobg2" >
+
+        <ImageView
+            android:id="@+id/photo_img_viewer2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop" />
+        
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:background="@drawable/idphoto_text_bg"
+            android:text="身份证背面" />
+        
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:gravity="center" >
 
         <Button
             android:id="@+id/upload_idphoto"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:text="上传身份证"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/back_idphoto"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:text="暂时不上传"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
+            style="@style/button"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:text="上传身份证" />
     </LinearLayout>
 
 </LinearLayout>
