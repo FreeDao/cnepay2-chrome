@@ -41,7 +41,7 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
         
         viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		MyFlipAdapter adapter = new MyFlipAdapter(this);
-		viewFlow.setAdapter(adapter, 1);
+		viewFlow.setAdapter(adapter, 0);
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
@@ -54,7 +54,9 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
 		private ArrayList<ArrayList<App>> mApps = new ArrayList<ArrayList<App>>();
 		private LayoutInflater mInflater;
 		private Context ct;
-		private String[] names = { "第一页", "第二页", "第三页" };
+		
+		
+		private boolean flag = false;
 
 		public MyFlipAdapter(Context context) {
 			ct = context;
@@ -64,11 +66,12 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
 			POSSession SESSION = POSHelper.getPOSSession();		
 			ArrayList<App> app1 = new ArrayList<App>();
 			if(SESSION != null && !SESSION.isAuthenticated()) {
-				//tv.setVisibility(View.VISIBLE);
+				flag = false;
 				app1.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
 	        	app1.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
+	        	mApps.add(app1);
 			}else{
-				//tv.setVisibility(View.GONE);
+				flag = true;
 				app1.add(new App(R.drawable.recharger, R.string.charge_mgr, CreditRechargerActivity.class));
 	            app1.add(new App(R.drawable.card2card, R.string.transfer_mgr, RemitActivity.class));
 	            app1.add(new App(R.drawable.mobile_charge, R.string.mobile_charge, MobileChargeActivity.class));
@@ -76,25 +79,25 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
 	            app1.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
 	            app1.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
 	            app1.add(new App(R.drawable.device_manage, R.string.device_mgr, DeviceManageActivity.class));
+	            mApps.add(app1);
+	            
+	            ArrayList<App> app2 = new ArrayList<App>();
+		        app2.add(new App(R.drawable.card2card, R.string.transfer_mgr, RemitActivity.class));
+	            app2.add(new App(R.drawable.mobile_charge, R.string.mobile_charge, MobileChargeActivity.class));
+	            app2.add(new App(R.drawable.mobile_charge, R.string.balance_enquiry, BalanceEnquiryActivity.class));
+	            app2.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
+		        mApps.add(app2);
+		        
+		        ArrayList<App> app3 = new ArrayList<App>();
+		        app3.add(new App(R.drawable.device_manage, R.string.device_mgr, DeviceManageActivity.class));
+		        mApps.add(app3);
 			}
-	        mApps.add(app1);
-	        //tv.setVisibility(View.GONE);
-	        ArrayList<App> app2 = new ArrayList<App>();
-	        
-	        app2.add(new App(R.drawable.card2card, R.string.transfer_mgr, RemitActivity.class));
-            app2.add(new App(R.drawable.mobile_charge, R.string.mobile_charge, MobileChargeActivity.class));
-            app2.add(new App(R.drawable.mobile_charge, R.string.balance_enquiry, BalanceEnquiryActivity.class));
-            app2.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
-	        mApps.add(app2);
-	        
-	        ArrayList<App> app3 = new ArrayList<App>();
-	        app3.add(new App(R.drawable.device_manage, R.string.device_mgr, DeviceManageActivity.class));
-	        mApps.add(app3);
+	     
 		}
 
 		@Override
 		public int getCount() {
-			return names.length;
+			return mApps.size();
 		}
 
 		@Override
@@ -114,6 +117,12 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
 			}
 			
 	        GridView mGrid = (GridView)convertView.findViewById(R.id.manager_grid);
+	        TextView tv = (TextView)convertView.findViewById(R.id.mananger_notice_text);
+	        if(flag){
+	        	tv.setVisibility(View.VISIBLE);
+	        }else{
+	        	tv.setVisibility(View.GONE);
+	        }
 	        mGrid.setAdapter(new ItemsAdapter(position));
 	        //mGrid.setOnItemClickListener(this);
 	        return convertView;
@@ -126,7 +135,8 @@ public class ManagerActivity extends UIBaseActivity implements OnItemClickListen
 		 */
 		@Override
 		public String getTitle(int position) {
-			return names[position];
+			String tmp = "第" + (position + 1) + "页";
+			return tmp;
 		}
 		
 		class ItemsAdapter extends BaseAdapter {
