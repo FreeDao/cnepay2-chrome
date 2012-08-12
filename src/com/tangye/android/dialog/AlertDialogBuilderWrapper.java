@@ -626,6 +626,7 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 				title.setTextColor(0xff279ce7);
 				title.setPadding(0, 0, 0, 0);
 				title.setTextSize(PublicHelper.dp2px(mContext, 16));
+				title.setShadowLayer(0, 0, 0, 0);
 			}
 			
 			if (scroll != null) {
