@@ -12,7 +12,7 @@ public class CashTransferActivity extends ConsumeBaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle("转账成功");
+		setTitle("付款成功");
 		setTraceId(m[11]);
 		setFilePath("TransferHistory", m[12]);
 	}
