@@ -637,6 +637,8 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 				int n = PublicHelper.dp2px(mContext, 8);
 				msg.setPadding(n, 0, n, 0);
 				msg.setTextColor(0xff000000);
+				msg.setGravity(Gravity.CENTER_VERTICAL);
+				msg.setMinimumHeight(PublicHelper.dp2px(mContext, 40));
 			}
 			
 			if (button != null) {

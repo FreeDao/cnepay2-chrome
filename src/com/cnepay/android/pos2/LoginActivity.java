@@ -42,6 +42,7 @@ public class LoginActivity extends UIBaseActivity
 	private Handler mHandler;
 	
 	private static final String TAG = "LoginActivity";
+	private static final String FALSE_PSWD = "************";
 	private static final int ENABLE_TIMEOUT = 1000;
 	private static final int SUCCESS = 0;
     private static final int FAILURE = 1;
@@ -99,17 +100,20 @@ public class LoginActivity extends UIBaseActivity
 	        			startResponseActivity(intent);
 	        			String nam = txtPhone.getText().toString();
 	        			String pas = txtPasswd.getText().toString();
+	        			SharedPreferences sp = getSharedPreferences("rem_info", 0);
 	        			if (checkRemember.isChecked() || checkRemePswd.isChecked()) {
 	        				if (nam.length() > 0) {
-	        					Editor edit = getSharedPreferences("rem_info", 0).edit();
+	        					Editor edit = sp.edit();
 	        					if (checkRemember.isChecked()) {
 	        						edit.putString("name", nam);
 	        					} else {
 	        						edit.remove("name");
 	        					}
 	        					if (checkRemePswd.isChecked()) {
-		        					String pwd = AES.encryptTrack(pas + "0000000000", nam);
-		        					edit.putString("passwd", pwd);
+	        						if (!FALSE_PSWD.equals(pas)) {
+			        					String pwd = AES.encryptTrack(pas + "0000000000", nam);
+			        					edit.putString("passwd", pwd);
+	        						}
 	        					} else {
 	        						edit.remove("passwd");
 	        					}
@@ -219,16 +223,23 @@ public class LoginActivity extends UIBaseActivity
 		btnLogin.setEnabled(false);
 
 		final String account = txtPhone.getText().toString();
-		final String passwd = txtPasswd.getText().toString();
+		String passwd0 = txtPasswd.getText().toString();
 		if (account.length() == 0) {
 			verify_failure(txtPhone, "账号不能为空");
 			return;
 		}
-		if (passwd.length() == 0) {
+		if (passwd0.length() == 0) {
 			verify_failure(txtPasswd, "密码不能为空");
 			return;
 		}
-		
+		if (FALSE_PSWD.equals(passwd0)) {
+			SharedPreferences sp = getSharedPreferences("rem_info", 0);
+			String p = sp.getString("passwd", "");
+			if (p.length() > 0) {
+				passwd0 = AES.decryptTrack(p, account).substring(0, 6);
+			}
+		}
+		final String passwd = passwd0;
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"", // title 
 				"登录中...", // message 
@@ -352,9 +363,10 @@ public class LoginActivity extends UIBaseActivity
 			checkRemember.setChecked(false);
 			txtPasswd.setText("");
 		}
-		String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
-		if (p1 != null && p1.length() >= 6) {
-			txtPasswd.setText(p1.substring(0, 6));
+		//String p1 = AES.decryptTrack(sp.getString("passwd", ""), n1);
+		String p1 = sp.getString("passwd", "");
+		if (p1 != null && p1.length() > 0) {
+			txtPasswd.setText(FALSE_PSWD);
 			checkRemePswd.setChecked(true);
 		} else {
 			checkRemePswd.setChecked(false);
@@ -369,10 +381,8 @@ public class LoginActivity extends UIBaseActivity
 		if(requestCode == RESET) {
 			if(resultCode == RESULT_OK) {
 				initRememberedHistory();
-				if(checkRemePswd.isChecked()) {
-					txtPasswd.requestFocus();
-					txtPasswd.setText("");
-				}
+				txtPasswd.requestFocus();
+				txtPasswd.setText("");
 				return;
 			}
 		}
