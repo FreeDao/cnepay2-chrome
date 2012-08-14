@@ -67,7 +67,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.card2card);
-		setTitle("汇款操作");
+		setTitle("付款操作");
 		setActivityPara(true, true);
 		
 		Intent i = getIntent();
@@ -97,11 +97,11 @@ public class Card2CardActivity extends UIBaseActivity implements
 						progressDialog.dismiss();
 						progressDialog = null; // For not fade card number
 						// TODO transfer successfully
-						makeError("转账成功!");
+						makeError("付款成功!");
 						Intent i = new Intent(Card2CardActivity.this, CashTransferActivity.class);
 	        			String extra = POSHelper.getSessionString();
 	        			if (extra == null) {
-	        				makeError("POS过期");
+	        				makeError("登录过期");
 	        				finish();
 	        				return;
 	        			}
@@ -192,7 +192,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 			}
 			if(cashIM.getCashInCents() > MAX_AMOUNT){
 				txtInput.requestFocus();
-				makeError("转账最大金额为50000元");
+				makeError("付款最大金额为50000元");
 				return;
 			}
 			hideTitleSubmit();
@@ -215,7 +215,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 		POSSession session = POSHelper.getPOSSession();
 		if (ci != null && session != null) {
 			if(!session.getCardNumber().equals(ci.getCard(false))) {
-				makeError("只能使用注册卡号转账！");
+				makeError("只能使用注册卡号付款！");
 				cashIM.init();
 				if(isPlugged()) {
 					showTitleSubmit();
@@ -235,11 +235,11 @@ public class Card2CardActivity extends UIBaseActivity implements
     	
     	amountH = new HandlingFee(cashIM.getCashInCents());
     	StringBuilder info = new StringBuilder();
-    	info.append("汇款金额: ￥" + amountH.getRaw());
+    	info.append("付款金额: ￥" + amountH.getRaw());
     	info.append("\n手续费用：￥" + amountH.getFee());
     	info.append("\n总共费用：￥" + amountH.getAll());
-    	info.append("\n汇款账户：" + user1);
-    	info.append("\n汇款卡号：\n" + cn);
+    	info.append("\n付款账户：" + user1);
+    	info.append("\n付款卡号：\n" + cn);
     	info.append("\n收款账户：" + user2);
     	info.append("\n收款卡号：\n" + card2);
     	info.append("\n收款银行：" + bankname2);
@@ -464,7 +464,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 		
 		progressDialog = PublicHelper.getProgressDialog(this, // context 
 				"",	// title 
-				"转账中...", // message 
+				"付款进行中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
 				false);
 		(new Thread(TAG) {

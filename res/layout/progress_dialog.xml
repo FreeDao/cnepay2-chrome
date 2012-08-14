@@ -32,7 +32,7 @@
 	            android:id="@+id/dialog_progressbar"
 	            android:layout_width="296px"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="15dp"
+	            android:layout_marginTop="20dp"
 	            android:indeterminateDrawable="@drawable/progress_orange_ani"
 	            android:indeterminateOnly="true" />
 	        	
