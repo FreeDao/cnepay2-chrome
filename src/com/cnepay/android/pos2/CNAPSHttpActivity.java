@@ -76,7 +76,6 @@ public class CNAPSHttpActivity extends Activity implements
 	LinearLayout hideLayout;
 	View notice;
 	Button commit;
-	Button cancel;
 
 	private ArrayAdapter<String> adapter;
 	Spinner bankNameList;
@@ -97,7 +96,6 @@ public class CNAPSHttpActivity extends Activity implements
 		bankName = (TextView) findViewById(R.id.cnaps_bankname);
 		bankId = (TextView) findViewById(R.id.cnaps_bankid);
 		commit = (Button) findViewById(R.id.submit_btn_cnaps);
-		cancel = (Button) findViewById(R.id.cancel_btn_cnaps);
 
 		fHandler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -185,7 +183,6 @@ public class CNAPSHttpActivity extends Activity implements
 		jumpButton.setOnClickListener(this);
 		bankNameList.setOnItemSelectedListener(this);
 		commit.setOnClickListener(this);
-		cancel.setOnClickListener(this);
 	}
 
 	public boolean getContentA(String bankKeyword, String page)
@@ -411,10 +408,6 @@ public class CNAPSHttpActivity extends Activity implements
 			}).start();
 			break;
 
-		case R.id.cancel_btn_cnaps:
-			setResult(RESULT_CANCELED);
-			finish();
-			break;
 		case R.id.submit_btn_cnaps:
 			commit.setEnabled(false);
 			final String a = bankName.getText().toString();
