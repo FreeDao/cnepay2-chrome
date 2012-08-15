@@ -33,7 +33,7 @@ public class CashTransferActivity extends ConsumeBaseActivity {
 			new Item("凭证号(VOUCHER NO): " + m[6], 20, 1, 20, 0, 0, false),
 			new Item("交易日期(DATE): " + m[7], 20, 1, 20, 0, 0, false),
 			new Item("交易时间(TIME): " + m[8], 20, 1, 20, 0, 0, false),
-			new Item("汇款人(REMITTER): " + m[9], 30, 0.6f, 20, 0, 0, false),
+			new Item("付款人(REMITTER): " + m[9], 30, 0.6f, 20, 0, 0, false),
 			new Item("金额(AMOUNT):", 30, 0.6f, 20, 0, 0, false),
 				new Item("RMB: " + m[10], 30, 0.9f, 40, 0, 0, true),
 			new Item("备注(REFERENCE): 转账", 30, 0.6f, 20, 0, 0, false),

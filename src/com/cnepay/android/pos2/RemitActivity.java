@@ -249,7 +249,7 @@ public class RemitActivity extends UIBaseActivity implements
 		AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(RemitActivity.this);
         builder.setTitle("提示")
         .setIcon(android.R.drawable.ic_dialog_alert)
-        .setMessage("确保以上信息无误，则可继续完成汇款操作\n\n是否继续转账？")
+        .setMessage("确保以上信息无误，则可继续完成付款操作\n\n是否继续付款？")
         .setNegativeButton(android.R.string.cancel, null)
         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int which) {

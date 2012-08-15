@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="15sp"
-        android:text="请确保您输入了正确的开户支行信息，如此信息有误，转账会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。" />
+        android:text="请确保您输入了正确的开户支行信息，如此信息有误，付款会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。" />
 
     <LinearLayout
         android:id="@+id/hide_part"

@@ -205,7 +205,7 @@
             android:layout_width="fill_parent"
             android:layout_height="45dp"
             android:layout_gravity="center"
-            android:text="准备汇款" />
+            android:text="准备付款" />
     </LinearLayout>
 
 </LinearLayout>

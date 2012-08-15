@@ -419,7 +419,7 @@ public class CNAPSHttpActivity extends Activity implements
 				return;
 			}
 			AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
-			builder.setMessage("请再次确保您输入了正确的开户支行信息，如此信息有误，转账会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。");
+			builder.setMessage("请再次确保您输入了正确的开户支行信息，如此信息有误，付款会因此失败。若您不清楚您的开户支行信息，请与发卡银行的客服联系。");
 			builder.setTitle("提示");
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setPositiveButton(android.R.string.ok,
