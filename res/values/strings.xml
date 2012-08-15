@@ -100,7 +100,7 @@
     <string name="cP6">终端错误，无此帐号</string>
     
     <string name="charge_mgr">POS收款</string>
-	<string name="transfer_mgr">银行卡转账</string>
+	<string name="transfer_mgr">卡卡转账</string>
 	<string name="setpwd_mgr">修改密码</string>
 	<string name="real_name_mgr">实名认证</string>
 	<string name="records_mgr">查看历史记录</string>
