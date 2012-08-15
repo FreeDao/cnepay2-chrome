@@ -68,7 +68,8 @@ public class IDPhotoActivity extends UIBaseActivity implements
 	private String filename_gray_front;
 	private String filename_gray_back;
 	private CustomProgressDialog progressDialog;
-	private ImageView viewer;
+	private View v1, v2;
+	private ImageView img1, img2;
 	private Handler mHandler;
 	private File vDirPath;
 	private String path;
@@ -83,12 +84,18 @@ public class IDPhotoActivity extends UIBaseActivity implements
 		setContentView(R.layout.idphoto);
 		setTitle("实名认证");
 		setActivityPara(true, true);
-		viewer = (ImageView) findViewById(R.id.photp_viewer);
+		v1 = findViewById(R.id.photo_viewer);
+		v2 = findViewById(R.id.photo_viewer2);
+		img1 = (ImageView) findViewById(R.id.photo_img_viewer);
+		img2 = (ImageView) findViewById(R.id.photo_img_viewer2);
 		path = getSDPath();
 		if (null == path) {
 			makeInfo("没有找到SD卡，无法拍照!");
 			return;
 		}
+		
+		v1.setOnClickListener(this);
+		v2.setOnClickListener(this);
 
 		mHandler = new Handler() {
 			@Override
@@ -152,14 +159,18 @@ public class IDPhotoActivity extends UIBaseActivity implements
 			vDirPath = vFile1.getParentFile(); // new File(vFile.getParent());
 			vDirPath.mkdirs();
 		}
-		// 拍摄正面
-		findViewById(R.id.take_id_front).setOnClickListener(this);
-		// 拍摄反面
-		findViewById(R.id.take_id_back).setOnClickListener(this);
 		// 上传
 		findViewById(R.id.upload_idphoto).setOnClickListener(this);
-		// 返回
-		findViewById(R.id.back_idphoto).setOnClickListener(this);
+		if (savedInstanceState != null) {
+			String tmp = savedInstanceState.getString("front");
+			if (tmp != null) {
+				mHandler.post(new DetectRunnable(img1, tmp));
+			}
+			tmp = savedInstanceState.getString("back");
+			if (tmp != null) {
+				mHandler.post(new DetectRunnable(img2, tmp));
+			}
+		}
 	}
 
 	@Override
@@ -188,33 +199,49 @@ public class IDPhotoActivity extends UIBaseActivity implements
 		}
 		if (null == latest)
 			return;
+		final ImageView v;
 		if (RET_CODE_FRONT == requestCode) {
 			filename_front = latest.getAbsolutePath();
+			v = img1;
 		} else if (RET_CODE_BACK == requestCode) {
 			filename_back = latest.getAbsolutePath();
+			v = img2;
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
 			return;
 		}
-		mHandler.post(new DetectRunnable(latest.getAbsolutePath()));
+		mHandler.post(new DetectRunnable(v, latest.getAbsolutePath()));
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		if (filename_front != null) {
+			outState.putString("front", filename_front);
+		}
+		if (filename_back != null) {
+			outState.putString("back", filename_back);
+		}
+		super.onSaveInstanceState(outState);
 	}
 	
 	class DetectRunnable implements Runnable {
 		private String path;
+		private ImageView view;
 		
-		public DetectRunnable(String file) {
+		public DetectRunnable(ImageView v, String file) {
 			path = file;
+			view = v;
 		}
 		
 		@Override
 		public void run() {
-			vHeight = viewer.getMeasuredHeight();
-			vWidth = viewer.getMeasuredWidth();
+			vHeight = view.getMeasuredHeight();
+			vWidth = view.getMeasuredWidth();
 			if (vHeight == 0 || vWidth == 0) {
 				mHandler.postDelayed(this, 100);
 				return;
 			}
-			showPhoto(path);
+			showPhoto(view, path);
 		}
 	}
 
@@ -400,15 +427,15 @@ public class IDPhotoActivity extends UIBaseActivity implements
 		return true;
 	}
 
-	private void showPhoto(String filename) {
+	private void showPhoto(ImageView view, String filename) {
 		Log.i(TAG, "finish width: " + vWidth + " height: " + vHeight);
 		File file = new File(filename);
 		if (!file.exists())
 			return;
-		Drawable temp = viewer.getDrawable();
-		if (null != temp && temp.getIntrinsicHeight() > 200) {
-			viewer.setImageDrawable(null);
-			temp = null;
+		Drawable temp = view.getDrawable();
+		if (null != temp && temp.getIntrinsicHeight() > 100) {
+			view.setImageDrawable(null);
+			temp.setCallback(null);
 			System.gc();
 		}
 		// 只读取图片尺寸
@@ -428,7 +455,7 @@ public class IDPhotoActivity extends UIBaseActivity implements
 		}
 		options.inJustDecodeBounds = false;
 		Bitmap bitmap = BitmapFactory.decodeFile(filename, options);
-		viewer.setImageBitmap(bitmap);
+		view.setImageBitmap(bitmap);
 	}
 
 	private Bitmap toGrayscale(Bitmap bmpOriginal) {
@@ -454,24 +481,17 @@ public class IDPhotoActivity extends UIBaseActivity implements
 		Intent intent;
 		Uri outputFileUri;
 		switch(v.getId()) {
-		case R.id.take_id_front:
+		case R.id.photo_viewer:
 			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			outputFileUri = Uri.fromFile(vFile1);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 			startActivityForResult(intent, RET_CODE_FRONT);
 			break;
-		case R.id.take_id_back:
+		case R.id.photo_viewer2:
 			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			outputFileUri = Uri.fromFile(vFile2);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 			startActivityForResult(intent, RET_CODE_BACK);
-			break;
-		case R.id.back_idphoto:
-			if (progressDialog != null) {
-				Log.i(TAG, "dialog cancel");
-				progressDialog.cancel();
-			}
-			finish();
 			break;
 		case R.id.upload_idphoto:
 			progressDialog = PublicHelper.getProgressDialog(

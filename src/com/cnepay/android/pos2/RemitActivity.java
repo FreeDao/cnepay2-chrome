@@ -33,7 +33,7 @@ public class RemitActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.remit);
-		setTitle("转账服务");
+		setTitle("付款服务");
 		setActivityPara(true, true);
 		setOnCNAPSResultListener(this); // 增加选择开户银行功能
 		setTitleSubmitText("刷卡获得卡号");
@@ -242,7 +242,7 @@ public class RemitActivity extends UIBaseActivity implements
 			return;
 		}
 		if (user.length() == 0) {
-			verify_failure(txtName, "缺少汇款用户姓名");
+			verify_failure(txtName, "缺少付款款人姓名");
 			return;
 		}
 		
