@@ -16,6 +16,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.DialogInterface.OnShowListener;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
@@ -662,7 +663,9 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 								allbtn.add(btn);
 								btn.setMinimumHeight(PublicHelper.dp2px(mContext, 54));
 								btn.setTextSize(PublicHelper.dp2px(mContext, 12));
-								btn.setTextColor(0xff279ce7);
+								//btn.setTextColor(0xff279ce7);
+								ColorStateList csl = mContext.getResources().getColorStateList(R.drawable.dialog_button_txt);
+								btn.setTextColor(csl);
 							}
 						}
 					}
