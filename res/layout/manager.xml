@@ -3,40 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res/com.cnepay.android.pos2"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal|bottom"
+    android:background="@drawable/main_bg"
     android:orientation="vertical" >
 
-    <ImageView
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo_inside" />
+        android:layout_height="wrap_content">
+	    
+	    <ImageView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:scaleType="centerCrop"
+	        android:src="@drawable/logo_inside" />
+	    
+    </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
-
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        
+        <org.taptwo.android.widget.SimpleFlowIndicator
+            android:id="@+id/viewflowindic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:padding="10dp"
+            app:fadeOut="0"
+            app:inactiveType="fill"
+            app:activeColor="#279ce7"
+            app:inactiveColor="#bababa"
+            app:type="square"
+            app:width="10dp"
+            app:height="2dp"
+            app:gap="3dp" />
+        
         <org.taptwo.android.widget.ViewFlow
             android:id="@+id/viewflow"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:duplicateParentState="true" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <org.taptwo.android.widget.CircleFlowIndicator
-            android:id="@+id/viewflowindic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="10dp"
-            app:fadeOut="1000"
-            app:inactiveType="fill" />
-    </LinearLayout>
+            app:sidebuffer="3" />
+        
+    </FrameLayout>
 
 </LinearLayout>

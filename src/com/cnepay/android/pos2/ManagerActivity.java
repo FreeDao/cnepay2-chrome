@@ -2,7 +2,7 @@ package com.cnepay.android.pos2;
 
 import java.util.ArrayList;
 
-import org.taptwo.android.widget.CircleFlowIndicator;
+import org.taptwo.android.widget.SimpleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
 
 import com.tangye.android.iso8583.POSHelper;
@@ -25,9 +25,9 @@ import android.widget.Toast;
 
 public class ManagerActivity extends UIBaseActivity  {
 	
+	private final static String TAG = "ManagerActivity";
 	
-    private ViewFlow viewFlow;
-    private final String TAG = "ManagerActivity";
+	private ViewFlow viewFlow;
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,16 +35,14 @@ public class ManagerActivity extends UIBaseActivity  {
         setContentView(R.layout.manager);
         setTitle("账户管理");
         setActivityPara(true ,true);
-        
         viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		MyFlipAdapter adapter = new MyFlipAdapter(this);
 		viewFlow.setAdapter(adapter, 0);
-		CircleFlowIndicator indicator = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
+		SimpleFlowIndicator indicator = (SimpleFlowIndicator) findViewById(R.id.viewflowindic);
 		viewFlow.setFlowIndicator(indicator);
-        
 	}
 	
-	class MyFlipAdapter extends BaseAdapter implements OnItemClickListener{
+	public static class MyFlipAdapter extends BaseAdapter implements OnItemClickListener{
 		private ArrayList<ArrayList<App>> mApps = new ArrayList<ArrayList<App>>();
 		private LayoutInflater mInflater;
 		private Context ct;
@@ -57,14 +55,14 @@ public class ManagerActivity extends UIBaseActivity  {
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
-			POSSession SESSION = POSHelper.getPOSSession();		
+			POSSession SESSION = POSHelper.getPOSSession();
 			ArrayList<App> app1 = new ArrayList<App>();
 			if(SESSION != null && !SESSION.isAuthenticated()) {
 				flag = false;
 				app1.add(new App(R.drawable.setpwd, R.string.setpwd_mgr, ChangePasswordActivity.class));
 	        	app1.add(new App(R.drawable.real_name, R.string.real_name_mgr, IDPhotoActivity.class));
 	        	mApps.add(app1);
-			}else{
+			} else {
 				flag = true;
 				app1.add(new App(R.drawable.recharger, R.string.charge_mgr, CreditRechargerActivity.class));
 	            app1.add(new App(R.drawable.card2card, R.string.transfer_mgr, RemitActivity.class));
@@ -114,7 +112,7 @@ public class ManagerActivity extends UIBaseActivity  {
 	        tv = (TextView)convertView.findViewById(R.id.mananger_notice_text);
 	        if(!flag){
 	        	tv.setVisibility(View.VISIBLE);
-	        }else{
+	        } else {
 	        	tv.setVisibility(View.GONE);
 	        }
 	        mGrid.setAdapter(new ItemsAdapter(position));
@@ -134,7 +132,7 @@ public class ManagerActivity extends UIBaseActivity  {
 	        public View getView(int position, View convertView, ViewGroup parent) {
 	            View root;
 	            if (convertView == null) {
-	                root = ((LayoutInflater) ct.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.griditem, null);
+	                root = mInflater.inflate(R.layout.griditem, null);
 	            } else {
 	                root = convertView;
 	            }
@@ -161,7 +159,7 @@ public class ManagerActivity extends UIBaseActivity  {
 	        public Intent intent;
 	        public App(int Icon, int Title, Class<?> mClass) {
 	        	if (mClass != null) {
-	        		intent = new Intent(ManagerActivity.this, mClass);
+	        		intent = new Intent(ct, mClass);
 	        	} else {
 	        		intent = null;
 	        	}
@@ -178,9 +176,9 @@ public class ManagerActivity extends UIBaseActivity  {
 			//Log.v(TAG, "currentPosition = " + currentPosition);
 			App app = mApps.get(tmp.getPosition()).get(position);        
 			if(app.intent != null) {            
-				startActivity(app.intent);      
+				ct.startActivity(app.intent);      
 			} else {
-				Toast.makeText(ManagerActivity.this, "该功能还未实现，敬请等待", Toast.LENGTH_SHORT).show();        
+				Toast.makeText(ct, "该功能还未实现，敬请等待", Toast.LENGTH_SHORT).show();        
 			}
 		}
 

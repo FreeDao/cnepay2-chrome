@@ -20,12 +20,19 @@
     <declare-styleable name="ViewFlow">
         <attr format="integer" name="sidebuffer" />
     </declare-styleable>
-    <declare-styleable name="CircleFlowIndicator">
+    <declare-styleable name="SimpleFlowIndicator">
         <attr format="color" name="activeColor" />
         <attr format="color" name="inactiveColor" />
         <attr format="dimension" name="radius" />
+        <attr format="dimension" name="width" />
+        <attr format="dimension" name="height" />
+        <attr format="dimension" name="gap" />
         <attr format="boolean" name="centered" />
         <attr format="integer" name="fadeOut" />
+        <attr name="type">
+            <flag name="circle" value="0" />
+            <flag name="square" value="1" />
+        </attr>
         <attr name="inactiveType">
             <flag name="stroke" value="0" />
             <flag name="fill" value="1" />
