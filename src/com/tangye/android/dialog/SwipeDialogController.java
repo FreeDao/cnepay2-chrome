@@ -4,8 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.DialogInterface.OnCancelListener;
@@ -19,12 +19,10 @@ public class SwipeDialogController implements OnDismissListener {
 	private int dialogNote;
 	
 	private Context mContext;
-	private AnimationDrawable anim;
 	private TextView note;
 	private ImageView img;
 	private String txt;
 	private OnCancelListener listener;
-	private boolean adjust = false;
 	
 	/**
 	 * new Dialog controller
@@ -51,22 +49,18 @@ public class SwipeDialogController implements OnDismissListener {
 		dlg.setContentView(dialogLayout);
 		img = (ImageView) dlg.findViewById(dialogAnim);
 		note = (TextView) dlg.findViewById(dialogNote);
-		note.setVisibility(View.INVISIBLE);
-		adjust = false;
 		if (txt != null) {
 			note.setText(txt);
 		}
-		anim = (AnimationDrawable) img.getDrawable();
 		dlg.setOnDismissListener(this);
 		if (listener != null) dlg.setOnCancelListener(listener);
-		img.postDelayed(new Runnable() {
-			public void run() {
-				note.setVisibility(View.VISIBLE);
-				adjust();
-				anim.start();
-			}
-		}, 500);
 		dlg.show();
+		
+		TranslateAnimation ta = new TranslateAnimation(-260, 1000, 0, 0);
+		ta.setDuration(3000);
+		ta.setRepeatCount(-1);
+		img.startAnimation(ta);
+		
 	}
 	
 	public void dismiss() {
@@ -77,7 +71,6 @@ public class SwipeDialogController implements OnDismissListener {
 
 	@Override
 	public void onDismiss(DialogInterface dialog) {
-		anim.stop();
 		note.setVisibility(View.INVISIBLE);
 	}
 
@@ -88,7 +81,6 @@ public class SwipeDialogController implements OnDismissListener {
 	public void setText(int resId) {
 		if (note != null) {
 			note.setText(resId);
-			adjust();
 		}
 		txt = mContext.getString(resId);
 	}
@@ -96,28 +88,12 @@ public class SwipeDialogController implements OnDismissListener {
 	public void setText(String text) {
 		if (note != null) {
 			note.setText(text);
-			adjust();
 		}
 		txt = text;
 	}
 	
 	public void setOnCancelListener(OnCancelListener l) {
 		listener = l;
-	}
-	
-	private void adjust() {
-		int screenH = img.getMeasuredHeight();
-		int screenW = img.getMeasuredWidth();
-		if (screenH != 0 && !adjust) {
-			//FIXME hardcode 540px of the picture
-			int actualH = (int) (screenW / 540.0f * screenH);
-			int fontH = note.getHeight();
-			//android.util.Log.v("DIALOG", "s=" + img.getMeasuredWidth() + " f=" + fontH);
-			int top = (int) (actualH * 0.23f - (fontH - screenH + actualH) / 2);
-			note.setPadding(0, top, 0, 0);
-			note.requestLayout();
-			adjust = true;
-		}
 	}
 	
 }

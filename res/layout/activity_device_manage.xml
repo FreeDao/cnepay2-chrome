@@ -4,6 +4,22 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg"
     android:orientation="vertical" >
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:text="刷卡器设备更换"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:background="#0099ff" />
 
     <TextView
         android:id="@+id/dev_manage_general_hint"
@@ -38,7 +54,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/input"
+        android:background="@drawable/input_focus"
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold" />
