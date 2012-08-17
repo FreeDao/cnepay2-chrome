@@ -98,17 +98,5 @@
     <string name="cZ7">上期未结，请先结完上批</string>
     <string name="cZ8">不支持该卡种</string>
     <string name="cP6">终端错误，无此帐号</string>
-    
-    <string name="charge_mgr">我要收款</string>
-	<string name="transfer_mgr">我要付款</string>
-
-	<string name="setpwd_mgr">修改密码</string>
-	<string name="real_name_mgr">实名认证</string>
-	<string name="records_mgr">查看历史记录</string>
-	<string name="device_mgr">设备管理</string>
-	<string name="change_pwd">修改密码</string>
-	<string name="mobile_charge">话费充值</string>
-	<string name="balance_enquiry">余额查询</string>
-	
 	
 </resources>

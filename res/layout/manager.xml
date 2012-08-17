@@ -9,12 +9,27 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-	    
-	    <ImageView
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:scaleType="centerCrop"
-	        android:src="@drawable/logo_inside" />
+        
+        <org.taptwo.android.widget.ViewFlow
+            android:id="@+id/ad_flow"
+            android:layout_width="fill_parent"
+            android:layout_height="207px"
+            app:sidebuffer="3"
+            app:autoflow="true" />
+        
+        <org.taptwo.android.widget.SimpleFlowIndicator
+            android:id="@+id/ad_indic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:padding="10dp"
+            app:fadeOut="6000"
+            app:inactiveType="fill"
+            app:activeColor="#279ce7"
+            app:inactiveColor="#bababa"
+            app:type="circle"
+            app:radius="4dp"
+            app:gap="3dp"/>
 	    
 	    <ImageView
             android:layout_width="fill_parent"
@@ -23,6 +38,11 @@
             android:src="@drawable/bg_shadow" />
 	    
     </FrameLayout>
+    
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#5ebcc8" />
 
     <FrameLayout
         android:layout_width="fill_parent"

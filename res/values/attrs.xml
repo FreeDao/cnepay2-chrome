@@ -19,6 +19,7 @@
 
     <declare-styleable name="ViewFlow">
         <attr format="integer" name="sidebuffer" />
+        <attr format="boolean" name="autoflow" />
     </declare-styleable>
     <declare-styleable name="SimpleFlowIndicator">
         <attr format="color" name="activeColor" />

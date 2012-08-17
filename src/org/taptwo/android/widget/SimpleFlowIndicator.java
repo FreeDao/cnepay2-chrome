@@ -89,6 +89,7 @@ public class SimpleFlowIndicator extends View implements FlowIndicator,
 	 */
 	public SimpleFlowIndicator(Context context, int type) {
 		super(context);
+		this.type = type;
 		if (type == TYPE_CIRCLE) {
 			radius = 2;
 			w = 4;
@@ -100,6 +101,8 @@ public class SimpleFlowIndicator extends View implements FlowIndicator,
 			w = 4;
 			h = 2;
 			gap = 2;
+		} else {
+			throw new IllegalArgumentException("type should be one of TYPE_CIRCLE or TYPE_SQUARE");
 		}
 		initColors(0xFFFFFFFF, 0xFFFFFFFF, STYLE_FILL, STYLE_STROKE);
 	}

@@ -51,7 +51,7 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 			Constructor<?> c = b.getConstructor(Context.class, int.class);
 			builder = (Builder) c.newInstance(ctx, theme);
     	} catch(Exception e) {
-    		e.printStackTrace();
+    		//e.printStackTrace();
     		builder = new Builder(new ContextThemeWrapper(ctx, theme));
     	}
     	mContext = ctx;
