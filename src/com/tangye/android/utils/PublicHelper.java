@@ -43,9 +43,10 @@ public class PublicHelper {
     	return new AlertDialogBuilderWrapper(ctx, R.style.MyAlertDialog);
     }
     
-    public static CustomProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
+    //type: 0 orange, 1 blue
+    public static CustomProgressDialog getProgressDialog(int type, Context context, CharSequence title, CharSequence message,
     		boolean indeterminate, boolean cancelable, OnCancelListener cancelListener) {
-    	CustomProgressDialog dialog = new CustomProgressDialog(context, R.style.MyProgressDialog);
+    	CustomProgressDialog dialog = new CustomProgressDialog(type, context, R.style.MyProgressDialog);
     	dialog.setTitle(title);
     	dialog.setMessage(message);
     	dialog.setIndeterminate(indeterminate);
@@ -55,9 +56,9 @@ public class PublicHelper {
 		return dialog;
     }
     
-    public static CustomProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
+    public static CustomProgressDialog getProgressDialog(int type, Context context, CharSequence title, CharSequence message,
     		boolean indeterminate, boolean cancelable) {
-    	return getProgressDialog(context, title, message, indeterminate, cancelable, null);
+    	return getProgressDialog(type, context, title, message, indeterminate, cancelable, null);
     }
     
     private static final char validRandomCode[] = {

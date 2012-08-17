@@ -325,7 +325,8 @@ public class ReBindActivity extends UIBaseActivity implements
 			}
 		}
 		
-		progressDialog = PublicHelper.getProgressDialog(this, // context 
+		progressDialog = PublicHelper.getProgressDialog(0,
+				this, // context 
 				"", // title 
 				"绑定中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 

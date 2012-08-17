@@ -495,6 +495,7 @@ public class IDPhotoActivity extends UIBaseActivity implements
 			break;
 		case R.id.upload_idphoto:
 			progressDialog = PublicHelper.getProgressDialog(
+					0,
 					IDPhotoActivity.this, // context
 					"", // title
 					"证件照片正在上传...", // message

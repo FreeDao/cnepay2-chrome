@@ -170,7 +170,7 @@ public class DeviceManageActivity extends UIBaseActivity implements OnClickListe
 			return false;
 		}
 		
-		progressDialog = PublicHelper.getProgressDialog(DeviceManageActivity.this, // context 
+		progressDialog = PublicHelper.getProgressDialog(0, DeviceManageActivity.this, // context 
 				"",	// title 
 				"刷卡器替换中...", // message 
 				true, 

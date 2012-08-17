@@ -240,7 +240,7 @@ public class LoginActivity extends UIBaseActivity
 			}
 		}
 		final String passwd = passwd0;
-		progressDialog = PublicHelper.getProgressDialog(this, // context 
+		progressDialog = PublicHelper.getProgressDialog(1, this, // context 
 				"", // title 
 				"登录中...", // message 
 				true, //进度是否是不确定的，这只和创建进度条有关 
