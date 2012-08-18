@@ -73,7 +73,7 @@ public class UpdateModel {
 			Log.v(TAG, "pkgname = " + pkgname);
 			while ((line = reader.readLine()) != null) {
 				try {
-					Log.i(TAG, line);
+					//Log.i(TAG, line);
 					if (i != 0 || line.equalsIgnoreCase(pkgname)) {
 						arr[i++] = line;
 						if (i == datanum) {
@@ -92,11 +92,11 @@ public class UpdateModel {
 			}
 			Log.v(TAG, "pkg= " + arr[pkg]);
 			Log.v(TAG, "ver= " + arr[ver]);
-			Log.v(TAG, "src= " + arr[src]);
+			//Log.v(TAG, "src= " + arr[src]);
 			Log.v(TAG, "ext= " + arr[ext]);
 			if (pkgname.equalsIgnoreCase(arr[pkg])) {
 				if (isNewVersion(arr[ver])) {
-					Log.v(TAG, "update");
+					Log.v(TAG, "need update");
 					notify(arr[ver], arr[src], arr[ext]);
 					return UpdateService.CHECKED_NEED_UPGRADE;
 				}

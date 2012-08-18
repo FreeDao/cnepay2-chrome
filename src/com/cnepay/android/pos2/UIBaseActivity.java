@@ -219,7 +219,7 @@ public class UIBaseActivity extends BaseActivity {
     }
     
     private void showAboutDialog() {
-    	View v = View.inflate(this, R.layout.activity_about, null);
+    	View v = View.inflate(this, R.layout.dialog_about, null);
     	AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
         builder.setTitle("关于" + getString(R.string.app_name))
         .setIcon(android.R.drawable.ic_dialog_info)

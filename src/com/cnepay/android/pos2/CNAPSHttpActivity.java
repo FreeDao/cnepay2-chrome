@@ -26,7 +26,6 @@ import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.utils.PublicHelper;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -46,7 +45,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CNAPSHttpActivity extends Activity implements
+public class CNAPSHttpActivity extends UIBaseActivity implements
 		View.OnClickListener, DialogInterface.OnCancelListener,
 		OnItemSelectedListener {
 	/** Called when the activity is first created. */
@@ -273,10 +272,9 @@ public class CNAPSHttpActivity extends Activity implements
 	}
 
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		switch (v.getId()) {
 		case R.id.find_button:
-			InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			inputManager.hideSoftInputFromWindow(getCurrentFocus()
 					.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			bankNames = null;
@@ -335,9 +333,6 @@ public class CNAPSHttpActivity extends Activity implements
 			}).start();
 			break;
 		case R.id.jump_page:
-			InputMethodManager inputManager2 = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-			inputManager2.hideSoftInputFromWindow(getCurrentFocus()
-					.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			bankNames = null;
 			buttonFind.setEnabled(false);
 			jumpButton.setEnabled(false);
@@ -356,12 +351,20 @@ public class CNAPSHttpActivity extends Activity implements
 				verify_failure(pageInput, "未输入跳转的页码");
 				return;
 			}
-			int input = Integer.parseInt(pageInput.getText().toString());
+			int input = 0;
+			try {
+				input= Integer.parseInt(pageInput.getText().toString());
+			} catch(NumberFormatException e) {
+				verify_failure(pageInput, "输入页码有误或过大，请重新输入");
+				return;
+			}
 			int getTotalNum = totalPageNum;
 			if (input > getTotalNum) {
 				verify_failure(pageInput, "输入页面大于总页面");
 				return;
 			}
+			inputManager.hideSoftInputFromWindow(getCurrentFocus()
+					.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			final String bankKeywordJ = edKeyword.getText().toString();
 			final String numPage = pageInput.getText().toString();
 			progressDialog = PublicHelper.getProgressDialog(this, // context
@@ -443,17 +446,14 @@ public class CNAPSHttpActivity extends Activity implements
 			break;
 		}
 	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		UIBaseActivity.updateLastLeaveTime();
-	}
 
 	// jumpButton
 	private void verify_failure(View v, String err) {
 		if (v != null) {
 			v.requestFocus();
+			if (v instanceof EditText) {
+				((EditText) v).selectAll();
+			}
 		}
 		buttonFind.postDelayed(new Runnable() {
 			public void run() {

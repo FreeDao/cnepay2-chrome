@@ -9,33 +9,39 @@
         android:layout_height="fill_parent"
         android:layout_margin="10dp"
         android:orientation="vertical" >
-        
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="top|center_horizontal"
             android:orientation="vertical" >
-            
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo2" />
-            
-            <TextView
-                android:id="@+id/about_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我刷版本："
-                android:textStyle="bold" />           
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="客服电话：400-678-0434"
-                android:textStyle="bold" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/about_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我刷版本："
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客服电话：400-678-0434"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
-        
     </LinearLayout>
 
 </LinearLayout>
