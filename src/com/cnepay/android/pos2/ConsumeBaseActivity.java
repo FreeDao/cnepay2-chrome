@@ -20,17 +20,20 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import com.tangye.android.dialog.AlertDialogBuilderWrapper;
 import com.tangye.android.dialog.CustomProgressDialog;
 import com.tangye.android.iso8583.POSHelper;
 import com.tangye.android.utils.PublicHelper;
 import com.tangye.android.utils.VoucherDraw;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -123,6 +126,25 @@ abstract public class ConsumeBaseActivity extends UIBaseActivity implements View
 		 */
 
 	}
+
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
+	        builder.setTitle("提示")
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setMessage("您还没有上传小票，这可能会导致你的交易无法正确结算。\n\n您确认要退出吗？")
+	        .setNegativeButton(android.R.string.cancel, null)
+	        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	               finish();
+	             }
+	        })
+	        .show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 	public void setTraceId(String traceid) {
 		traceID = traceid;

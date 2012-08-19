@@ -43,9 +43,25 @@ public class PublicHelper {
     	return new AlertDialogBuilderWrapper(ctx, R.style.MyAlertDialog);
     }
     
+    /**
+     * get progress dialog
+     * 
+     * @param context
+     * @param title
+     * @param message
+     * @param indeterminate
+     * @param cancelable if it is a cancelable dialog, it will be styled BLUE, otherwise will be styled ORANGE
+     * @param cancelListener
+     * @return the specific styled dialog
+     */
     public static CustomProgressDialog getProgressDialog(Context context, CharSequence title, CharSequence message,
     		boolean indeterminate, boolean cancelable, OnCancelListener cancelListener) {
-    	CustomProgressDialog dialog = new CustomProgressDialog(context, R.style.MyProgressDialog);
+    	CustomProgressDialog dialog ;
+    	if (cancelable) {
+    		dialog = new CustomProgressDialog(context, R.style.MyProgressDialog, CustomProgressDialog.BLUE);
+    	} else {
+    		dialog = new CustomProgressDialog(context, R.style.MyProgressDialog, CustomProgressDialog.ORANGE);
+    	}
     	dialog.setTitle(title);
     	dialog.setMessage(message);
     	dialog.setIndeterminate(indeterminate);

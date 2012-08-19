@@ -61,8 +61,9 @@ public class ManagerActivity extends UIBaseActivity  {
 		ArrayList<Link> links = new ArrayList<Link>();
 		public AdAdapter(Context context) {
 			ctx = context;
-			links.add(new Link(R.drawable.logo_inside, "http://www.cnepay.com"));
-			links.add(new Link(R.drawable.logo_inside, null));
+			links.add(new Link(R.drawable.logo_inside_ad1, "http://www.cnepay.com"));
+			links.add(new Link(R.drawable.logo_inside_ad2, "http://www.cnepay.com/pay.html"));
+			links.add(new Link(R.drawable.logo_inside_ad3, null));
 		}
 		
 		@Override

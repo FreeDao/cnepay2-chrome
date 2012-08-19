@@ -29,7 +29,7 @@
             app:inactiveColor="#bababa"
             app:type="circle"
             app:radius="4dp"
-            app:gap="3dp"/>
+            app:gap="4dp"/>
 	    
 	    <ImageView
             android:layout_width="fill_parent"

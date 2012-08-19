@@ -247,6 +247,7 @@ public class LoginActivity extends UIBaseActivity
 				true,
 				this);
 		progressDialog.setCanceledOnTouchOutside(false);
+		//if (true) return; // TODO test dialog, please un-quote this line
 		(new Thread() {
 			public void run() {
 			    POSEncrypt POS = POSHelper.getPOSEncrypt(LoginActivity.this, account);

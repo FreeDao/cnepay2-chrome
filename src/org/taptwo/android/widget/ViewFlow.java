@@ -52,8 +52,9 @@ public class ViewFlow extends AdapterView<Adapter> {
 
 	private static final int SNAP_VELOCITY = 1000;
 	private static final int INVALID_SCREEN = -1;
-	private final static int TOUCH_STATE_REST = 0;
-	private final static int TOUCH_STATE_SCROLLING = 1;
+	private static final int TOUCH_STATE_REST = 0;
+	private static final int TOUCH_STATE_SCROLLING = 1;
+	private static final int TIMEOUT_SWITCH = 5000;
 
 	private LinkedList<View> mLoadedViews;
 	private int mCurrentBufferIndex;
@@ -439,7 +440,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 			//Log.i("dd", "snap mCurrentScreen = " + mCurrentScreen);
 			snapToScreen((mCurrentScreen + 1) % getChildCount());
 			//Log.i("dd", "new screen = " + (mCurrentScreen + 1) % getChildCount());
-			postDelayed(r, 6000);
+			postDelayed(r, TIMEOUT_SWITCH);
 		}
 	};
 	
@@ -447,7 +448,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 		auto = automatic;
 		removeCallbacks(r);
 		if (auto) {
-			postDelayed(r, 6000);
+			postDelayed(r, TIMEOUT_SWITCH);
 		}
 	}
 

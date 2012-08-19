@@ -21,7 +21,7 @@ public class CashTransferActivity extends ConsumeBaseActivity {
 	protected void setSource(VoucherDraw view, String signaturePath) {
 		Item source[] = {
 			new Item(BitmapFactory.decodeResource(getResources(), R.drawable.unionpay), 40, 20, 20, -55),
-			new Item(getString(R.string.app_name) + "手机客户端支付", 35, 0.8f, true, 0, 20, true),
+			new Item(getString(R.string.app_name) + "客户端支付", 35, 0.8f, true, 0, 20, true),
 			new Item("终端号(TERMINAL NO): " + m[0], 30, 0.6f, 20, 0, 0, false),
 			new Item("转出卡号(CARD NO): " + PublicHelper.getMaskedString(m[1], 6, 4, '*') +" S", 30, 0.6f, 20, 0, 0, true),
 			new Item("转入卡号(CARD NO): " + m[2], 30, 0.6f, 20, 0, 0, true),

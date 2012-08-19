@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,10 +57,11 @@ public class SwipeDialogController implements OnDismissListener {
 		dlg.setOnDismissListener(this);
 		if (listener != null) dlg.setOnCancelListener(listener);
 		dlg.show();
-		
-		TranslateAnimation ta = new TranslateAnimation(-260, 1000, 0, 0);
-		ta.setDuration(3000);
-		ta.setRepeatCount(-1);
+		DisplayMetrics  dm = new DisplayMetrics();
+		dlg.getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
+		TranslateAnimation ta = new TranslateAnimation(-260, dm.widthPixels, 0, 0);
+		ta.setDuration(2500);
+		ta.setRepeatCount(Animation.INFINITE);
 		img.startAnimation(ta);
 		
 	}

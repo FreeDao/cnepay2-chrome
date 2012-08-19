@@ -27,34 +27,23 @@
 
             <Button
                 android:id="@+id/charge_sign"
+                style="@style/button"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
                 android:layout_marginRight="4dp"
                 android:layout_weight="1"
-                android:background="@drawable/button"
-                android:shadowColor="#333333"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"
-                android:text="去签名"
-                android:textColor="#ffffff"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="去签名" />
 
             <Button
                 android:id="@+id/charge_finish"
-                android:layout_width="0dip"
-                android:layout_height="40dp"
+                style="@style/button"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:background="@drawable/button"
-                android:shadowColor="#333333"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"
-                android:text="上传票据"
-                android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:text="上传票据" />
         </LinearLayout>
     </LinearLayout>
 

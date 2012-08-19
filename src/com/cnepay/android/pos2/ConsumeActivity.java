@@ -21,7 +21,7 @@ public class ConsumeActivity extends ConsumeBaseActivity {
 	protected void setSource(VoucherDraw view, String signaturePath) {
 		Item source[] = {
 			new Item(BitmapFactory.decodeResource(getResources(), R.drawable.unionpay), 40, 20, 20, -55),
-			new Item(getString(R.string.app_name) + "手机客户端支付", 35, 0.8f, true, 0, 20, true),
+			new Item(getString(R.string.app_name) + "客户端支付", 35, 0.8f, true, 0, 20, true),
 			new Item("商户名(MERCHANT NAME):", 30, 0.6f, 20, 0, 0, false),
 				new Item(m[0], 30, 0.9f, 40, 0, 0, true),
 			new Item("商户号(MERCHANT NO): " + m[1], 25, 0.6f, 20, 0, 0, false),
