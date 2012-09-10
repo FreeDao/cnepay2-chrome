@@ -36,7 +36,7 @@ public class CashTransferActivity extends ConsumeBaseActivity {
 			new Item("付款人(REMITTER): " + m[9], 30, 0.6f, 20, 0, 0, false),
 			new Item("金额(AMOUNT):", 30, 0.6f, 20, 0, 0, false),
 				new Item("RMB: " + m[10], 30, 0.9f, 40, 0, 0, true),
-			new Item("备注(REFERENCE): 转账", 30, 0.6f, 20, 0, 0, false),
+			new Item("备注(REFERENCE): 付款", 30, 0.6f, 20, 0, 0, false),
 			new Item("持卡人签名(CARDHOLDER SIGNATURE):", 30, 0.6f, 20, 0, 120, false),
 			new Item(BitmapFactory.decodeFile(signaturePath), 120, true, -120, 0),
 			new Item("本人确认以上交易", 25, 0.6f, 20, 0, 0, false),

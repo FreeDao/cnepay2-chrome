@@ -30,7 +30,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
-        android:text="如果没有SD卡会无法上传小票，但不会影响交易结果。\n有了SD卡会在SD卡上保存交易记录，方便查询." />
+        android:text="提示一：手机端若无内置内存，必须插入SD卡，否则将无法进行签名提交以及后续的交易。\n提示二：交易记录将被保存至内置内存或者sdcard当中，方便用户查询." />
 
     <LinearLayout
         android:layout_width="fill_parent"

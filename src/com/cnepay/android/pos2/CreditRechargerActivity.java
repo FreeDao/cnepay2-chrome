@@ -66,7 +66,7 @@ public class CreditRechargerActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recharger);
-		setTitle("POS收款");
+		setTitle("收款服务");
 		setActivityPara(true, true);
 		btnSubmit.setOnClickListener(this);
 		initUI();

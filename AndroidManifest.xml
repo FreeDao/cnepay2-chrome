@@ -1,151 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.cnepay.android.pos2"
-      android:versionCode="2"
-      android:versionName="2.134">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".LoaderActivity"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.Light.NoTitleBar"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait">
+    package="com.cnepay.android.pos2"
+    android:versionCode="2"
+    android:versionName="2.134" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="9" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".LoaderActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".RegisterActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".ResetPasswdActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".ReBindActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".CNAPSHttpActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/hide_title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".ManagerActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".CreditRechargerActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".ConsumeActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".RemitActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".Card2CardActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".SignatureActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".CashTransferActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".IDPhotoActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".UpdateActivity"
-                  android:label="@string/app_name"
-                  android:launchMode="singleTask"
-                  android:theme="@android:style/Theme.Translucent"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".DeviceManageActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".ChangePasswordActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".MobileChargeActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".MobileChargeConsumeActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".MobileChargeTicketActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".VerifySerialNumberActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".VerifyKSNActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="adjustResize|stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".BalanceEnquiryActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".HomeActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/hide_title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".AboutUsActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/title"
-                  android:windowSoftInputMode="stateHidden"
-                  android:screenOrientation="portrait" />
-        <service android:name=".UpdateService" android:enabled="true" />
-        <service android:name=".UpdateService" android:enabled="true" />
-        <service android:name=".UpdateService" android:enabled="true" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ResetPasswdActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ReBindActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".CNAPSHttpActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/hide_title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ManagerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".CreditRechargerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ConsumeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".RemitActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".Card2CardActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".SignatureActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".CashTransferActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".IDPhotoActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".UpdateActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".DeviceManageActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".MobileChargeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".MobileChargeConsumeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".MobileChargeTicketActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".VerifySerialNumberActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".VerifyKSNActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".BalanceEnquiryActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/hide_title"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/title"
+            android:windowSoftInputMode="stateHidden" />
+
+        <service
+            android:name=".UpdateService"
+            android:enabled="true" />
     </application>
-    <uses-sdk android:minSdkVersion="8" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-</manifest> 
+
+</manifest>

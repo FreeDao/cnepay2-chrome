@@ -2,6 +2,7 @@ package com.tangye.android.iso8583.protocol;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -85,6 +86,11 @@ public abstract class BaseMessageAbstract {
         } catch(IOException e) {
         	if (ignoreAnyError) {
         		return null;
+        	}
+        	if (e instanceof ConnectException) {
+        		IOException e1 = new UnknownHostException(e.getMessage());
+        		e1.initCause(e);
+        		throw e1;
         	}
         	throw e;
         }

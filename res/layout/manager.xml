@@ -13,7 +13,7 @@
         <org.taptwo.android.widget.ViewFlow
             android:id="@+id/ad_flow"
             android:layout_width="fill_parent"
-            android:layout_height="207px"
+            android:layout_height="120dp"
             app:sidebuffer="3"
             app:autoflow="true" />
         

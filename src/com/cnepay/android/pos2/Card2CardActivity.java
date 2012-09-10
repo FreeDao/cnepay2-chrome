@@ -67,7 +67,7 @@ public class Card2CardActivity extends UIBaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.card2card);
-		setTitle("付款操作");
+		setTitle("付款服务");
 		setActivityPara(true, true);
 		
 		Intent i = getIntent();
@@ -247,7 +247,7 @@ public class Card2CardActivity extends UIBaseActivity implements
     	AlertDialogBuilderWrapper builder = PublicHelper.getAlertDialogBuilder(this);
         builder.setTitle("信息预览")
         .setIcon(android.R.drawable.ic_dialog_info)
-        .setMessage(info.toString() + "\n\n是否继续转账？")
+        .setMessage(info.toString() + "\n\n是否继续付款？")
         .setCancelable(false)
         .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {

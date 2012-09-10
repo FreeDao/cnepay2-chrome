@@ -17,11 +17,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
             android:numColumns="3"
-            android:padding="10dp"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" />
+            android:stretchMode="columnWidth" />
 
         <TextView
             android:id="@+id/mananger_notice_text"
