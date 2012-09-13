@@ -536,14 +536,25 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 			Field f;
 			int id;
 			LinearLayout.LayoutParams lp;
-			
-			f = b.getDeclaredField("parentPanel");
-			id = (Integer) f.get(null);
-			View parent = window.findViewById(id);
+			/*
+			for (Field f1 : b.getDeclaredFields()) {
+				android.util.Log.w("ty", f1.getName());
+			}
+			*/
+			View parent = null;
+			try {
+				f = b.getDeclaredField("parentPanel");
+				id = (Integer) f.get(null);
+				parent = window.findViewById(id);
+			} catch (NoSuchFieldException e) {}
 			
 			f = b.getDeclaredField("topPanel");
 			id = (Integer) f.get(null);
 			View top = window.findViewById(id);
+			if (parent == null) {
+				// fix for jelly bean
+				parent = top.getRootView();
+			}
 			
 			f = b.getDeclaredField("title_template");
 			id = (Integer) f.get(null);
@@ -618,7 +629,7 @@ public class AlertDialogBuilderWrapper implements OnShowListener {
 				divider.setLayoutParams(lp);
 				if (divider instanceof ImageView) {
 					ImageView img = (ImageView) divider;
-					img.setImageResource(R.color.transparent);
+					img.setImageResource(0);
 				}
 				divider.setBackgroundColor(0xff279ce7);
 			}
